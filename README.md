@@ -2,6 +2,8 @@
 
 **English** · [Türkçe](#chess-lux-türkçe)
 
+▶ **[Play in your browser](https://cuneytinann.github.io/Chess_LUX/)** · [Benchmarking page](https://cuneytinann.github.io/Chess_LUX/BestArbiter.html)
+
 **The world's most rule-accurate chess arbiter, in a single 7,415-byte HTML file.**
 
 Chess LUX is a browser-based chess app for two players sharing a single screen. Its real job is arbitration: in line with the FIDE Laws of Chess, it determines whether each move is legal, whether the game is over and what the result is. In particular, it performs a check that most chess sites skip when a flag falls or a position locks up.
@@ -16,11 +18,11 @@ Chess LUX is a browser-based chess app for two players sharing a single screen. 
 | **In locked positions** | the correct verdict in 50,513 of the 50,526 locked-structure games among them (99.97%) |
 | **False draws** | 0 on the test positions |
 | **Speed** | flag verdict in a median of 0.1 ms on real games; about half a second on the hardest constructed position |
-| **Installation** | none, and no internet connection required |
+| **Installation** | none: play online, or download the file and play offline |
 
 ## Try it now
 
-1. Download `index.html` and open it in your browser; the tab will read "FideLite".
+1. Open [cuneytinann.github.io/Chess_LUX](https://cuneytinann.github.io/Chess_LUX/), or download `index.html` and open it locally; the tab will read "FideLite".
 2. In the dialog that appears, keep the starting position and time control (10 min + 5 s) or enter your own FEN, then press **Play**.
 3. Move the pieces by clicking or dragging. Use ½ to claim or offer a draw and ⚐ to resign; once the game is over, ↺ starts a new one.
 
@@ -123,8 +125,8 @@ The difference is clearest in the locked-structure class of chasolver's data ("B
 
 `BestArbiter.html` is a benchmarking page that lets you put the claims to the test yourself; the verdicts come from the very same engine that runs the game.
 
-1. Open `BestArbiter.html` in your browser.
-2. Drag `chasolver-data-until-08-2026.csv` (or one of the two `.txt` files) onto the page.
+1. Open [BestArbiter.html](https://cuneytinann.github.io/Chess_LUX/BestArbiter.html) online, or download it and open it locally.
+2. Download `chasolver-data-until-08-2026.csv` (or one of the two `.txt` files) from this repository and drag it onto the page.
 3. Press **judge the files**. **run both builds** runs the two engine builds back to back and shows that their verdicts match.
 
 Expected results with the default settings (15 plies, 20,000 nodes):
@@ -141,15 +143,17 @@ Large files can take a few minutes to process. To try a single position, simply 
 
 ## Files
 
-| file | size | contents |
-|---|---|---|
-| `index.html` | 7,415 B | game and arbiter |
-| `BestArbiter.html` | 66,016 B | benchmarking page with both engine builds embedded |
-| `chasolver-data-until-08-2026.csv` | 22.9 MB | the 201,060 wrongly decided timeouts chasolver found on Lichess (through August 2026) |
-| `chasolver-blocked-until-08-2026.csv` | 6.2 MB | the "Blocked" (locked-structure) class of the same data, 50,526 games |
-| `chasolver-positions.txt` | 152 KB | chasolver's 3,414 labeled challenging test positions |
-| `chasolver-lichess.txt` | 3.3 MB | 65,536 labeled Lichess positions |
-| `LICENSE` | | MIT License |
+| file | size | contents | source |
+|---|---|---|---|
+| `index.html` | 7,415 B | game and arbiter | this project |
+| `BestArbiter.html` | 66,016 B | benchmarking page with both engine builds embedded | this project |
+| `chasolver-data-until-08-2026.csv` | 22.9 MB | the 201,060 wrongly decided timeouts chasolver found on Lichess (through August 2026) | [chasolver.org](https://chasolver.org/unfair-games) |
+| `chasolver-blocked-until-08-2026.csv` | 6.2 MB | the "Blocked" (locked-structure) class of the same data, 50,526 games | [chasolver.org](https://chasolver.org/unfair-games) |
+| `chasolver-positions.txt` | 152 KB | chasolver's 3,414 labeled challenging test positions | [chasolver `tests/positions.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/positions.txt) (MIT) |
+| `chasolver-lichess.txt` | 3.3 MB | 65,536 labeled Lichess positions | [chasolver `tests/lichess.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/lichess.txt) (MIT) |
+| `LICENSE` | | MIT License | this project |
+
+The four `chasolver-*` data files are Miguel Ambrona's work. They are included here with attribution so that the measurements can be reproduced; the originals are linked in the source column.
 
 ## Counterexamples, contributions and license
 
@@ -429,6 +433,8 @@ Run with `node --stack-size=4000`.
 
 [English](#chess-lux) · **Türkçe**
 
+▶ **[Tarayıcıda hemen oyna](https://cuneytinann.github.io/Chess_LUX/)** · [Ölçüm sayfası](https://cuneytinann.github.io/Chess_LUX/BestArbiter.html)
+
 **7.415 baytlık tek bir HTML dosyasında, dünyanın kural doğruluğu en yüksek satranç hakemi.**
 
 Chess LUX, tarayıcıda açılan ve aynı ekranda iki kişinin oynadığı bir satranç uygulaması. Asıl işi hakemlik: her hamlenin legal olup olmadığını, oyunun bitip bitmediğini ve sonucu FIDE kurallarına göre belirler. Özellikle bayrak düşmesinde ve kilitli pozisyonlarda, çoğu satranç sitesinin yapmadığı bir denetim yapar.
@@ -443,11 +449,11 @@ Chess LUX, tarayıcıda açılan ve aynı ekranda iki kişinin oynadığı bir s
 | **Kilitli yapılarda** | bunların 50.526'sını oluşturan kilitli yapı sınıfında 50.513 doğru hüküm (%99,97) |
 | **Yanlış beraberlik** | test pozisyonlarında 0 |
 | **Hız** | bayrak hükmü gerçek oyunlarda medyan 0,1 ms; en zor kurgulanmış pozisyonda yaklaşık yarım saniye |
-| **Kurulum** | yok; internet bağlantısı da gerekmez |
+| **Kurulum** | yok: çevrimiçi oynayın ya da dosyayı indirip internetsiz oynayın |
 
 ## Hemen dene
 
-1. `index.html`'i indirip tarayıcıda açın. Sekmede "FideLite" başlığı görünür.
+1. [cuneytinann.github.io/Chess_LUX](https://cuneytinann.github.io/Chess_LUX/) adresini açın ya da `index.html`'i indirip tarayıcıda açın. Sekmede "FideLite" başlığı görünür.
 2. Açılan pencerede başlangıç pozisyonunu ve süreyi (10 dk + 5 sn) olduğu gibi bırakın ya da kendi FEN'inizi girin, ardından **Play**'e basın.
 3. Taşları tıklayarak ya da sürükleyerek oynayın. ½ beraberlik talebi ve teklifi, ⚐ terk içindir; oyun bitince ↺ yeni bir oyun açar.
 
@@ -550,8 +556,8 @@ Farkı en açık biçimde chasolver verisindeki kilitli yapı sınıfı ("Blocke
 
 `BestArbiter.html`, iddiaları kendiniz sınayabilmeniz için hazırlanmış bir ölçüm sayfası; hükmü oyundaki motorun kendisi verir.
 
-1. `BestArbiter.html`'i tarayıcıda açın.
-2. `chasolver-data-until-08-2026.csv`'yi (ya da iki `.txt` dosyasından birini) sayfaya sürükleyin.
+1. [BestArbiter.html](https://cuneytinann.github.io/Chess_LUX/BestArbiter.html) sayfasını çevrimiçi açın ya da dosyayı indirip tarayıcıda açın.
+2. `chasolver-data-until-08-2026.csv`'yi (ya da iki `.txt` dosyasından birini) bu repodan indirip sayfaya sürükleyin.
 3. **judge the files** düğmesine basın. **run both builds** ise iki motor sürümünü art arda çalıştırıp hükümlerin aynı olduğunu gösterir.
 
 Varsayılan ayarlarla (15 yarım hamle, 20.000 düğüm) beklenen sonuçlar:
@@ -568,15 +574,17 @@ Büyük dosyaların işlenmesi birkaç dakika sürebilir. Tek bir pozisyonu dene
 
 ## Dosyalar
 
-| dosya | boyut | içerik |
-|---|---|---|
-| `index.html` | 7.415 B | oyun ve hakem |
-| `BestArbiter.html` | 66.016 B | ölçüm sayfası; iki motor sürümü gömülü |
-| `chasolver-data-until-08-2026.csv` | 22,9 MB | chasolver'ın Lichess'te bulduğu 201.060 haksız bayrak sonucu (Ağustos 2026'ya kadar) |
-| `chasolver-blocked-until-08-2026.csv` | 6,2 MB | aynı verinin chasolver'daki "Blocked" (kilitli yapı) sınıfı, 50.526 oyun |
-| `chasolver-positions.txt` | 152 KB | chasolver'ın 3.414 etiketli zorlu test pozisyonu |
-| `chasolver-lichess.txt` | 3,3 MB | 65.536 etiketli Lichess pozisyonu |
-| `LICENSE` | | MIT lisansı |
+| dosya | boyut | içerik | kaynak |
+|---|---|---|---|
+| `index.html` | 7.415 B | oyun ve hakem | bu proje |
+| `BestArbiter.html` | 66.016 B | ölçüm sayfası; iki motor sürümü gömülü | bu proje |
+| `chasolver-data-until-08-2026.csv` | 22,9 MB | chasolver'ın Lichess'te bulduğu 201.060 haksız bayrak sonucu (Ağustos 2026'ya kadar) | [chasolver.org](https://chasolver.org/unfair-games) |
+| `chasolver-blocked-until-08-2026.csv` | 6,2 MB | aynı verinin chasolver'daki "Blocked" (kilitli yapı) sınıfı, 50.526 oyun | [chasolver.org](https://chasolver.org/unfair-games) |
+| `chasolver-positions.txt` | 152 KB | chasolver'ın 3.414 etiketli zorlu test pozisyonu | [chasolver `tests/positions.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/positions.txt) (MIT) |
+| `chasolver-lichess.txt` | 3,3 MB | 65.536 etiketli Lichess pozisyonu | [chasolver `tests/lichess.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/lichess.txt) (MIT) |
+| `LICENSE` | | MIT lisansı | bu proje |
+
+Dört `chasolver-*` veri dosyası Miguel Ambrona'nın çalışmasıdır. Ölçümler tekrarlanabilsin diye atıfla birlikte bu repoya eklendi; özgün kaynakları tablodaki bağlantılarda.
 
 ## Karşı örnek, katkı ve lisans
 
