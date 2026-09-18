@@ -2,9 +2,9 @@
 
 **English** · [Türkçe](#chess-lux-türkçe)
 
-▶ **[Play in your browser](https://cuneytinann.github.io/Chess_LUX/)** · [Benchmarking page](https://cuneytinann.github.io/Chess_LUX/BestArbiter.html)
+▶ **[Play in your browser](https://cuneytinann.github.io/Chess-LUX/)** · [Benchmarking page](https://cuneytinann.github.io/Chess-LUX/BestArbiter.html)
 
-**The world's most rule-accurate chess arbiter, in a single 7,415-byte HTML file.**
+**The world's most rule-accurate chess arbiter, in a single 7,695-byte HTML file.**
 
 Chess LUX is a browser-based chess app for two players sharing a single screen. Its real job is arbitration: in line with the FIDE Laws of Chess, it determines whether each move is legal, whether the game is over and what the result is. In particular, it performs a check that most chess sites skip when a flag falls or a position locks up.
 
@@ -12,7 +12,7 @@ Chess LUX is a browser-based chess app for two players sharing a single screen. 
 
 | | |
 |---|---|
-| **Size** | one file, 7,415 bytes: game, clock, interface and arbiter in one |
+| **Size** | one file, 7,695 bytes: game, clock, interface and arbiter in one |
 | **Rules** | checkmate, stalemate, dead positions, flag fall, resignation, the 50- and 75-move rules, threefold and fivefold repetition, draw claims and offers |
 | **On Lichess data** | the correct verdict in 201,047 of 201,060 games wrongly decided on time (99.9935%) |
 | **In locked positions** | the correct verdict in 50,513 of the 50,526 locked-structure games among them (99.97%) |
@@ -22,9 +22,9 @@ Chess LUX is a browser-based chess app for two players sharing a single screen. 
 
 ## Try it now
 
-1. Open [cuneytinann.github.io/Chess_LUX](https://cuneytinann.github.io/Chess_LUX/), or download `index.html` and open it locally; the tab will read "FideLite".
+1. Open [cuneytinann.github.io/Chess-LUX](https://cuneytinann.github.io/Chess-LUX/), or download `index.html` and open it locally; the tab will read "FideLite".
 2. In the dialog that appears, keep the starting position and time control (10 min + 5 s) or enter your own FEN, then press **Play**.
-3. Move the pieces by clicking or dragging. Use ½ to claim or offer a draw and ⚐ to resign; once the game is over, ↺ starts a new one.
+3. Move the pieces by clicking or dragging. Right-drag across the board to mark a line of squares, right-click one square to mark it alone, and any left click clears the marks. Use ½ to claim or offer a draw and ⚐ to resign; once the game is over, ↺ starts a new one.
 
 Any up-to-date browser will do: Chrome/Edge 85+, Firefox 98+, Safari 15.4+ (2022 or later).
 
@@ -58,6 +58,10 @@ Dead positions tell a similar story. Under FIDE rules (Article 5.2.2), the game 
 
 If no proof is found, the side with time remaining wins. The overriding priority is never to award a false draw; missing a draw is the lesser evil.
 
+**The clock is settled before every action.** A move, a draw claim and a resignation all begin by charging the elapsed time to the player on move; if that empties their clock, the flag verdict is issued and the action is refused. The 99 ms display tick therefore only delays what the players see, never what the arbiter counts: elapsed time is always measured from the last reading, so nothing is lost between two ticks and nothing is charged to the wrong side. Measurement uses `performance.now()`, a monotonic source, so a system-clock correction cannot give or take time either.
+
+**The time control.** Both fields take any non-negative number, fractions included: 2.5 minutes is a 150-second game and 2.5 seconds is a 2.5-second increment, with no silent rounding on either side. Anything that is not a finite number, or a starting time of 24 hours or more, or an increment of an hour or more, is refused before the game starts. The clock reads `MM:SS` and grows an hour field only when it needs one, so `15:00` stays `15:00` and a 90-minute control reads `1:30:00`.
+
 **The 75-move rule also feeds into the flag verdict.** If mate is only possible after the 75-move limit, a flag fall ends in a draw:
 
 ```
@@ -79,12 +83,13 @@ Threefold-repetition and fifty-move claims are neither fully manual nor fully au
 
 - **Pressing ½ directly:** The claim is assessed for the current position (9.2.2, 9.3.2).
 - **Making a move with ½ checked:** The claim is assessed for the position the move will produce (9.2.1, 9.3.1). This is the equivalent of writing the move down and declaring your intention to the arbiter over the board.
+- **The board is read first:** A claim is only assessed once the position it produces has been examined. If that move gives checkmate or stalemate, or the position is dead, the game ends there and the claim never arises — mate outranks the fifty-move rule, threefold repetition and a draw agreement alike.
 - **If the claim is incorrect:** It goes to the opponent as a draw offer (9.1.2.3). An offer sent together with a move corresponds to an over-the-board offer made after moving and before pressing the clock (9.1.2.1).
 - **The opponent's response:** If the opponent presses ½, the game ends in a draw by agreement; moving without pressing it declines the offer.
 
 Under a fully manual scheme, a player would have to catch the exact moment to claim, and a fast opponent or a premove could cost them that right. Under a fully automatic scheme, the game would end in a draw at a moment the player never chose. With the semi-automatic approach, the intention is registered before the move, the verdict is delivered with the move, and the decision to claim always rests with the player.
 
-The ½ button is available from the very first move, so in a position set up from a FEN the fifty-move rule can be claimed right away. The trade-off is that a draw by agreement becomes possible one ply earlier than FIDE 5.2.3 allows.
+The ½ button is available from the very first move, so in a position set up from a FEN the fifty-move rule can be claimed right away. A draw by agreement is the one thing it cannot produce that early: under FIDE 5.2.3 the players may only agree once both of them have made a move, so until then the offer is recorded but never reaches the opponent. Disabling the button on the first ply would have been the simpler fix, but it would have taken the fifty-move claim down with it.
 
 ### Result codes
 
@@ -111,7 +116,7 @@ I developed the algorithm independently, but without Ambrona's work I could neve
 
 ### Comparison with FideLite
 
-Chess LUX builds on the most advanced version of the FideLite engine at [fidelite.art](https://fidelite.art), where the rules and functions are documented in detail. FideLite's lock detector only recognizes locked structures consisting of kings and pawns. With roughly 1 KB of additional code, Chess LUX extends it to every piece; since knights, rooks and queens can only be accounted for when they are immobile, the extension effectively amounts to adding bishops. In short, this repository is FideLite with a looser byte budget and higher rule accuracy.
+Chess LUX builds on the most advanced version of the FideLite engine at [fidelite.art](https://fidelite.art), where the rules and functions are documented in detail. FideLite's lock detector only recognizes locked structures consisting of kings and pawns. With roughly 1 KB of additional code, Chess LUX extends it to every piece; since knights, rooks and queens can only be accounted for when they are immobile, the extension effectively amounts to adding bishops. In short, this repository is FideLite with a looser byte budget and higher rule accuracy. The naming follows the L3 build: every name L3 already had keeps it — `N` is `indexOf`, `Q` is `innerHTML`, `l`/`m` are the pawn sets inside `J` — and the declarations appear in L3’s order, so the two sources can be read side by side. Only what Chess LUX adds carries new names.
 
 The difference is clearest in the locked-structure class of chasolver's data ("Blocked", 50,526 games):
 
@@ -125,7 +130,7 @@ The difference is clearest in the locked-structure class of chasolver's data ("B
 
 `BestArbiter.html` is a benchmarking page that lets you put the claims to the test yourself; the verdicts come from the very same engine that runs the game.
 
-1. Open [BestArbiter.html](https://cuneytinann.github.io/Chess_LUX/BestArbiter.html) online, or download it and open it locally.
+1. Open [BestArbiter.html](https://cuneytinann.github.io/Chess-LUX/BestArbiter.html) online, or download it and open it locally.
 2. Download `chasolver-data-until-08-2026.csv` (or one of the two `.txt` files) from this repository and drag it onto the page.
 3. Press **judge the files**. **run both builds** runs the two engine builds back to back and shows that their verdicts match.
 
@@ -145,8 +150,8 @@ Large files can take a few minutes to process. To try a single position, simply 
 
 | file | size | contents | source |
 |---|---|---|---|
-| `index.html` | 7,415 B | game and arbiter | this project |
-| `BestArbiter.html` | 66,016 B | benchmarking page with both engine builds embedded | this project |
+| `index.html` | 7,695 B | game and arbiter | this project |
+| `BestArbiter.html` | 66,012 B | benchmarking page with both engine builds embedded | this project |
 | `chasolver-data-until-08-2026.csv` | 22.9 MB | the 201,060 wrongly decided timeouts chasolver found on Lichess (through August 2026) | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-blocked-until-08-2026.csv` | 6.2 MB | the "Blocked" (locked-structure) class of the same data, 50,526 games | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-positions.txt` | 152 KB | chasolver's 3,414 labeled challenging test positions | [chasolver `tests/positions.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/positions.txt) (MIT) |
@@ -193,29 +198,30 @@ The starting position is built from a hexadecimal string: ``5d37b3d5${10n**40n-1
 | `e` | en passant target square; set only when a legal capture exists, otherwise -1 |
 | `n` | halfmove clock |
 | `R`, `$` | repetition table (key `b+t+e+c`) and the repetition count of the current position |
-| `o` | draw-offer bits |
+| `o` | draw offers (bits 1, 2) and which side has already moved (bits 4, 8) |
 | `z` | result (0 = game in progress) |
+| `N`, `Q` | the strings `'indexOf'` and `'innerHTML'`, as in L3 |
+| `Y` | the constant -1: no en passant square, no selected square, no such piece |
 | `Xm`, `Xs` | search node budget and transposition table |
 
 | name | role | 1x | 4x |
 |---|---|---|---|
-| `G(i,f,T)` | move geometry and castling; attack mode when `T` is set | 268 | 269 |
-| `V(u,s)` | whether a square is attacked | 39 | 42 |
-| `l(g)` | whether the king is in check | 20 | 20 |
-| `L(i)` | legal target squares of a piece | 101 | 105 |
+| `G(i,f,T)` | move geometry and castling; attack mode when `T` is set | 263 | 264 |
+| `V(s,u)` | whether square `u` is attacked by `s`'s opponent; with `u` omitted, whether `s`'s king is in check | 50 | 53 |
+| `L(i)` | legal target squares of a piece | 100 | 105 |
 | `C(i)` | castling rights affected by a square | 27 | 27 |
-| `M(i,f,u)` | makes a move on a copy of the board | 222 | 222 |
+| `M(i,f,u)` | makes a move on a copy of the board | 219 | 219 |
 | `I(g)` | insufficient material | 85 | 85 |
-| `H(g)` | material shortcut for the flag verdict | 77 | 77 |
+| `H(g)` | material shortcut for the flag verdict | 74 | 74 |
 | `Z()` | result after a move | 73 | 76 |
-| `A(i,f,u)` | plays a move | 67 | 67 |
-| `D(g)` | draw claims and offers | 37 | 37 |
-| `X(g,d)` | helpmate search | 219 | 230 |
+| `A(i,f,u)` | plays a move | 75 | 75 |
+| `D(g)` | draw claims and offers | 43 | 43 |
+| `X(g,d)` | helpmate search | 216 | 230 |
 | `F(g,k)` | flag or resignation verdict | 43 | 43 |
-| `J(a,G)` | dead-position and lock detector | 1,261 | 1,369 |
-| **engine file** | | **2,695** | **2,825** |
+| `J(a,G)` | dead-position and lock detector | 1,240 | 1,356 |
+| **engine file** | | **2,659** | **2,801** |
 
-`index.html` carries the 4x definitions (`G V l L C M I H X J`) byte-for-byte identical to those in `engine_4x.js`; `Z D F A` are interface versions that report the result as a text code. On top of the material test come two layers that most sites lack: `J` (1,369 bytes) and `X` (230 bytes), 1,599 bytes combined.
+`index.html` carries the 4x definitions (`G V L C M I H X J`) byte-for-byte identical to those in `engine_4x.js`; `Z D F A` are interface versions that report the result as a text code. On top of the material test come two layers that most sites lack: `J` (1,356 bytes) and `X` (230 bytes), 1,586 bytes combined.
 
 **1x and 4x.** Everything shipped to users is written in 4x style: bytes come first, but a few extra bytes are spent whenever they buy a multiplicative speedup. 1x is the shortest source with identical behavior and is offered only as an experimental option on the benchmarking page. The two builds must return the same verdict on every input; on real games 4x stays under 100 ms, whereas 1x can take seconds.
 
@@ -258,6 +264,7 @@ If none of these applies, all legal moves and promotion choices (`[3,2,1,6]`) ar
 **Bitboards.** Each set is a 64-bit `BigInt`; bit `i` represents square `i`.
 - **Masks:** `f` is the whole board, `y` everything but the a-file, `x` everything but the h-file, `d` the light squares.
 - **Helpers:** `S` horizontal neighbors, `N` the 3×3 neighborhood including the square itself, `O` orthogonal neighbors, `T` diagonal neighbors.
+- **Occupancy:** `M` all White men, `D` all Black men; `l`/`m` are the uncapturable pawns of each side within one iteration.
 
 **Fixed point.** Each iteration grows or shrinks the sets:
 - **Blocked pawns:** `P`/`Q` only ever shrink; what remains are the pawns the enemy king can never capture and whose way forward is permanently blocked.
@@ -284,7 +291,7 @@ In 4x the loop stops as soon as the `k2` checksum (`C+Z+K+L+r+q-P-Q+R+c`) stops 
 1x source:
 
 ```js
-|!(o?B^Q:W^P)&(!(a&1+o)|!(i=o?c:R,j=f^(p&~i|(o?S(C)<<8n|N(K):S(Z)>>8n|N(L))|t&~b1),u=j&~i,s=j&b1,A=u&b1,l1&b1&~(E(9n)&E(7n)|O(u)|j>>8n&j<<8n|j>>1n&j<<1n&x&y|(j>>8n|j<<8n)&S(j))))
+|!(o?B^Q:W^P)&(!(a&1+o)|!(i=o?c:R,j=f^(p&~i|(o?S(C)<<8n|N(K):S(Z)>>8n|N(L))|t&~b1),u=j&~i,s=j&b1,A=u&b1,l&b1&~(E(9n)&E(7n)|O(u)|j>>8n&j<<8n|j>>1n&j<<1n&x&y|(j>>8n|j<<8n)&S(j))))
 ```
 
 - `E=k=>s>>k&s<<k|A>>k|A<<k`: an escape on one diagonal pair;
@@ -433,9 +440,9 @@ Run with `node --stack-size=4000`.
 
 [English](#chess-lux) · **Türkçe**
 
-▶ **[Tarayıcıda hemen oyna](https://cuneytinann.github.io/Chess_LUX/)** · [Ölçüm sayfası](https://cuneytinann.github.io/Chess_LUX/BestArbiter.html)
+▶ **[Tarayıcıda hemen oyna](https://cuneytinann.github.io/Chess-LUX/)** · [Ölçüm sayfası](https://cuneytinann.github.io/Chess-LUX/BestArbiter.html)
 
-**7.415 baytlık tek bir HTML dosyasında, dünyanın kural doğruluğu en yüksek satranç hakemi.**
+**7.695 baytlık tek bir HTML dosyasında, dünyanın kural doğruluğu en yüksek satranç hakemi.**
 
 Chess LUX, tarayıcıda açılan ve aynı ekranda iki kişinin oynadığı bir satranç uygulaması. Asıl işi hakemlik: her hamlenin legal olup olmadığını, oyunun bitip bitmediğini ve sonucu FIDE kurallarına göre belirler. Özellikle bayrak düşmesinde ve kilitli pozisyonlarda, çoğu satranç sitesinin yapmadığı bir denetim yapar.
 
@@ -443,7 +450,7 @@ Chess LUX, tarayıcıda açılan ve aynı ekranda iki kişinin oynadığı bir s
 
 | | |
 |---|---|
-| **Boyut** | tek dosya, 7.415 bayt: oyun, saat, arayüz ve hakem bir arada |
+| **Boyut** | tek dosya, 7.695 bayt: oyun, saat, arayüz ve hakem bir arada |
 | **Kurallar** | mat, pat, ölü pozisyon, bayrak düşmesi, terk, 50 ve 75 hamle kuralı, üçlü ve beşli tekrar, beraberlik talebi ve teklifi |
 | **Lichess verisiyle** | bayrak düşmesiyle haksız sonuçlanmış 201.060 oyunun 201.047'sinde doğru hüküm (%99,9935) |
 | **Kilitli yapılarda** | bunların 50.526'sını oluşturan kilitli yapı sınıfında 50.513 doğru hüküm (%99,97) |
@@ -453,9 +460,9 @@ Chess LUX, tarayıcıda açılan ve aynı ekranda iki kişinin oynadığı bir s
 
 ## Hemen dene
 
-1. [cuneytinann.github.io/Chess_LUX](https://cuneytinann.github.io/Chess_LUX/) adresini açın ya da `index.html`'i indirip tarayıcıda açın. Sekmede "FideLite" başlığı görünür.
+1. [cuneytinann.github.io/Chess-LUX](https://cuneytinann.github.io/Chess-LUX/) adresini açın ya da `index.html`'i indirip tarayıcıda açın. Sekmede "FideLite" başlığı görünür.
 2. Açılan pencerede başlangıç pozisyonunu ve süreyi (10 dk + 5 sn) olduğu gibi bırakın ya da kendi FEN'inizi girin, ardından **Play**'e basın.
-3. Taşları tıklayarak ya da sürükleyerek oynayın. ½ beraberlik talebi ve teklifi, ⚐ terk içindir; oyun bitince ↺ yeni bir oyun açar.
+3. Taşları tıklayarak ya da sürükleyerek oynayın. Sağ tuşla tahtada sürüklerseniz aradaki bütün kareler işaretlenir, tek kareye sağ tıklarsanız yalnız o kare işaretlenir; sol tıklama işaretleri siler. ½ beraberlik talebi ve teklifi, ⚐ terk içindir; oyun bitince ↺ yeni bir oyun açar.
 
 Güncel bir tarayıcı yeterli: Chrome/Edge 85+, Firefox 98+, Safari 15.4+ (2022 ve sonrası).
 
@@ -489,6 +496,10 @@ Beyazın süresi bitti ve oyun beyazın yenilgisiyle sonuçlandı. Oysa piyon du
 
 Kanıt bulunamazsa süresi kalan taraf kazanır. Öncelik hiçbir zaman yanlış beraberlik vermemek; bir beraberliği kaçırmak daha küçük bir kusur.
 
+**Her eylemden önce saat kapatılır.** Hamle de, beraberlik talebi de, terk de önce geçen süreyi sırası gelen oyuncunun saatine yazar; bu saat sıfırlanıyorsa bayrak hükmü verilir ve eylem kabul edilmez. 99 ms'lik gösterim tiki bu yüzden yalnızca oyuncuların gördüğünü geciktirir, hakemin saydığını değil: geçen süre her zaman son okumadan itibaren ölçülür, iki tik arasında ne kaybolur ne de yanlış tarafa yazılır. Ölçüm `performance.now()` ile, yani monotonik bir kaynaktan yapılır; sistem saati düzeltilse de süre ne eksilir ne artar.
+
+**Süre kontrolü.** İki alan da kesirli dahil her negatif olmayan sayıyı kabul eder: 2,5 dakika 150 saniyelik oyun, 2,5 saniye 2,5 saniyelik artırım demektir; hiçbir tarafta sessiz yuvarlama yoktur. Sonlu bir sayı olmayan her değer, 24 saat ve üzeri başlangıç süresi, 1 saat ve üzeri artırım oyun başlamadan reddedilir. Saat `DD:SS` okunur ve saat alanını yalnız gerektiğinde açar: `15:00` `15:00` kalır, 90 dakikalık kontrol `1:30:00` görünür.
+
 **75 hamle kuralı bayrak hükmüne de girer.** Mat ancak 75 hamle sınırından sonra mümkünse bayrak düşmesi beraberlikle sonuçlanır:
 
 ```
@@ -510,12 +521,13 @@ Kanıt bulunamazsa süresi kalan taraf kazanır. Öncelik hiçbir zaman yanlış
 
 - **½'ye doğrudan basmak:** Talep o anki pozisyon için değerlendirilir (9.2.2, 9.3.2).
 - **½ işaretliyken hamle yapmak:** Talep, hamlenin ortaya çıkaracağı pozisyon için değerlendirilir (9.2.1, 9.3.1). Bu, masabaşında hamleyi yazıp niyetini hakeme bildirmenin karşılığıdır.
+- **Önce tahta okunur:** Talep, ancak doğuracağı pozisyon incelendikten sonra değerlendirilir. O hamle mat ya da pat veriyorsa veya pozisyon ölüyse oyun orada biter, talep hiç doğmaz — mat 50 hamle kuralını da, üçlü tekrarı da, anlaşmalı beraberliği de ezer.
 - **Talep yerinde değilse:** Rakibe beraberlik teklifi olarak gider (9.1.2.3). Hamleyle birlikte giden teklif, masabaşında hamleden sonra ve saate basmadan önce yapılan teklifin karşılığıdır (9.1.2.1).
 - **Rakibin cevabı:** Rakip ½'ye basarsa oyun anlaşmalı beraberlikle biter; basmadan hamle yaparsa teklifi reddetmiş olur.
 
 Tam manuel bir düzende oyuncu talep anını yakalamak zorunda kalırdı; hızlı oynayan bir rakip ya da ön hamle (premove) yüzünden talep hakkını kaçırabilirdi. Tam otomatik bir düzende ise oyun, oyuncunun istemediği bir anda beraberlikle biterdi. Yarı otomatik düzende işaret hamleden önce konur, hüküm hamleyle birlikte verilir ve talep etmek her zaman oyuncunun kararıdır.
 
-½ düğmesi oyunun ilk hamlesinden itibaren kullanılabilir; böylece FEN'le başlatılan bir pozisyonda 50 hamle kuralı daha ilk hamlede talep edilebilir. Bunun yan etkisi, anlaşmalı beraberliğin FIDE 5.2.3'ün öngördüğünden bir yarım hamle erken mümkün olmasıdır.
+½ düğmesi oyunun ilk hamlesinden itibaren kullanılabilir; böylece FEN'le başlatılan bir pozisyonda 50 hamle kuralı daha ilk hamlede talep edilebilir. Bu kadar erken üretilemeyen tek şey anlaşmalı beraberliktir: FIDE 5.2.3'e göre taraflar ancak ikisi de birer hamle yaptıktan sonra anlaşabilir, o ana kadar teklif kaydedilir ama karşı tarafa ulaşmaz. Düğmeyi ilk yarım hamlede kapatmak daha kolay bir çözüm olurdu, ama 50 hamle talebini de birlikte götürürdü.
 
 ### Sonuç kodları
 
@@ -542,7 +554,7 @@ Algoritmayı bağımsız olarak geliştirdim, ama Ambrona'nın çalışması olm
 
 ### FideLite ile karşılaştırma
 
-Chess LUX, [fidelite.art](https://fidelite.art)'taki FideLite motorunun en üst sürümü üzerine kurulu; kuralların ve fonksiyonların ayrıntılı anlatımı orada. FideLite'ın kilit dedektörü yalnızca şah ve piyonlardan oluşan kilitli yapıları tanıyor. Chess LUX, yaklaşık 1 KB'lık ek kodla bunu bütün taşlara genişletiyor; at, kale ve vezir ancak hareketsizken hesaba katılabildiği için bu genişletme pratikte fillerin eklenmesi demek. Kısacası bu repo, FideLite'ın bayt kaygısı hafifletilip kural doğruluğu artırılmış hâli.
+Chess LUX, [fidelite.art](https://fidelite.art)'taki FideLite motorunun en üst sürümü üzerine kurulu; kuralların ve fonksiyonların ayrıntılı anlatımı orada. FideLite'ın kilit dedektörü yalnızca şah ve piyonlardan oluşan kilitli yapıları tanıyor. Chess LUX, yaklaşık 1 KB'lık ek kodla bunu bütün taşlara genişletiyor; at, kale ve vezir ancak hareketsizken hesaba katılabildiği için bu genişletme pratikte fillerin eklenmesi demek. Kısacası bu repo, FideLite'ın bayt kaygısı hafifletilip kural doğruluğu artırılmış hâli. Adlandırma L3 sürümünü izler: L3'te zaten bulunan her ad korunur — `N` `indexOf`, `Q` `innerHTML`, `J` içindeki `l`/`m` piyon kümeleri — ve tanımlar L3'teki sırayla gelir, böylece iki kaynak yan yana okunabilir. Yalnızca Chess LUX'ün eklediği şeyler yeni ad taşır.
 
 Farkı en açık biçimde chasolver verisindeki kilitli yapı sınıfı ("Blocked", 50.526 oyun) gösteriyor:
 
@@ -556,7 +568,7 @@ Farkı en açık biçimde chasolver verisindeki kilitli yapı sınıfı ("Blocke
 
 `BestArbiter.html`, iddiaları kendiniz sınayabilmeniz için hazırlanmış bir ölçüm sayfası; hükmü oyundaki motorun kendisi verir.
 
-1. [BestArbiter.html](https://cuneytinann.github.io/Chess_LUX/BestArbiter.html) sayfasını çevrimiçi açın ya da dosyayı indirip tarayıcıda açın.
+1. [BestArbiter.html](https://cuneytinann.github.io/Chess-LUX/BestArbiter.html) sayfasını çevrimiçi açın ya da dosyayı indirip tarayıcıda açın.
 2. `chasolver-data-until-08-2026.csv`'yi (ya da iki `.txt` dosyasından birini) bu repodan indirip sayfaya sürükleyin.
 3. **judge the files** düğmesine basın. **run both builds** ise iki motor sürümünü art arda çalıştırıp hükümlerin aynı olduğunu gösterir.
 
@@ -576,8 +588,8 @@ Büyük dosyaların işlenmesi birkaç dakika sürebilir. Tek bir pozisyonu dene
 
 | dosya | boyut | içerik | kaynak |
 |---|---|---|---|
-| `index.html` | 7.415 B | oyun ve hakem | bu proje |
-| `BestArbiter.html` | 66.016 B | ölçüm sayfası; iki motor sürümü gömülü | bu proje |
+| `index.html` | 7.695 B | oyun ve hakem | bu proje |
+| `BestArbiter.html` | 66.012 B | ölçüm sayfası; iki motor sürümü gömülü | bu proje |
 | `chasolver-data-until-08-2026.csv` | 22,9 MB | chasolver'ın Lichess'te bulduğu 201.060 haksız bayrak sonucu (Ağustos 2026'ya kadar) | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-blocked-until-08-2026.csv` | 6,2 MB | aynı verinin chasolver'daki "Blocked" (kilitli yapı) sınıfı, 50.526 oyun | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-positions.txt` | 152 KB | chasolver'ın 3.414 etiketli zorlu test pozisyonu | [chasolver `tests/positions.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/positions.txt) (MIT) |
@@ -624,29 +636,30 @@ Başlangıç dizilimi onaltılık bir metinden kurulur: ``5d37b3d5${10n**40n-10n
 | `e` | geçerken alma hedef karesi; yalnız legal bir alım varsa kurulur, yoksa -1 |
 | `n` | yarım hamle sayacı |
 | `R`, `$` | tekrar tablosu (anahtar `b+t+e+c`) ve mevcut pozisyonun tekrar sayısı |
-| `o` | beraberlik teklifi bitleri |
+| `o` | beraberlik teklifi (1, 2 bitleri) ve hangi tarafın hamle yaptığı (4, 8 bitleri) |
 | `z` | sonuç (0 = oyun sürüyor) |
+| `N`, `Q` | `'indexOf'` ve `'innerHTML'` dizgileri, L3'teki gibi |
+| `Y` | -1 sabiti: geçerken alma karesi yok, seçili kare yok, böyle bir taş yok |
 | `Xm`, `Xs` | aramanın düğüm bütçesi ve transpozisyon tablosu |
 
 | ad | görev | 1x | 4x |
 |---|---|---|---|
-| `G(i,f,T)` | hamle geometrisi ve rok; `T` doluysa saldırı modu | 268 | 269 |
-| `V(u,s)` | kare saldırı altında mı | 39 | 42 |
-| `l(g)` | şah, şah altında mı | 20 | 20 |
-| `L(i)` | taşın legal hedef kareleri | 101 | 105 |
+| `G(i,f,T)` | hamle geometrisi ve rok; `T` doluysa saldırı modu | 263 | 264 |
+| `V(s,u)` | `u` karesi `s`'nin rakibince saldırı altında mı; `u` yazılmazsa `s`'nin şahı şah altında mı | 50 | 53 |
+| `L(i)` | taşın legal hedef kareleri | 100 | 105 |
 | `C(i)` | karenin etkilediği rok hakları | 27 | 27 |
-| `M(i,f,u)` | hamleyi tahtanın bir kopyasında yapar | 222 | 222 |
+| `M(i,f,u)` | hamleyi tahtanın bir kopyasında yapar | 219 | 219 |
 | `I(g)` | yetersiz materyal | 85 | 85 |
-| `H(g)` | bayrak hükmü için materyal kısa yolu | 77 | 77 |
+| `H(g)` | bayrak hükmü için materyal kısa yolu | 74 | 74 |
 | `Z()` | hamleden sonraki sonuç | 73 | 76 |
-| `A(i,f,u)` | hamle oynatır | 67 | 67 |
-| `D(g)` | beraberlik talebi ve teklifi | 37 | 37 |
-| `X(g,d)` | yardım matı araması | 219 | 230 |
+| `A(i,f,u)` | hamle oynatır | 75 | 75 |
+| `D(g)` | beraberlik talebi ve teklifi | 43 | 43 |
+| `X(g,d)` | yardım matı araması | 216 | 230 |
 | `F(g,k)` | bayrak ya da terk hükmü | 43 | 43 |
-| `J(a,G)` | ölü pozisyon ve kilit dedektörü | 1.261 | 1.369 |
-| **motor dosyası** | | **2.695** | **2.825** |
+| `J(a,G)` | ölü pozisyon ve kilit dedektörü | 1.240 | 1.356 |
+| **motor dosyası** | | **2.659** | **2.801** |
 
-`index.html`, 4x tanımlarını (`G V l L C M I H X J`) `engine_4x.js` ile bayt bayt aynı taşır; `Z D F A` ise sonucu metin koduyla yazan arayüz sürümleridir. Materyal testinin üstüne çoğu sitede olmayan iki katman ekleniyor: `J` (1.369 bayt) ve `X` (230 bayt), birlikte 1.599 bayt.
+`index.html`, 4x tanımlarını (`G V L C M I H X J`) `engine_4x.js` ile bayt bayt aynı taşır; `Z D F A` ise sonucu metin koduyla yazan arayüz sürümleridir. Materyal testinin üstüne çoğu sitede olmayan iki katman ekleniyor: `J` (1.356 bayt) ve `X` (230 bayt), birlikte 1.586 bayt.
 
 **1x ve 4x.** Kullanıcıya sunulan her şey 4x yazılır: bayt önceliklidir, ama birkaç bayt karşılığında katlanarak hız kazanılıyorsa o bayt harcanır. 1x, aynı davranışın en kısa metnidir ve yalnızca ölçüm sayfasında deneysel seçenek olarak durur. İki sürüm her girdide aynı hükmü vermek zorundadır; gerçek oyunlarda 4x 100 ms'nin altında kalırken 1x saniyelere çıkabilir.
 
@@ -689,6 +702,7 @@ Hiçbiri tutmazsa bütün legal hamleler ve terfi seçenekleri (`[3,2,1,6]`) den
 **Bitboard.** Her küme 64 bitlik bir `BigInt`; bit `i`, kare `i`'yi temsil eder.
 - **Maskeler:** `f` bütün tahta, `y` a sütunu hariç, `x` h sütunu hariç, `d` açık renkli kareler.
 - **Yardımcılar:** `S` yatay komşular, `N` karenin kendisi dahil 3×3 komşuluk, `O` ortogonal komşular, `T` çapraz komşular.
+- **Taş kümeleri:** `M` bütün beyaz taşlar, `D` bütün siyah taşlar; `l`/`m` bir tur içinde her iki tarafın alınamayan piyonları.
 
 **Sabit nokta.** Her tur kümeleri büyütür ya da daraltır:
 - **Tıkalı piyonlar:** `P`/`Q` yalnız küçülür; rakip şahın alamadığı ve önü kalıcı olarak kapalı piyonlar kalır.
@@ -715,7 +729,7 @@ Hiçbiri tutmazsa bütün legal hamleler ve terfi seçenekleri (`[3,2,1,6]`) den
 1x metni:
 
 ```js
-|!(o?B^Q:W^P)&(!(a&1+o)|!(i=o?c:R,j=f^(p&~i|(o?S(C)<<8n|N(K):S(Z)>>8n|N(L))|t&~b1),u=j&~i,s=j&b1,A=u&b1,l1&b1&~(E(9n)&E(7n)|O(u)|j>>8n&j<<8n|j>>1n&j<<1n&x&y|(j>>8n|j<<8n)&S(j))))
+|!(o?B^Q:W^P)&(!(a&1+o)|!(i=o?c:R,j=f^(p&~i|(o?S(C)<<8n|N(K):S(Z)>>8n|N(L))|t&~b1),u=j&~i,s=j&b1,A=u&b1,l&b1&~(E(9n)&E(7n)|O(u)|j>>8n&j<<8n|j>>1n&j<<1n&x&y|(j>>8n|j<<8n)&S(j))))
 ```
 
 - `E=k=>s>>k&s<<k|A>>k|A<<k`: bir çapraz çiftte kaçış;
