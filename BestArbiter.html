@@ -159,8 +159,8 @@ summary{cursor:pointer;color:var(--dim)}
 </div>
 
 <div class="opts shared">
-  <label>ply <input type="number" id="ply" value="15" min="1" max="150"></label>
-  <label><span data-i="lblBud">node budget</span> <input type="number" id="bud" value="20000" min="100" step="500"></label>
+  <label>ply <input type="number" id="ply" value="99" min="1" max="150"></label>
+  <label><span data-i="lblBud">node budget</span> <input type="number" id="bud" value="50000" min="100" step="500"></label>
   <span class="rng"><label for="rowA" data-i="lblRowA">rows</label> <input type="number" id="rowA" value="1" min="1" step="100" style="width:74px">
          <label for="rowB" data-i="lblRowB">to</label> <input type="number" id="rowB" value="0" min="0" step="100" style="width:74px">
          <span style="color:var(--dim)" data-i="lblRowC">(header = 0, first data row = 1, to = 0 means the end)</span></span>
@@ -233,12 +233,12 @@ summary{cursor:pointer;color:var(--dim)}
 </div>
 
 <script type="text/plain" id="src_nm">
-c=15,U=N='indexOf',e=Y=-1,t=1,b=[...`5d37b3d5${10n**40n-10n**32n}888888884c26a2c4`].map(u=>'0x'+u-0),z=n=o=0,R={[b+t+e+c]:$=1},a=Math.abs,G=(i,f,T,g=b[i],P=g>>1,y=i>>3,h=a(i%8-f%8),v=a(y-(f>>3)),d=h|v,k=(f-i)/d,S=Q=>(i+=k)==f||!b[i]&&S())=>P>5?h*v==2:P>4?T|v|h^2?d<2:c&C(r=i+3.5*k-.5)&&G(r,i)&&!V(t,i)&!V(t,i+k):P>3?f<i^g&1&&(h?d<2&v&&T|b[f]|f==e:T|b[f]?0:v<2|v<3&!b[i+f>>1]&66>>y):P&(h*v?h==v:2)&&S(),V=(s,u=b[N](10+s))=>b.some((p,i)=>p%2^s&&G(i,u,1)),L=(i,q=[],g=b[i]&1)=>b.map((p,f)=>!p|p&1^g&&G(i,f)&&(p=[b,e,n],M(i,f),V(g)||q.push(f),[b,e,n]=p))&&q,C=i=>'20003001'[i%56]<<i/28,M=(i,f,u=3,p=(b=[...b])[i],P=p>>1==4,d=a(i-f),q=i+f>>1)=>(n=P|b[f]?0:n+1,b[f]=P&f%56<8?u*2+t:p,b[i]=b[P&f==e?f^8:i]=0,d==2&p>9&&(b[q]=b[r=f>i?i+3:i-4],b[r]=0),e=P&d>9&&[f-1,f+1,e=q].some(x=>b[x]==17-p&&~L(x)[N](e))?e:Y),I=g=>(m=W=0,b.map((p,i)=>p&&g>1|p%2==g&&(p<4?m|=(i/8^i)%2+1:W+=p<10?9:p>11)),W*2+m<3),H=g=>(O=u=>!~b[N](u+g),I(g),B=m,I(!g)&(m+W<1|O(12)&O(8)&O(4)+m>0&!(B&~m))),Z=Q=>b.some((p,i)=>p%2==t&&L(i)+'')?I(2)|J()?4:$>4?5:n>149?8:0:V(t)?t+1:3,A=(i,f,u)=>(c&=~C(i)&~C(f),M(i,f,u),t^=1,o|=4<<t,$=R[s=b+t+e+c]=-~R[s],Z()),D=g=>(o^=2-g,Z()||(n>99?6:$>2?7:o>14?15:0)),X=(g,d,v=t^g|!V(g))=>H(g)||Xs[s=b+t+e]>=d||J(2-g)||(Xs[s]=d,b.every((p,i)=>p%2^t||L(i).every(f=>v=n>149||d&&Xm-->0&&[3,2,1,6].every((u,x,w)=>x&&p>>1^4|f%56>7||(w=[b,e,n,t],M(i,f,u),t^=1,X(g,d-1)|([b,e,n,t]=w)))))&&v),F=(g,k)=>(Xm=5e4,Xs={},X(g,9))?13+k:9+2*k+g;
-J=(a=3,G=0,f=2n**64n-1n,y=f^f/255n,x=y>>1n,d=f/3n^f/257n,S=s=>s+s&y|s>>1n&x,N=s=>s|O(s)|T(s),O=s=>S(s)|s<<8n&f|s>>8n,T=s=>S(s<<8n|s>>8n),W=0n,B=W,V,v,M=W,D=W,C,Z,K,L,q=r=W,P,Q,F=W,g=W,R,c,B1=W,B2=W,E=k=>s>>k&s<<k|A>>k|A<<k,X=k=>k&&(l=W&~r,m=B&~q,t=F|g|A|H,b1=m|P|t,b2=l|Q|t,P=l&b1>>8n,Q=m&b2<<8n,C|=C<<8n&~b1,Z|=Z>>8n&~b2,K|=N(K)&~(P|F|N(A)|S(Q)>>8n),L|=N(L)&~(Q|g|N(H)|S(P)<<8n),r|=L|(r&~b1)>>8n,q|=K|(q&~b2)<<8n,t|=P|Q,R|=T(R)&~t,c|=T(c)&~t,U.map(([u,s])=>h0|=s&~((j=u&M)?P|F:Q|g)|u&(j?L|S(Z)>>8n|c|T(c):K|S(C)<<8n|R|T(R))),X(k-1)),U=[],u=1n,A,H,i,s,t,p,o,j,b1,b2,l,m,h0=W,)=>~e?0:(b.map(p=>(p&&(j=p&1,j?M|=u:D|=u,(o=p>>1)==4?j?W|=u:B|=u:o==5?j?K=V=u:L=v=u:o<2?j?B1|=u:B2|=u:(j?F|=u:g|=u,U.push([u,o>5?O(T(u))^O(u):o>2?N(u)^u:O(u)]))),u+=u)),C=P=W,Z=Q=B,R=B1,c=B2,A=G&1?v:r,H=G&2?V:r,!(X(768),C>>56n|Z&255n|S(C)<<8n&((a&2?D:D^v)|Z)|S(Z)>>8n&((a&1?M:M^V)|C)|S(C^W)<<8n&L|S(Z^B)>>8n&K)&&!(G&&(A?L^A:K^H))&&!h0&&(!(R|c)|!(K&L)&[d,f^d,d,f^d].every((b1,w)=>!(s=((o=w<2)?B1:B2)&b1)|!(s&s-1n)&(t=o?R:c,t|=T(t),p=o?D^v|Z:M^V|C,l=o?L:K,!(t&p)&(!(t&l)|!(o?B^Q:W^P)&(!(a&1+o)|!(i=o?c:R,j=f^(p&~i|(o?S(C)<<8n|N(K):S(Z)>>8n|N(L))|t&~b1),u=j&~i,s=j&b1,A=u&b1,l&b1&~(E(9n)&E(7n)|O(u)|j>>8n&j<<8n|j>>1n&j<<1n&x&y|(j>>8n|j<<8n)&S(j))))))))||G<2&&J(a,G+1))
+c=15,U=N='indexOf',e=Y=-1,t=1,b=[...`5d37b3d5${10n**40n-10n**32n}888888884c26a2c4`].map(u=>'0x'+u-0),z=n=o=0,R={[b+t+e+c]:$=1},a=Math.abs,G=(i,f,T,g=b[i],P=g>>1,y=i>>3,h=a(i%8-f%8),v=a(y-(f>>3)),d=h|v,k=(f-i)/d,S=Q=>(i+=k)==f||!b[i]&&S())=>P>5?h*v==2:P>4?T|v|h^2?d<2:c&C(r=i+3.5*k-.5)&&G(r,i)&&!V(t,i)&!V(t,i+k):P>3?f<i^g&1&&(h?d<2&v&&T|b[f]|f==e:T|b[f]?0:v<2|v<3&!b[i+f>>1]&66>>y):P&(h*v?h==v:2)&&S(),V=(s,u=b[N](10+s))=>b.some((p,i)=>p%2^s&&G(i,u,1)),L=(i,q=[],g=b[i]&1)=>b.map((p,f)=>!p|p&1^g&&G(i,f)&&(p=[b,e,n,c],M(i,f),V(g)||q.push(f),[b,e,n,c]=p))&&q,C=i=>'20003001'[i%56]<<i/28,M=(i,f,u=3,p=(b=[...b])[i],P=p>>1==4,d=a(i-f),q=i+f>>1)=>(c&=~C(i)&~C(f),n=P|b[f]?0:n+1,b[f]=P&f%56<8?u*2+t:p,b[i]=b[P&f==e?f^8:i]=0,d==2&p>9&&(b[q]=b[r=f>i?i+3:i-4],b[r]=0),e=P&d>9&&[f-1,f+1,e=q].some(x=>b[x]==17-p&&~L(x)[N](e))?e:Y),I=g=>(m=W=0,b.map((p,i)=>p&&g>1|p%2==g&&(p<4?m|=(i/8^i)%2+1:W+=p<10?9:p>11)),W*2+m<3),Im=g=>(O=u=>!~b[N](u+g),I(g),B=m,I(!g)&(m+W<1|O(12)&O(8)&O(4)+m>0&!(B&~m))),Z=Q=>b.some((p,i)=>p%2==t&&L(i)+'')?I(2)|l()?4:$>4?5:n>149?8:0:V(t)?t+1:3,A=(i,f,u)=>(M(i,f,u),t^=1,o|=4<<t,$=R[s=b+t+e+c]=-~R[s],Z()),D=g=>(o^=2-g,Z()||(n>99?6:$>2?7:o>14?15:0)),H=(g,d,v=t^g|!V(g))=>Im(g)||Ht[s=b+t+e+c]>=d||l(2-g)||(Ht[s]=d,b.every((p,i)=>p%2^t||L(i).every(f=>v=n>149||d&&Hn-->0&&[3,2,1,6].every((u,x,w)=>x&&p>>1^4|f%56>7||(w=[b,e,n,t,c],M(i,f,u),t^=1,H(g,d-1)|([b,e,n,t,c]=w)))))&&v),F=(g,k)=>(Hn=5e4,Ht={},H(g,99))?13+k:9+2*k+g;
+l=(a=3,G=0,f=2n**64n-1n,y=f^f/255n,x=y>>1n,d=f/3n^f/257n,S=s=>s+s&y|s>>1n&x,N=s=>s|O(s)|T(s),O=s=>S(s)|s<<8n&f|s>>8n,T=s=>S(s<<8n|s>>8n),W=0n,B=W,V,v,M=W,D=W,C,Z,K,L,q=r=W,P,Q,F=W,g=W,R,c,$=W,_=W,E=k=>s>>k&s<<k|A>>k|A<<k,X=k=>k&&(m=W&~r,n=B&~q,t=F|g|A|H,I=n|P|t,J=m|Q|t,P=m&I>>8n,Q=n&J<<8n,C|=C<<8n&~I,Z|=Z>>8n&~J,K|=N(K)&~(P|F|N(A)|S(Q)>>8n),L|=N(L)&~(Q|g|N(H)|S(P)<<8n),r|=L|(r&~I)>>8n,q|=K|(q&~J)<<8n,t|=P|Q,R|=T(R)&~t,c|=T(c)&~t,U.map(([u,s])=>Y|=s&~((j=u&M)?P|F:Q|g)|u&(j?L|S(Z)>>8n|c|T(c):K|S(C)<<8n|R|T(R))),X(k-1)),U=[],u=1n,A,H,i,s,t,p,o,j,I,J,m,n,Y=W,)=>~e?0:(b.map(p=>(p&&(j=p&1,j?M|=u:D|=u,(o=p>>1)==4?j?W|=u:B|=u:o==5?j?K=V=u:L=v=u:o<2?j?$|=u:_|=u:(j?F|=u:g|=u,U.push([u,o>5?O(T(u))^O(u):o>2?N(u)^u:O(u)]))),u+=u)),C=P=W,Z=Q=B,R=$,c=_,A=G&1?v:r,H=G&2?V:r,!(X(768),C>>56n|Z&255n|S(C)<<8n&((a&2?D:D^v)|Z)|S(Z)>>8n&((a&1?M:M^V)|C)|S(C^W)<<8n&L|S(Z^B)>>8n&K)&&!(G&&(A?L^A:K^H))&&!Y&&(!(R|c)|!(K&L)&[d,f^d,d,f^d].every((I,w)=>!(s=((o=w<2)?$:_)&I)|!(s&s-1n)&(t=o?R:c,t|=T(t),p=o?D^v|Z:M^V|C,m=o?L:K,!(t&p)&(!(t&m)|!(o?B^Q:W^P)&(!(a&1+o)|!(i=o?c:R,j=f^(p&~i|(o?S(C)<<8n|N(K):S(Z)>>8n|N(L))|t&~I),u=j&~i,s=j&I,A=u&I,m&I&~(E(9n)&E(7n)|O(u)|j>>8n&j<<8n|j>>1n&j<<1n&x&y|(j>>8n|j<<8n)&S(j))))))))||G<2&&l(a,G+1))
 </script>
 <script type="text/plain" id="src_x4">
-c=15,U=N='indexOf',e=Y=-1,t=1,b=[...`5d37b3d5${10n**40n-10n**32n}888888884c26a2c4`].map(u=>'0x'+u-0),z=n=o=0,R={[b+t+e+c]:$=1},a=Math.abs,G=(i,f,T,g=b[i],P=g>>1,y=i>>3,h=a(i%8-f%8),v=a(y-(f>>3)),d=h|v,k=(f-i)/d,S=Q=>(i+=k)==f||!b[i]&&S())=>P>5?h*v==2:P>4?T|v|h^2?d<2:c&C(r=i+3.5*k-.5)&&G(r,i)&&!V(t,i)&&!V(t,i+k):P>3?f<i^g&1&&(h?d<2&v&&T|b[f]|f==e:T|b[f]?0:v<2|v<3&!b[i+f>>1]&66>>y):P&(h*v?h==v:2)&&S(),V=(s,u=b[N](10+s))=>b.some((p,i)=>p&&p&1^s&&G(i,u,1)),L=(i,q=[],g=b[i]&1)=>(b.forEach((p,f)=>!p|p&1^g&&G(i,f)&&(p=[b,e,n],M(i,f),V(g)||q.push(f),[b,e,n]=p)),q),C=i=>'20003001'[i%56]<<i/28,M=(i,f,u=3,p=(b=[...b])[i],P=p>>1==4,d=a(i-f),q=i+f>>1)=>(n=P|b[f]?0:n+1,b[f]=P&f%56<8?u*2+t:p,b[i]=b[P&f==e?f^8:i]=0,d==2&p>9&&(b[q]=b[r=f>i?i+3:i-4],b[r]=0),e=P&d>9&&[f-1,f+1,e=q].some(x=>b[x]==17-p&&~L(x)[N](e))?e:Y),I=g=>(m=W=0,b.map((p,i)=>p&&g>1|p%2==g&&(p<4?m|=(i/8^i)%2+1:W+=p<10?9:p>11)),W*2+m<3),H=g=>(O=u=>!~b[N](u+g),I(g),B=m,I(!g)&(m+W<1|O(12)&O(8)&O(4)+m>0&!(B&~m))),Z=Q=>b.some((p,i)=>p&&p%2==t&&L(i)+'')?I(2)|J()?4:$>4?5:n>149?8:0:V(t)?t+1:3,A=(i,f,u)=>(c&=~C(i)&~C(f),M(i,f,u),t^=1,o|=4<<t,$=R[s=b+t+e+c]=-~R[s],Z()),D=g=>(o^=2-g,Z()||(n>99?6:$>2?7:o>14?15:0)),X=(g,d,v=0)=>H(g)||Xs[s=b+t+e]>=d||J(2-g)||(Xs[s]=d,b.every((p,i)=>!p||p%2^t||L(i).every(f=>v=n>149||d&&Xm-->0&&[3,2,1,6].every((u,x,w)=>x&&(f%56>7||p>>1^4)||(w=[b,e,n,t],M(i,f,u),t^=1,X(g,d-1)|([b,e,n,t]=w,0)))))&&(v||t^g|!V(g))),F=(g,k)=>(Xm=5e4,Xs={},X(g,9))?13+k:9+2*k+g;
-J=(a=3,G=0,f=2n**64n-1n,y=f^f/255n,x=y>>1n,d=f/3n^f/257n,S=s=>s<<1n&y|s>>1n&x,N=s=>s|O(s)|T(s),O=s=>S(s)|s<<8n&f|s>>8n,T=s=>s&&S(s<<8n|s>>8n),W=0n,B=W,V,v,M=W,D=W,C,Z,K,L,r=W,q=W,P,Q,F=W,g=W,R,c,B1=W,B2=W,E=k=>s>>k&s<<k|A>>k|A<<k,X=k=>k2^(k2=C+Z+K+L+r+q-P-Q+R+c)&&(l=W&~r,m=B&~q,t=F|g|A|H,b1=m|P|t,b2=l|Q|t,P=l&b1>>8n,Q=m&b2<<8n,C|=C<<8n&~b1&f,Z|=Z>>8n&~b2,K|=N(K)&~(P|F|N(A)|S(Q)>>8n),L|=N(L)&~(Q|g|N(H)|S(P)<<8n),r|=L|(r&~b1)>>8n,q|=K|(q&~b2)<<8n&f,t|=P|Q,R|=T(R)&~t,c|=T(c)&~t,U.map(([u,s])=>h0|=s&~((j=u&M)?P|F:Q|g)|u&(j?L|S(Z)>>8n|c|T(c):K|S(C)<<8n|R|T(R))),X()),U=[],u=1n,k2=W,A,H,i,s,t,p,o,j,b1,b2,l,m,h0=W,)=>~e?0:(b.map(p=>(p&&(j=p&1,j?M|=u:D|=u,(o=p>>1)==4?j?W|=u:B|=u:o==5?j?K=V=u:L=v=u:o<2?j?B1|=u:B2|=u:(j?F|=u:g|=u,U.push([u,o>5?O(T(u))^O(u):o>2?N(u)^u:O(u)]))),u+=u)),C=P=W,Z=Q=B,R=B1,c=B2,A=G&1?v:r,H=G&2?V:r,!U.some(h=>h[1]&~(h[0]&M?W|F:B|g))&&(!(N(A|H)&~(A?D|S(W)<<8n:M|S(B)>>8n))&&!(X(),C>>56n|Z&255n|S(C)<<8n&((a&2?D:D^v)|Z)|S(Z)>>8n&((a&1?M:M^V)|C)|S(C^W)<<8n&L|S(Z^B)>>8n&K)&&!(G&&(A?L^A:K^H))&&!h0&&(!(R|c)|!(K&L)&[d,f^d,d,f^d].every((b1,w)=>!(s=((o=w<2)?B1:B2)&b1)|!(s&s-1n)&(t=o?R:c,t|=T(t),p=o?D^v|Z:M^V|C,l=o?L:K,!(t&p)&&(!(t&l)||!(o?B^Q:W^P)&&(!(a&1+o)||!(i=o?c:R,j=f^(p&~i|(o?S(C)<<8n|N(K):S(Z)>>8n|N(L))|t&~b1),u=j&~i,s=j&b1,A=u&b1,l&b1&~(E(9n)&E(7n)|O(u)|j>>8n&j<<8n|j>>1n&j<<1n&x&y|(j>>8n|j<<8n)&S(j))))))))||G<2&&J(a,G+1)))
+c=15,U=N='indexOf',e=Y=-1,t=1,b=[...`5d37b3d5${10n**40n-10n**32n}888888884c26a2c4`].map(u=>'0x'+u-0),z=n=o=0,R={[b+t+e+c]:$=1},a=Math.abs,G=(i,f,T,g=b[i],P=g>>1,y=i>>3,h=a(i%8-f%8),v=a(y-(f>>3)),d=h|v,k=(f-i)/d,S=Q=>(i+=k)==f||!b[i]&&S())=>P>5?h*v==2:P>4?T|v|h^2?d<2:c&C(r=i+3.5*k-.5)&&G(r,i)&&!V(t,i)&&!V(t,i+k):P>3?f<i^g&1&&(h?d<2&v&&T|b[f]|f==e:T|b[f]?0:v<2|v<3&!b[i+f>>1]&66>>y):P&(h*v?h==v:2)&&S(),V=(s,u=b[N](10+s))=>b.some((p,i)=>p&&p&1^s&&G(i,u,1)),L=(i,q=[],g=b[i]&1)=>(b.forEach((p,f)=>!p|p&1^g&&G(i,f)&&(p=[b,e,n],M(i,f),V(g)||q.push(f),[b,e,n]=p)),q),C=i=>'20003001'[i%56]<<i/28,M=(i,f,u=3,p=(b=[...b])[i],P=p>>1==4,d=a(i-f),q=i+f>>1)=>(n=P|b[f]?0:n+1,b[f]=P&f%56<8?u*2+t:p,b[i]=b[P&f==e?f^8:i]=0,d==2&p>9&&(b[q]=b[r=f>i?i+3:i-4],b[r]=0),e=P&d>9&&[f-1,f+1,e=q].some(x=>b[x]==17-p&&~L(x)[N](e))?e:Y),I=g=>(m=W=0,b.map((p,i)=>p&&g>1|p%2==g&&(p<4?m|=(i/8^i)%2+1:W+=p<10?9:p>11)),W*2+m<3),Im=g=>(O=u=>!~b[N](u+g),I(g),B=m,I(!g)&(m+W<1|O(12)&O(8)&O(4)+m>0&!(B&~m))),Z=Q=>b.some((p,i)=>p&&p%2==t&&L(i)+'')?I(2)|l()?4:$>4?5:n>149?8:0:V(t)?t+1:3,A=(i,f,u)=>(c&=~C(i)&~C(f),M(i,f,u),t^=1,o|=4<<t,$=R[s=b+t+e+c]=-~R[s],Z()),D=g=>(o^=2-g,Z()||(n>99?6:$>2?7:o>14?15:0)),H=(g,d,v=0)=>Im(g)||Ht[s=b+t+e+c]>=d||l(2-g)||(Ht[s]=d,b.every((p,i)=>!p||p%2^t||L(i).every(f=>v=n>149||d&&Hn-->0&&[3,2,1,6].every((u,x,w)=>x&&(f%56>7||p>>1^4)||(w=[b,e,n,t,c],c&=~C(i)&~C(f),M(i,f,u),t^=1,H(g,d-1)|([b,e,n,t,c]=w,0)))))&&(v||t^g|!V(g))),F=(g,k)=>(Hn=5e4,Ht={},H(g,99))?13+k:9+2*k+g;
+l=(a=3,G=0,f=2n**64n-1n,y=f^f/255n,x=y>>1n,d=f/3n^f/257n,S=s=>s<<1n&y|s>>1n&x,N=s=>s|O(s)|T(s),O=s=>S(s)|s<<8n&f|s>>8n,T=s=>s&&S(s<<8n|s>>8n),W=0n,B=W,V,v,M=W,D=W,C,Z,K,L,r=W,q=W,P,Q,F=W,g=W,R,c,$=W,_=W,E=k=>s>>k&s<<k|A>>k|A<<k,X=k=>z^(z=C+Z+K+L+r+q-P-Q+R+c)&&(m=W&~r,n=B&~q,t=F|g|A|H,I=n|P|t,J=m|Q|t,P=m&I>>8n,Q=n&J<<8n,C|=C<<8n&~I&f,Z|=Z>>8n&~J,K|=N(K)&~(P|F|N(A)|S(Q)>>8n),L|=N(L)&~(Q|g|N(H)|S(P)<<8n),r|=L|(r&~I)>>8n,q|=K|(q&~J)<<8n&f,t|=P|Q,R|=T(R)&~t,c|=T(c)&~t,U.map(([u,s])=>Y|=s&~((j=u&M)?P|F:Q|g)|u&(j?L|S(Z)>>8n|c|T(c):K|S(C)<<8n|R|T(R))),X()),U=[],u=1n,z=W,A,H,i,s,t,p,o,j,I,J,m,n,Y=W,)=>~e?0:(b.map(p=>(p&&(j=p&1,j?M|=u:D|=u,(o=p>>1)==4?j?W|=u:B|=u:o==5?j?K=V=u:L=v=u:o<2?j?$|=u:_|=u:(j?F|=u:g|=u,U.push([u,o>5?O(T(u))^O(u):o>2?N(u)^u:O(u)]))),u+=u)),C=P=W,Z=Q=B,R=$,c=_,A=G&1?v:r,H=G&2?V:r,!U.some(h=>h[1]&~(h[0]&M?W|F:B|g))&&(!(N(A|H)&~(A?D|S(W)<<8n:M|S(B)>>8n))&&!(X(),C>>56n|Z&255n|S(C)<<8n&((a&2?D:D^v)|Z)|S(Z)>>8n&((a&1?M:M^V)|C)|S(C^W)<<8n&L|S(Z^B)>>8n&K)&&!(G&&(A?L^A:K^H))&&!Y&&(!(R|c)|!(K&L)&[d,f^d,d,f^d].every((I,w)=>!(s=((o=w<2)?$:_)&I)|!(s&s-1n)&(t=o?R:c,t|=T(t),p=o?D^v|Z:M^V|C,m=o?L:K,!(t&p)&&(!(t&m)||!(o?B^Q:W^P)&&(!(a&1+o)||!(i=o?c:R,j=f^(p&~i|(o?S(C)<<8n|N(K):S(Z)>>8n|N(L))|t&~I),u=j&~i,s=j&I,A=u&I,m&I&~(E(9n)&E(7n)|O(u)|j>>8n&j<<8n|j>>1n&j<<1n&x&y|(j>>8n|j<<8n)&S(j))))))))||G<2&&l(a,G+1)))
 </script>
 
 <script>
@@ -267,16 +267,16 @@ function judge(fen,ply,bud,forced){
   if(!setFen(fen))return null;
   var side=(forced===0||forced===1)?forced:t, nn=n, given=window.FEN_N_GIVEN, mv=0, i;
   for(i=0;i<64;i++) if(b[i]&&(b[i]&1)==t) mv+=L(i).length;
-  setFen(fen); var hOnly=!!H(side);
-  /* static lock detector; J() judges this FEN as it stands — only a live ep blocks */
-  setFen(fen); var dp=!!J();
-  setFen(fen); Xm=bud; Xs={};
-  var t0=performance.now(), ok=!!X(side,ply), used=bud-Xm, ms=performance.now()-t0;
-  /* hukmu kim uretti: X arama yaptiysa X, yoksa H, yoksa J, hicbiri degilse terminal Z */
-  var src=used>0?'X':hOnly?'H':dp?'J':'Z';
-  var code=(ok||dp)?(src=='J'?'DP':'TM'):'WB'[side]+'T', why='', mate=0;
-  if(!ok){ setFen(fen); Xm=bud; Xt={}; XM=0; Xd(side,ply); mate=XM;
-           why=mate?'mate':(Xm<0?'budget':'horizon') }
+  setFen(fen); var hOnly=!!Im(side);
+  /* static lock detector; l() judges this FEN as it stands — only a live ep blocks */
+  setFen(fen); var dp=!!l();
+  setFen(fen); Hn=bud; Ht={};
+  var t0=performance.now(), ok=!!H(side,ply), used=bud-Hn, ms=performance.now()-t0;
+  /* hukmu kim uretti: H arama yaptiysa H, yoksa Im, yoksa l, hicbiri degilse terminal Z */
+  var src=used>0?'H':hOnly?'Im':dp?'l':'Z';
+  var code=(ok||dp)?(src=='l'?'DP':'TM'):'WB'[side]+'T', why='', mate=0;
+  if(!ok){ setFen(fen); Hn=bud; Hs={}; HM=0; Hd(side,ply); mate=HM;
+           why=mate?'mate':(Hn<0?'budget':'horizon') }
   if(dp) why='static';
   return{side:side,n:nn,nGiven:given,moves:mv,hOnly:hOnly,ok:ok,dp:dp,src:src,code:code,used:used,ms:ms,why:why,mate:mate}
 }
@@ -310,9 +310,11 @@ en:{
  wJ:'The pawn+king lock detector for FIDE 5.2.2, wired into <code>Z</code> beside the material test <code>I</code>. It grows six 64-bit masks — the two pawn cones, the two king regions and the two capture-reach sets — to a monotone fixpoint, then asks whether any pawn can promote, change file, or ever check a king. The compact build simply runs the relaxation a fixed 600 times, which is above the provable bound of 552 and therefore always converged. The speed build keeps a running sum of all eight masks and stops the recursion the moment that sum stops moving; on a real position that is about twenty passes instead of six hundred. The permanence masks <code>P</code> and <code>Q</code> belong in that sum: they drain downward without always moving the other six, so leaving them out could stop the loop one pass early and under-grow every mask. The diagonal step <code>T</code> differs by one guard: the speed build opens it with <code>s&amp;&amp;</code>, so an empty bishop flood — a side with no bishop — comes straight back instead of being shifted and masked on every pass.',
  wG:'The piece is bound to a parameter (<code>p=b[i]</code>) instead of being read from the board twice, and two <code>&amp;</code> become <code>&amp;&amp;</code> so the right-hand side is skipped once the left one has decided. <code>G</code> is the geometry test every move generation goes through, so this is the hottest saving of the five.',
  wV:'A <code>p&amp;&amp;</code> guard: an empty square leaves the attack scan at once instead of computing <code>p%2^s</code> and falling through. <code>V</code> runs 64 times per check test.',
- wL:'<code>map</code> becomes <code>forEach</code>: the 64-element result array that <code>map</code> has to allocate — and immediately throw away — is never built. One allocation per legal-move generation.',
+ wL:'<code>map</code> becomes <code>forEach</code>: the 64-element result array that <code>map</code> has to allocate — and immediately throw away — is never built. One allocation per legal-move generation. The compact build also carries <code>c</code> through the save/restore pair, because <code>M</code> now changes it.',
+ wM:'Castling rights. The compact build has <code>M</code> itself clear the rights the from- and to-squares touch (<code>c&amp;=~C(i)&amp;~C(f)</code>), so every caller gets it for free: <code>A</code> drops its own copy of the line and the search needs no extra code. That is 11 bytes cheaper, but the line then also runs on every pseudo-legal move <code>L</code> tries out — roughly twice as often as it has to. Measured over 833 positions it costs about 3%.',
+ wA:'The mirror image of the <code>M</code> change: the compact build drops <code>c&amp;=~C(i)&amp;~C(f)</code> from <code>A</code> because <code>M</code> has already done it, while the speed build keeps the line here so that <code>M</code> stays a pure board operation.',
  wZ:'The same <code>p&amp;&amp;</code> guard on the position-result scan, before the legal-move generation is called at all.',
- wX:'The FIDE 6.9 helpmate search. Both builds now consult <code>J</code> right after the transposition cut: a locked node certifies that no mate lies below it, exactly as <code>H</code> does for material, which is what lets a position that only becomes dead after a forced reply be judged correctly. The compact build folds the "side to move is not in check" test into the parameter default of <code>v</code> and lets the restore expression be the value of the branch — the destructuring result is not a number, and a NaN is falsy, which is exactly what the search needs. The speed build starts from <code>v=0</code>, evaluates the check test only once at the terminal, appends <code>,0</code> so the restore expression is a plain zero, and reorders the two hot guards into short-circuiting form.',
+ wX:'The FIDE 6.9 helpmate search. Both builds now consult <code>l</code> right after the transposition cut: a locked node certifies that no mate lies below it, exactly as <code>Im</code> does for material, which is what lets a position that only becomes dead after a forced reply be judged correctly. The compact build folds the "side to move is not in check" test into the parameter default of <code>v</code> and lets the restore expression be the value of the branch — the destructuring result is not a number, and a NaN is falsy, which is exactly what the search needs. The speed build starts from <code>v=0</code>, evaluates the check test only once at the terminal, appends <code>,0</code> so the restore expression is a plain zero, and reorders the two hot guards into short-circuiting form. Both builds now keep castling rights correct inside the search and put <code>c</code> in the transposition key; the speed build updates them here, right before <code>M</code>, so the line never runs on a move that <code>L</code> was only trying out.',
  secSolo:'Single position', btnJudge:'judge', btnBoth:'run both builds',
  secInput:'What to judge', btnOne:'judge this position', btnRun:'judge the files',
  sharedNote:'ply and node budget apply to both',
@@ -326,7 +328,7 @@ en:{
  thBuild:'build', thBytes:'bytes', thTime:'time (s)', thRate:'rows/s', thNodes:'nodes', thEq:'equivalent', thUn:'no verdict', thMt:'found mate',
  secTotal:'Total',
  kEq:'equivalent', kUn:'no verdict', kMt:'found mate', kStatic:'proved without searching',
- kLock:'lock detector (J)', jYes:'dead position — proved statically', jNo:'no verdict — the search decides',
+ kLock:'lock detector (l)', jYes:'dead position — proved statically', jNo:'no verdict — the search decides',
  legTotal:'<b>equivalent</b> — the engine said <code>TM</code>/<code>RM</code>, the same verdict as the reference · <b>no verdict</b> — the search hit the horizon or the budget and fell to the safe side with <code>WT</code>/<code>BT</code> (a completeness loss) · <b>found mate</b> — the search really did find a mate, so we contradict the reference',
  warnMate:'<b>{0}</b> positions where the search actually found a mate — the reference calls them a draw and we do not. These are contradictions worth reading; export them with "found-mate.csv".',
  warnClean:'The search found a mate in no position — no contradiction with the reference. Everything we missed is a completeness loss, not a soundness loss.',
@@ -342,7 +344,7 @@ en:{
  secBad:'The false TM positions', expBad:'false-tm.csv',
  lblRowA:'rows', lblRowB:'to', lblRowC:'(header = 0, first data row = 1; “to” 0 means the end)',
  lbOpen:'open on lichess', lbCopy:'copy FEN', lbClose:'close',
- sX:'search <code>X</code>', sH:'material <code>H</code>', sJ:'lock <code>J</code>', sZ:'already over <code>Z</code>',
+ sX:'search <code>H</code>', sH:'material <code>Im</code>', sJ:'lock <code>l</code>', sZ:'already over <code>Z</code>',
  kLabel:'reference', kExpect:'expected', kWhy:'came from',
  legBad:'Every position the engine called dead while the reference says one side can still helpmate. <b>came from</b> names which of the three certificates produced the verdict, so you can tell a detector bug from a material-rule bug at a glance.',
  refClean:'<b>No false TM.</b> Every TM/RM the engine produced is backed by the reference. Soundness holds on this set; what is left is completeness.',
@@ -364,7 +366,7 @@ en:{
  sDone:'done · {0} s · {1} rows/s · {2}',
  sPhase:'[{0}/2 {1}] ',
  sFail:'could not read: {0}',
- foot:'The engine block is <code>engine.js</code> and <code>engine_4x.js</code> plus one addition: <code>J</code>, the pawn+king lock detector, wired into <code>Z</code> beside the material test <code>I</code>. Nothing else was rewritten for this page. The verdict is the code <code>F</code> returns. A second, marked copy of <code>X</code> is used only to tell a horizon miss from a real mate; it never touches the verdict.'
+ foot:'The engine block is <code>engine.js</code> and <code>engine_4x.js</code> plus one addition: <code>l</code>, the pawn+king lock detector, wired into <code>Z</code> beside the material test <code>I</code>. Nothing else was rewritten for this page. The verdict is the code <code>F</code> returns. A second, marked copy of <code>H</code> is used only to tell a horizon miss from a real mate; it never touches the verdict.'
 },
 tr:{
  title:'hakem — FIDE 6.9 örtüşmesi',
@@ -383,9 +385,11 @@ tr:{
  wJ:'FIDE 5.2.2 için piyon+şah kilit dedektörü; <code>Z</code> içinde materyal testi <code>I</code>’nin yanına bağlı. Altı adet 64 bitlik maskeyi — iki piyon konisi, iki şah bölgesi, iki yenilebilirlik kümesi — monoton bir sabit noktaya kadar büyütüyor, sonra herhangi bir piyonun terfi edip edemeyeceğini, sütun değiştirip değiştiremeyeceğini ve bir gün şah çekip çekemeyeceğini soruyor. Kısa sürüm gevşetmeyi sabit 600 kez koşuyor; bu, kanıtlanabilir 552 sınırının üstünde olduğu için her zaman yakınsamış oluyor. Hız sürümü sekiz maskenin toplamını tutup, toplam kıpırdamayı bıraktığı anda özyinelemeyi kesiyor — gerçek bir pozisyonda altı yüz yerine yaklaşık yirmi tur. Kalıcılık maskeleri <code>P</code> ve <code>Q</code> o toplamda olmak zorunda: aşağı boşalırken diğer altısını her zaman kıpırdatmıyorlar, dışarıda kalsalar döngü bir tur erken durup bütün maskeleri eksik büyütebilirdi. Köşegen adımı <code>T</code> tek bir korumayla ayrışıyor: hız sürümü onu <code>s&amp;&amp;</code> ile açıyor; fili olmayan tarafın boş seli her turda kaydırılıp maskelenmek yerine hemen geri dönüyor.',
  wG:'Taş, tahtadan iki kez okunmak yerine bir parametreye bağlanıyor (<code>p=b[i]</code>); ayrıca iki <code>&amp;</code> yerine <code>&amp;&amp;</code> geliyor, yani sol taraf kararı verdiğinde sağ taraf hiç çalışmıyor. <code>G</code> her hamle üretiminin geçtiği geometri testi olduğu için beşi içinde en sıcak kazanç bu.',
  wV:'<code>p&amp;&amp;</code> koruması: boş kare, <code>p%2^s</code> hesaplanmadan taramadan çıkıyor. <code>V</code> her şah testinde 64 kez dönüyor.',
- wL:'<code>map</code> yerine <code>forEach</code>: <code>map</code>’in ayırmak ve hemen atmak zorunda olduğu 64 elemanlık sonuç dizisi hiç kurulmuyor. Her legal hamle üretiminde bir tahsis eksiliyor.',
+ wL:'<code>map</code> yerine <code>forEach</code>: <code>map</code>’in ayırmak ve hemen atmak zorunda olduğu 64 elemanlık sonuç dizisi hiç kurulmuyor. Her legal hamle üretiminde bir tahsis eksiliyor. Derli toplu sürüm ayrıca <code>c</code>’yi de kaydedip geri yazıyor, çünkü <code>M</code> artık onu değiştiriyor.',
+ wM:'Rok hakları. Derli toplu sürümde <code>M</code>’in kendisi, kalkış ve varış karelerinin düşürdüğü hakları siliyor (<code>c&amp;=~C(i)&amp;~C(f)</code>); böylece her çağıran bedavaya alıyor: <code>A</code> kendi kopyasını bırakıyor, aramaya da ek kod gerekmiyor. 11 bayt ucuza geliyor, ama satır bu kez <code>L</code>’nin denediği her sözde-legal hamlede de çalışıyor, gerekenin kabaca iki katı sıklıkta. 833 pozisyonluk ölçümde bedeli yaklaşık %3.',
+ wA:'<code>M</code>’deki değişikliğin aynası: derli toplu sürüm <code>c&amp;=~C(i)&amp;~C(f)</code> satırını <code>A</code>’dan atıyor, çünkü <code>M</code> zaten yapmış oluyor; hız sürümü satırı burada tutuyor, böylece <code>M</code> saf bir tahta işlemi olarak kalıyor.',
  wZ:'Aynı <code>p&amp;&amp;</code> koruması, bu kez pozisyon sonucu taramasında — hamle üretimi çağrılmadan önce.',
- wX:'FIDE 6.9 yardımcı-mat araması. İki sürüm de artık transpozisyon kesmesinin hemen ardından <code>J</code>’ye danışıyor: kilitli bir düğüm, altında mat olmadığının belgesi — tıpkı <code>H</code>’nin materyal için yaptığı gibi. Zorunlu bir cevaptan sonra ölüleşen pozisyonların doğru yargılanmasını sağlayan şey bu. Kısa sürüm “sırası gelen şahta değil” testini <code>v</code>’nin parametre varsayılanına katlıyor ve geri-yükleme ifadesinin değerini dalın değeri olarak bırakıyor — destructuring sonucu sayı değil, NaN de yanlış sayılıyor; aramanın istediği tam olarak bu. Hız sürümü <code>v=0</code>’dan başlıyor, şah testini yalnız terminalde bir kez hesaplıyor, geri-yüklemeye <code>,0</code> ekleyip düz bir sıfır döndürüyor ve iki sıcak korumayı kısa devre biçimine çeviriyor.',
+ wX:'FIDE 6.9 yardımcı-mat araması. İki sürüm de artık transpozisyon kesmesinin hemen ardından <code>l</code>’ye danışıyor: kilitli bir düğüm, altında mat olmadığının belgesi — tıpkı <code>Im</code>’nin materyal için yaptığı gibi. Zorunlu bir cevaptan sonra ölüleşen pozisyonların doğru yargılanmasını sağlayan şey bu. Kısa sürüm “sırası gelen şahta değil” testini <code>v</code>’nin parametre varsayılanına katlıyor ve geri-yükleme ifadesinin değerini dalın değeri olarak bırakıyor — destructuring sonucu sayı değil, NaN de yanlış sayılıyor; aramanın istediği tam olarak bu. Hız sürümü <code>v=0</code>’dan başlıyor, şah testini yalnız terminalde bir kez hesaplıyor, geri-yüklemeye <code>,0</code> ekleyip düz bir sıfır döndürüyor ve iki sıcak korumayı kısa devre biçimine çeviriyor. İki sürüm de artık aramanın içinde rok haklarını doğru tutuyor ve <code>c</code>’yi transpozisyon anahtarına koyuyor; hız sürümü güncellemeyi burada, <code>M</code>’in hemen öncesinde yapıyor, böylece satır <code>L</code>’nin yalnızca denediği hamlelerde hiç çalışmıyor.',
  secSolo:'Tek pozisyon', btnJudge:'hüküm ver', btnBoth:'iki sürümü de koştur',
  secInput:'Neyi yargılayalım', btnOne:'bu pozisyona hüküm ver', btnRun:'dosyalara hüküm ver',
  sharedNote:'ply ve düğüm bütçesi ikisinde de geçerli',
@@ -399,7 +403,7 @@ tr:{
  thBuild:'sürüm', thBytes:'bayt', thTime:'süre (sn)', thRate:'satır/sn', thNodes:'düğüm', thEq:'eşdeğer', thUn:'hüküm veremedi', thMt:'mat buldu',
  secTotal:'Toplam',
  kEq:'eşdeğer', kUn:'hüküm veremedi', kMt:'mat buldu', kStatic:'arama yapmadan kanıtladı',
- kLock:'kilit dedektörü (J)', jYes:'ölü pozisyon — statik olarak kanıtlandı', jNo:'hüküm yok — kararı arama veriyor',
+ kLock:'kilit dedektörü (l)', jYes:'ölü pozisyon — statik olarak kanıtlandı', jNo:'hüküm yok — kararı arama veriyor',
  legTotal:'<b>eşdeğer</b> — motor <code>TM</code>/<code>RM</code> verdi, referansla aynı hükümde · <b>hüküm veremedi</b> — ufka ya da bütçeye çarptı, güvenli tarafa düşüp <code>WT</code>/<code>BT</code> verdi (completeness kaybı) · <b>mat buldu</b> — aramada gerçekten mat çıktı, yani referansla çelişiyoruz',
  warnMate:'<b>{0}</b> pozisyonda arama gerçekten mat buldu — referans berabere diyor, biz demiyoruz. İncelenmesi gereken çelişkiler; “mat-buldu.csv” ile çıkar.',
  warnClean:'Aramada hiçbir pozisyonda mat bulunmadı — referansla çelişkimiz yok. Kaçırdıklarımızın tamamı completeness kaybı, soundness kaybı değil.',
@@ -415,7 +419,7 @@ tr:{
  secBad:'Yanlış TM verilen pozisyonlar', expBad:'yanlis-tm.csv',
  lblRowA:'satır', lblRowB:'—', lblRowC:'(başlık = 0, ilk veri satırı = 1; bitiş 0 ise sona kadar)',
  lbOpen:'lichess’te aç', lbCopy:'FEN kopyala', lbClose:'kapat',
- sX:'arama <code>X</code>', sH:'materyal <code>H</code>', sJ:'kilit <code>J</code>', sZ:'zaten bitmiş <code>Z</code>',
+ sX:'arama <code>H</code>', sH:'materyal <code>Im</code>', sJ:'kilit <code>l</code>', sZ:'zaten bitmiş <code>Z</code>',
  kLabel:'referans', kExpect:'beklenen', kWhy:'nereden geldi',
  legBad:'Referansın “bir taraf hâlâ yardımcı-mat yapabilir” dediği ama motorun ölü dediği her pozisyon. <b>nereden geldi</b> sütunu hükmü üç sertifikadan hangisinin ürettiğini söylüyor; dedektör hatasıyla materyal kuralı hatasını bir bakışta ayırmanı sağlar.',
  refClean:'<b>Yanlış TM yok.</b> Motorun ürettiği her TM/RM referansça doğrulanıyor. Bu kümede soundness ayakta; geriye kalan completeness.',
@@ -437,7 +441,7 @@ tr:{
  sDone:'bitti · {0} sn · {1} satır/sn · {2}',
  sPhase:'[{0}/2 {1}] ',
  sFail:'okunamadı: {0}',
- foot:'Motor bloğu <code>engine.js</code> ve <code>engine_4x.js</code>, üstüne tek ekleme: piyon+şah kilit dedektörü <code>J</code>, <code>Z</code> içinde materyal testi <code>I</code>’nin yanına bağlandı. Başka hiçbir şey bu sayfa için yeniden yazılmadı. Hüküm, <code>F</code>’in döndürdüğü kod. Ufuk ıskası ile gerçek matı ayırmak için <code>X</code>’in ikinci, işaretlenmiş bir kopyası kullanılıyor; hükme karışmıyor.'
+ foot:'Motor bloğu <code>engine.js</code> ve <code>engine_4x.js</code>, üstüne tek ekleme: piyon+şah kilit dedektörü <code>l</code>, <code>Z</code> içinde materyal testi <code>I</code>’nin yanına bağlandı. Başka hiçbir şey bu sayfa için yeniden yazılmadı. Hüküm, <code>F</code>’in döndürdüğü kod. Ufuk ıskası ile gerçek matı ayırmak için <code>H</code>’in ikinci, işaretlenmiş bir kopyası kullanılıyor; hükme karışmıyor.'
 }};
 var lang='en';
 function T(k){var v=DICT[lang][k];return v===undefined?DICT.en[k]:v}
@@ -455,19 +459,19 @@ function chunks(s){var r=[],d=0,st=0,i,c;
   r.push(s.slice(st));return r}
 function nameOf(ch){return ch.slice(0,ch.indexOf('='))}
 function mirror(x){
-  var y=x.replace(/^X=/,'Xd=').split('Xs[').join('Xt[').replace(',X(g,d-1)',',Xd(g,d-1)');
+  var y=x.replace(/^H=/,'Hd=').split('Ht[').join('Hs[').replace(',H(g,d-1)',',Hd(g,d-1)');
   var k=y.lastIndexOf('&&');
-  return y.slice(0,k+2)+'('+y.slice(k+2,y.length-1)+'||(XM=1,0)))'
+  return y.slice(0,k+2)+'('+y.slice(k+2,y.length-1)+'||(HM=1,0)))'
 }
 var CH={nm:chunks(SRC.nm), x4:chunks(SRC.x4)};
-var XD={}, k0;
+var HD={}, k0;
 for(k0 in CH){ (function(k){ var i,c=CH[k];
-  for(i=0;i<c.length;i++) if(c[i].indexOf('X=')===0) XD[k]=mirror(c[i]) })(k0) }
+  for(i=0;i<c.length;i++) if(c[i].indexOf('H=')===0) HD[k]=mirror(c[i]) })(k0) }
 
 var cur=null;
 function loadEngine(k){
   if(cur===k)return;
-  (new Function(SRC[k]+';'+XD[k]+';XM=0;Xt={};Xs={};Xm=0'))();
+  (new Function(SRC[k]+';'+HD[k]+';HM=0;Hs={};Ht={};Hn=0'))();
   cur=k;
   $('engnote').textContent=F('engnote',num(SRC[k].length),k=='nm'?T('nmTag'):T('x4Tag'))
 }
@@ -488,7 +492,7 @@ function ldiff(a,b){
   for(i=0;i<out.length;i++){ p=g[g.length-1];
     if(p&&p[0]===out[i][0])p[1]+=out[i][1]; else g.push([out[i][0],out[i][1]]) }
   return g}
-var WHAT={G:'wG',V:'wV',L:'wL',Z:'wZ',X:'wX',J:'wJ'};
+var WHAT={G:'wG',V:'wV',L:'wL',M:'wM',A:'wA',Z:'wZ',H:'wX',l:'wJ'};
 function renderDiff(){
   var A=CH.nm,B=CH.x4,i,h='',same=0,d=[];
   for(i=0;i<A.length;i++){ if(A[i]===B[i])same++; else d.push([nameOf(A[i]),A[i],B[i]]) }
@@ -516,11 +520,15 @@ function shortWhat(f){
   var m={G:{en:'piece cached in a parameter; two <code>&amp;</code> → <code>&amp;&amp;</code>',
             tr:'taş bir parametreye alınıyor; iki <code>&amp;</code> → <code>&amp;&amp;</code>'},
          V:{en:'<code>p&amp;&amp;</code> guard on empty squares', tr:'boş kareler için <code>p&amp;&amp;</code> koruması'},
-         L:{en:'<code>map</code> → <code>forEach</code>: no result array', tr:'<code>map</code> → <code>forEach</code>: sonuç dizisi yok'},
+         L:{en:'<code>map</code> → <code>forEach</code>: no result array; <code>c</code> joins the save/restore',
+            tr:'<code>map</code> → <code>forEach</code>: sonuç dizisi yok; <code>c</code> de kaydedilip geri yazılıyor'},
+         M:{en:'castling rights cleared inside <code>M</code>: 11 bytes less, about 3% slower',
+            tr:'rok hakları <code>M</code>’in içinde düşürülüyor: 11 bayt az, ~%3 yavaş'},
+         A:{en:'the castling line moved into <code>M</code>', tr:'rok satırı <code>M</code>’e taşındı'},
          Z:{en:'<code>p&amp;&amp;</code> guard on empty squares', tr:'boş kareler için <code>p&amp;&amp;</code> koruması'},
-         X:{en:'helpmate search: check test moved to the terminal, guards short-circuited',
-            tr:'yardımcı-mat araması: şah testi terminale taşındı, korumalar kısa devreye çevrildi'},
-         J:{en:'lock detector: fixed 600 passes → stop the moment nothing changes; <code>s&amp;&amp;</code> guard on <code>T</code>',
+         H:{en:'helpmate search: check test moved to the terminal, guards short-circuited; castling update before <code>M</code>',
+            tr:'yardımcı-mat araması: şah testi terminale taşındı, korumalar kısa devreye çevrildi; rok güncellemesi <code>M</code>’den önce'},
+         l:{en:'lock detector: fixed 600 passes → stop the moment nothing changes; <code>s&amp;&amp;</code> guard on <code>T</code>',
             tr:'kilit dedektörü: sabit 600 tur → hiçbir şey değişmeyince dur; <code>T</code>’ye <code>s&amp;&amp;</code> koruması'}};
   return m[f]?(m[f][lang]||m[f].en):''
 }
@@ -748,7 +756,7 @@ function render(){
   renderRef();
   $('h2tot').textContent=T('secTotal')+' — '+NAME[results.key];
   var R=results.res, W=results.rows, n=0, eq=0, un=0, mt=0, k;
-  var by={X:0,H:0,J:0,Z:0};
+  var by={H:0,Im:0,l:0,Z:0};
   for(k=0;k<R.length;k++){ if(!R[k])continue; n++;
     if(R[k].ok||R[k].dp){eq++; by[R[k].src]=(by[R[k].src]||0)+1}
     else if(R[k].mate)mt++; else un++ }
@@ -757,15 +765,15 @@ function render(){
     '<div class="b1"><b>'+num(un)+'</b>'+T('kUn')+'<em>'+pct(un,n)+'</em>WT / BT</div>'+
     '<div class="b2"><b>'+num(mt)+'</b>'+T('kMt')+'<em>'+pct(mt,n)+'</em>WT / BT</div>';
   $('srcb').innerHTML= eq?
-    '<div class="b0"><b>'+num(by.X)+'</b>'+T('sX')+'<em>'+pct(by.X,eq)+'</em>TM / RM</div>'+
-    '<div class="b0"><b>'+num(by.H)+'</b>'+T('sH')+'<em>'+pct(by.H,eq)+'</em>TM / RM</div>'+
-    '<div class="b3"><b>'+num(by.J)+'</b>'+T('sJ')+'<em>'+pct(by.J,eq)+'</em>DP</div>'+
+    '<div class="b0"><b>'+num(by.H)+'</b>'+T('sX')+'<em>'+pct(by.H,eq)+'</em>TM / RM</div>'+
+    '<div class="b0"><b>'+num(by.Im)+'</b>'+T('sH')+'<em>'+pct(by.Im,eq)+'</em>TM / RM</div>'+
+    '<div class="b3"><b>'+num(by.l)+'</b>'+T('sJ')+'<em>'+pct(by.l,eq)+'</em>DP</div>'+
     '<div class="b0"><b>'+num(by.Z)+'</b>'+T('sZ')+'<em>'+pct(by.Z,eq)+'</em>Z</div>' : '';
   $('warn').innerHTML= mt?F('warnMate',num(mt)):T('warnClean');
   var per={};
   for(k=0;k<R.length;k++){ if(!R[k])continue; var s=W[k].set;
     per[s]=per[s]||{n:0,eq:0,un:0,mt:0,uf:0,bt:0,dp:0};
-    per[s].n++; if((R[k].ok||R[k].dp)&&R[k].src=='J')per[s].dp++;
+    per[s].n++; if((R[k].ok||R[k].dp)&&R[k].src=='l')per[s].dp++;
     if(R[k].ok||R[k].dp)per[s].eq++; else if(R[k].mate)per[s].mt++;
     else { per[s].un++; R[k].why=='horizon'?per[s].uf++:per[s].bt++ } }
   var h='<tr><th>'+T('thSet')+'</th><th>'+T('thRows')+'</th><th>'+T('kEq')+'</th><th>'+T('thRate2')+'</th><th>'+
@@ -853,7 +861,7 @@ $('expMiss').onclick=function(){ if(!results)return;
 $('expAll').onclick=function(){ if(!results)return;
   var o=['build,set,gameId,side,verdict,source,label,expect,agree,bucket,reason,n,nodes,ms,fen'],R=results.res,W=results.rows;
   for(var k=0;k<R.length;k++){ if(!R[k])continue;
-    var kova=(R[k].ok||R[k].dp)?(R[k].src=='J'?'dead-position':'equivalent'):(R[k].mate?'mate':'unjudged');
+    var kova=(R[k].ok||R[k].dp)?(R[k].src=='l'?'dead-position':'equivalent'):(R[k].mate?'mate':'unjudged');
     var exp=W[k].draw===undefined?'':(W[k].draw?'TM':'WB'[R[k].side]+'T'),
         agr=W[k].draw===undefined?'':((R[k].ok||R[k].dp)===W[k].draw?'yes':(W[k].draw?'missed':'FALSE-TM'));
     o.push([NAME[results.key],W[k].set,W[k].id,R[k].side?'w':'b',R[k].code,R[k].src,W[k].lab||'',exp,agr,kova,R[k].why,R[k].n,R[k].used,R[k].ms.toFixed(2),W[k].fen].join(',')) }
