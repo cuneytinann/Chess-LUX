@@ -151,7 +151,7 @@ Large files can take a few minutes to process; since the defaults were raised to
 | file | size | contents | source |
 |---|---|---|---|
 | `index.html` | 7,688 B | game and arbiter | this project |
-| `BestArbiter.html` | 68,840 B | benchmarking page with both engine builds embedded | this project |
+| `BestArbiter.html` | 68,839 B | benchmarking page with both engine builds embedded | this project |
 | `chasolver-data-until-08-2026.csv` | 22.9 MB | the 201,060 wrongly decided timeouts chasolver found on Lichess (through August 2026) | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-blocked-until-08-2026.csv` | 6.2 MB | the "Blocked" (locked-structure) class of the same data, 50,526 games | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-positions.txt` | 152 KB | chasolver's 3,414 labeled challenging test positions | [chasolver `tests/positions.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/positions.txt) (MIT) |
@@ -216,10 +216,10 @@ The starting position is built from a hexadecimal string: ``5d37b3d5${10n**40n-1
 | `Z()` | result after a move | 73 | 76 |
 | `A(i,f,u)` | plays a move | 60 | 75 |
 | `D(g)` | draw claims and offers | 43 | 43 |
-| `H(g,d)` | helpmate search | 223 | 252 |
+| `H(g,d)` | helpmate search | 222 | 252 |
 | `F(g,k)` | flag or resignation verdict | 43 | 43 |
 | `l(a,G)` | dead-position and lock detector | 1,213 | 1,326 |
-| **engine file** | | **2,645** | **2,795** |
+| **engine file** | | **2,644** | **2,795** |
 
 `index.html` carries the 4x definitions (`G V L C M I Im H l`) byte-for-byte identical to those in `engine_4x.js`; `Z D F A` are interface versions that report the result as a text code. On top of the material test come two layers that most sites lack: `l` (1,326 bytes) and `H` (252 bytes), 1,578 bytes combined.
 
@@ -592,7 +592,7 @@ Büyük dosyaların işlenmesi birkaç dakika sürebilir; varsayılanlar 99 yar�
 | dosya | boyut | içerik | kaynak |
 |---|---|---|---|
 | `index.html` | 7.688 B | oyun ve hakem | bu proje |
-| `BestArbiter.html` | 68.840 B | ölçüm sayfası; iki motor sürümü gömülü | bu proje |
+| `BestArbiter.html` | 68.839 B | ölçüm sayfası; iki motor sürümü gömülü | bu proje |
 | `chasolver-data-until-08-2026.csv` | 22,9 MB | chasolver'ın Lichess'te bulduğu 201.060 haksız bayrak sonucu (Ağustos 2026'ya kadar) | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-blocked-until-08-2026.csv` | 6,2 MB | aynı verinin chasolver'daki "Blocked" (kilitli yapı) sınıfı, 50.526 oyun | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-positions.txt` | 152 KB | chasolver'ın 3.414 etiketli zorlu test pozisyonu | [chasolver `tests/positions.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/positions.txt) (MIT) |
@@ -657,10 +657,10 @@ Başlangıç dizilimi onaltılık bir metinden kurulur: ``5d37b3d5${10n**40n-10n
 | `Z()` | hamleden sonraki sonuç | 73 | 76 |
 | `A(i,f,u)` | hamle oynatır | 60 | 75 |
 | `D(g)` | beraberlik talebi ve teklifi | 43 | 43 |
-| `H(g,d)` | yardım matı araması | 223 | 252 |
+| `H(g,d)` | yardım matı araması | 222 | 252 |
 | `F(g,k)` | bayrak ya da terk hükmü | 43 | 43 |
 | `l(a,G)` | ölü pozisyon ve kilit dedektörü | 1.213 | 1.326 |
-| **motor dosyası** | | **2.645** | **2.795** |
+| **motor dosyası** | | **2.644** | **2.795** |
 
 `index.html`, 4x tanımlarını (`G V L C M I Im H l`) `engine_4x.js` ile bayt bayt aynı taşır; `Z D F A` ise sonucu metin koduyla yazan arayüz sürümleridir. Materyal testinin üstüne çoğu sitede olmayan iki katman ekleniyor: `l` (1.326 bayt) ve `H` (252 bayt), birlikte 1.578 bayt.
 
