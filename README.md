@@ -4,7 +4,7 @@
 
 ▶ **[Play in your browser](https://cuneytinann.github.io/Chess-LUX/)** · [Benchmarking page](https://cuneytinann.github.io/Chess-LUX/BestArbiter.html)
 
-**The world's most rule-accurate chess arbiter, in a single 7,688-byte HTML file.**
+**The world's most rule-accurate chess arbiter, in a single 7,697-byte HTML file.**
 
 Chess LUX is a browser-based chess app for two players sharing a single screen. Its real job is arbitration: in line with the FIDE Laws of Chess, it determines whether each move is legal, whether the game is over and what the result is. In particular, it performs a check that most chess sites skip when a flag falls or a position locks up.
 
@@ -12,7 +12,7 @@ Chess LUX is a browser-based chess app for two players sharing a single screen. 
 
 | | |
 |---|---|
-| **Size** | one file, 7,688 bytes: game, clock, interface and arbiter in one |
+| **Size** | one file, 7,697 bytes: game, clock, interface and arbiter in one |
 | **Rules** | checkmate, stalemate, dead positions, flag fall, resignation, the 50- and 75-move rules, threefold and fivefold repetition, draw claims and offers |
 | **On Lichess data** | the correct verdict in 201,048 of 201,060 games wrongly decided on time (99.9940%) |
 | **In locked positions** | the correct verdict in 50,514 of the 50,526 locked-structure games among them (99.98%) |
@@ -86,6 +86,7 @@ Threefold-repetition and fifty-move claims are neither fully manual nor fully au
 - **The board is read first:** A claim is only assessed once the position it produces has been examined. If that move gives checkmate or stalemate, or the position is dead, the game ends there and the claim never arises — mate outranks the fifty-move rule, threefold repetition and a draw agreement alike.
 - **If the claim is incorrect:** It goes to the opponent as a draw offer (9.1.2.3). An offer sent together with a move corresponds to an over-the-board offer made after moving and before pressing the clock (9.1.2.1).
 - **The opponent's response:** If the opponent presses ½, the game ends in a draw by agreement; moving without pressing it declines the offer.
+- **The indicator:** The ½ radio lights yellow whenever pressing it would achieve something: a draw offer is waiting for the player on move, or a claim would stand on its own — `M` at 100, or `R` at 3. The offer is addressed to one player, so only that player sees it lit; the two counters belong to the position, so both sides do. The thresholds are exactly the ones the arbiter applies to a claim, and both counters are shown beside the board.
 
 Under a fully manual scheme, a player would have to catch the exact moment to claim, and a fast opponent or a premove could cost them that right. Under a fully automatic scheme, the game would end in a draw at a moment the player never chose. With the semi-automatic approach, the intention is registered before the move, the verdict is delivered with the move, and the decision to claim always rests with the player.
 
@@ -150,7 +151,7 @@ Large files can take a few minutes to process; since the defaults were raised to
 
 | file | size | contents | source |
 |---|---|---|---|
-| `index.html` | 7,688 B | game and arbiter | this project |
+| `index.html` | 7,697 B | game and arbiter | this project |
 | `BestArbiter.html` | 68,839 B | benchmarking page with both engine builds embedded | this project |
 | `chasolver-data-until-08-2026.csv` | 22.9 MB | the 201,060 wrongly decided timeouts chasolver found on Lichess (through August 2026) | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-blocked-until-08-2026.csv` | 6.2 MB | the "Blocked" (locked-structure) class of the same data, 50,526 games | [chasolver.org](https://chasolver.org/unfair-games) |
@@ -445,7 +446,7 @@ Run with `node --stack-size=4000`.
 
 ▶ **[Tarayıcıda hemen oyna](https://cuneytinann.github.io/Chess-LUX/)** · [Ölçüm sayfası](https://cuneytinann.github.io/Chess-LUX/BestArbiter.html)
 
-**7.688 baytlık tek bir HTML dosyasında, dünyanın kural doğruluğu en yüksek satranç hakemi.**
+**7.697 baytlık tek bir HTML dosyasında, dünyanın kural doğruluğu en yüksek satranç hakemi.**
 
 Chess LUX, tarayıcıda açılan ve aynı ekranda iki kişinin oynadığı bir satranç uygulaması. Asıl işi hakemlik: her hamlenin legal olup olmadığını, oyunun bitip bitmediğini ve sonucu FIDE kurallarına göre belirler. Özellikle bayrak düşmesinde ve kilitli pozisyonlarda, çoğu satranç sitesinin yapmadığı bir denetim yapar.
 
@@ -453,7 +454,7 @@ Chess LUX, tarayıcıda açılan ve aynı ekranda iki kişinin oynadığı bir s
 
 | | |
 |---|---|
-| **Boyut** | tek dosya, 7.688 bayt: oyun, saat, arayüz ve hakem bir arada |
+| **Boyut** | tek dosya, 7.697 bayt: oyun, saat, arayüz ve hakem bir arada |
 | **Kurallar** | mat, pat, ölü pozisyon, bayrak düşmesi, terk, 50 ve 75 hamle kuralı, üçlü ve beşli tekrar, beraberlik talebi ve teklifi |
 | **Lichess verisiyle** | bayrak düşmesiyle haksız sonuçlanmış 201.060 oyunun 201.048'inde doğru hüküm (%99,9940) |
 | **Kilitli yapılarda** | bunların 50.526'sını oluşturan kilitli yapı sınıfında 50.514 doğru hüküm (%99,98) |
@@ -527,6 +528,7 @@ Kanıt bulunamazsa süresi kalan taraf kazanır. Öncelik hiçbir zaman yanlış
 - **Önce tahta okunur:** Talep, ancak doğuracağı pozisyon incelendikten sonra değerlendirilir. O hamle mat ya da pat veriyorsa veya pozisyon ölüyse oyun orada biter, talep hiç doğmaz — mat 50 hamle kuralını da, üçlü tekrarı da, anlaşmalı beraberliği de ezer.
 - **Talep yerinde değilse:** Rakibe beraberlik teklifi olarak gider (9.1.2.3). Hamleyle birlikte giden teklif, masabaşında hamleden sonra ve saate basmadan önce yapılan teklifin karşılığıdır (9.1.2.1).
 - **Rakibin cevabı:** Rakip ½'ye basarsa oyun anlaşmalı beraberlikle biter; basmadan hamle yaparsa teklifi reddetmiş olur.
+- **Gösterge:** ½ radyosu, basmanın bir işe yarayacağı her durumda sarı yanar: sırası gelen oyuncuyu bekleyen bir beraberlik teklifi varsa ya da talep kendi başına geçerliyse — `M` 100'de, `R` 3'te. Teklif tek bir oyuncuya yöneliktir, onu yalnız o oyuncu yanık görür; iki sayaç ise pozisyona aittir, onları iki taraf da görür. Eşikler hakemin talebe uyguladığı eşiklerin aynısıdır ve iki sayaç da tahtanın yanında yazar.
 
 Tam manuel bir düzende oyuncu talep anını yakalamak zorunda kalırdı; hızlı oynayan bir rakip ya da ön hamle (premove) yüzünden talep hakkını kaçırabilirdi. Tam otomatik bir düzende ise oyun, oyuncunun istemediği bir anda beraberlikle biterdi. Yarı otomatik düzende işaret hamleden önce konur, hüküm hamleyle birlikte verilir ve talep etmek her zaman oyuncunun kararıdır.
 
@@ -591,7 +593,7 @@ Büyük dosyaların işlenmesi birkaç dakika sürebilir; varsayılanlar 99 yar�
 
 | dosya | boyut | içerik | kaynak |
 |---|---|---|---|
-| `index.html` | 7.688 B | oyun ve hakem | bu proje |
+| `index.html` | 7.697 B | oyun ve hakem | bu proje |
 | `BestArbiter.html` | 68.839 B | ölçüm sayfası; iki motor sürümü gömülü | bu proje |
 | `chasolver-data-until-08-2026.csv` | 22,9 MB | chasolver'ın Lichess'te bulduğu 201.060 haksız bayrak sonucu (Ağustos 2026'ya kadar) | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-blocked-until-08-2026.csv` | 6,2 MB | aynı verinin chasolver'daki "Blocked" (kilitli yapı) sınıfı, 50.526 oyun | [chasolver.org](https://chasolver.org/unfair-games) |
