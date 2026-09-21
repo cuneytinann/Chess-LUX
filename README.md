@@ -15,7 +15,7 @@ Chess LUX is a browser-based chess app for two players sharing a single screen. 
 | **Size** | one file, 7,697 bytes: game, clock, interface and arbiter in one |
 | **Rules** | checkmate, stalemate, dead positions, flag fall, resignation, the 50- and 75-move rules, threefold and fivefold repetition, draw claims and offers |
 | **On Lichess data** | the correct verdict in 201,048 of 201,060 games wrongly decided on time (99.9940%) |
-| **In locked positions** | the correct verdict in 50,514 of the 50,526 locked-structure games among them (99.98%) |
+| **In locked positions** | the correct verdict in 51,046 of the 51,058 locked-structure games among them (99.98%) |
 | **False draws** | 0 on the test positions |
 | **Speed** | flag verdict in a median of 0.1 ms on real games; about half a second on the hardest constructed position |
 | **Installation** | none: play online, or download the file and play offline |
@@ -59,6 +59,8 @@ Dead positions tell a similar story. Under FIDE rules (Article 5.2.2), the game 
 If no proof is found, the side with time remaining wins. The overriding priority is never to award a false draw; missing a draw is the lesser evil.
 
 **The clock is settled before every action.** A move, a draw claim and a resignation all begin by charging the elapsed time to the player on move; if that empties their clock, the flag verdict is issued and the action is refused. The 99 ms display tick therefore only delays what the players see, never what the arbiter counts: elapsed time is always measured from the last reading, so nothing is lost between two ticks and nothing is charged to the wrong side. Measurement uses `performance.now()`, a monotonic source, so a system-clock correction cannot give or take time either.
+
+**Resignation, if the driver is moved online.** In this single-screen version ⚐ resigns the player on move, and that is correct: only that player is at the board. If the driver is ever ported to online play, the player who pressed ⚐ must be taken instead — `F(g,1)` with `g` the resigning side, which may be the side not on move — while draw offers and claims stay tied to the turn. The clock is still settled first for the player on move, since theirs is the clock that is running.
 
 **The time control.** Both fields take any non-negative number, fractions included: 2.5 minutes is a 150-second game and 2.5 seconds is a 2.5-second increment, with no silent rounding on either side. Anything that is not a finite number, or a starting time of 24 hours or more, or an increment of an hour or more, is refused before the game starts. The clock reads `MM:SS` and grows an hour field only when it needs one, so `15:00` stays `15:00` and a 90-minute control reads `1:30:00`.
 
@@ -119,13 +121,13 @@ I developed the algorithm independently, but without Ambrona's work I could neve
 
 Chess LUX builds on the most advanced version of the FideLite engine at [fidelite.art](https://fidelite.art), where the rules and functions are documented in detail. FideLite's lock detector only recognizes locked structures consisting of kings and pawns. With roughly 1 KB of additional code, Chess LUX extends it to every piece; since knights, rooks and queens can only be accounted for when they are immobile, the extension effectively amounts to adding bishops. In short, this repository is FideLite with a looser byte budget and higher rule accuracy. The naming follows the L3 build: every name L3 already had keeps it — `N` is `indexOf`, `Q` is `innerHTML`, the pawn sets inside the lock detector are still an adjacent pair (`m`/`n`, since `l` now names the detector itself) — and the declarations appear in L3’s order, so the two sources can be read side by side. Only what Chess LUX adds carries new names.
 
-The difference is clearest in the locked-structure class of chasolver's data ("Blocked", 50,526 games):
+The difference is clearest in the locked-structure class of chasolver's data ("Blocked", 51,058 games):
 
 | version | undetected | coverage |
 |---|---|---|
-| FideLite (fidelite.art, king + pawn) | 3,567 | 92.94% |
+| FideLite (fidelite.art, king + pawn) | 3,567 | 93.01% |
 | Chess LUX (+ bishops, about 1 KB) | 12 | 99.98% |
-| difference | 3,555 | 7.04 percentage points |
+| difference | 3,555 | 6.96 percentage points |
 
 ## Verify it yourself: BestArbiter.html
 
@@ -140,7 +142,7 @@ Expected results with the default settings (99 plies, 50,000 nodes):
 | file | expected |
 |---|---|
 | `chasolver-data-until-08-2026.csv` | 201,048 correct draws, 12 without a verdict, 0 contradictions |
-| `chasolver-blocked-until-08-2026.csv` | 50,514 correct draws, the same 12 without a verdict, 0 contradictions |
+| `chasolver-blocked-until-08-2026.csv` | 51,046 correct draws, the same 12 without a verdict, 0 contradictions |
 | `chasolver-positions.txt` | 0 false draws across the 1,945 positions the opponent can win |
 | `chasolver-lichess.txt` | 0 false draws |
 | between the two engine builds | 0 differing verdicts |
@@ -153,8 +155,8 @@ Large files can take a few minutes to process; since the defaults were raised to
 |---|---|---|---|
 | `index.html` | 7,697 B | game and arbiter | this project |
 | `BestArbiter.html` | 68,839 B | benchmarking page with both engine builds embedded | this project |
-| `chasolver-data-until-08-2026.csv` | 22.9 MB | the 201,060 wrongly decided timeouts chasolver found on Lichess (through August 2026) | [chasolver.org](https://chasolver.org/unfair-games) |
-| `chasolver-blocked-until-08-2026.csv` | 6.2 MB | the "Blocked" (locked-structure) class of the same data, 50,526 games | [chasolver.org](https://chasolver.org/unfair-games) |
+| `chasolver-data-until-08-2026.csv` | 22.3 MB | the 201,060 wrongly decided timeouts chasolver found on Lichess (through August 2026) | [chasolver.org](https://chasolver.org/unfair-games) |
+| `chasolver-blocked-until-08-2026.csv` | 6.1 MB | the "Blocked" (locked-structure) class of the same data, 51,058 games | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-positions.txt` | 152 KB | chasolver's 3,414 labeled challenging test positions | [chasolver `tests/positions.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/positions.txt) (MIT) |
 | `chasolver-lichess.txt` | 3.3 MB | 65,536 labeled Lichess positions | [chasolver `tests/lichess.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/lichess.txt) (MIT) |
 | `LICENSE` | | MIT License | this project |
@@ -216,9 +218,9 @@ The starting position is built from a hexadecimal string: ``5d37b3d5${10n**40n-1
 | `Im(g)` | material shortcut for the flag verdict | 75 | 75 |
 | `Z()` | result after a move | 73 | 76 |
 | `A(i,f,u)` | plays a move | 60 | 75 |
-| `D(g)` | draw claims and offers | 43 | 43 |
+| `D(g)` | draw claims and offers | 42 | 42 |
 | `H(g,d)` | helpmate search | 222 | 252 |
-| `F(g,k)` | flag or resignation verdict | 43 | 43 |
+| `F(g,k)` | flag or resignation verdict | 45 | 45 |
 | `l(a,G)` | dead-position and lock detector | 1,213 | 1,326 |
 | **engine file** | | **2,644** | **2,795** |
 
@@ -332,7 +334,7 @@ In 4x the loop stops as soon as the `z` checksum (`C+Z+K+L+r+q-P-Q+R+c`) stops c
 | measurement | result |
 |---|---|
 | chasolver data: proven draws | 201,048 / 201,060 (99.9940%) |
-| locked-structure class: proven draws | 50,514 / 50,526 (99.98%) |
+| locked-structure class: proven draws | 51,046 / 51,058 (99.98%) |
 | no verdict | 12; all in the locked-structure class, and in each the search runs out of depth |
 | mates found by the search (contradicting the reference) | 0 |
 | `chasolver-positions.txt`: false draws across the 1,945 positions the opponent can win | 0 |
@@ -457,7 +459,7 @@ Chess LUX, tarayıcıda açılan ve aynı ekranda iki kişinin oynadığı bir s
 | **Boyut** | tek dosya, 7.697 bayt: oyun, saat, arayüz ve hakem bir arada |
 | **Kurallar** | mat, pat, ölü pozisyon, bayrak düşmesi, terk, 50 ve 75 hamle kuralı, üçlü ve beşli tekrar, beraberlik talebi ve teklifi |
 | **Lichess verisiyle** | bayrak düşmesiyle haksız sonuçlanmış 201.060 oyunun 201.048'inde doğru hüküm (%99,9940) |
-| **Kilitli yapılarda** | bunların 50.526'sını oluşturan kilitli yapı sınıfında 50.514 doğru hüküm (%99,98) |
+| **Kilitli yapılarda** | bunların 51.058'ini oluşturan kilitli yapı sınıfında 51.046 doğru hüküm (%99,98) |
 | **Yanlış beraberlik** | test pozisyonlarında 0 |
 | **Hız** | bayrak hükmü gerçek oyunlarda medyan 0,1 ms; en zor kurgulanmış pozisyonda yaklaşık yarım saniye |
 | **Kurulum** | yok: çevrimiçi oynayın ya da dosyayı indirip internetsiz oynayın |
@@ -501,6 +503,8 @@ Beyazın süresi bitti ve oyun beyazın yenilgisiyle sonuçlandı. Oysa piyon du
 Kanıt bulunamazsa süresi kalan taraf kazanır. Öncelik hiçbir zaman yanlış beraberlik vermemek; bir beraberliği kaçırmak daha küçük bir kusur.
 
 **Her eylemden önce saat kapatılır.** Hamle de, beraberlik talebi de, terk de önce geçen süreyi sırası gelen oyuncunun saatine yazar; bu saat sıfırlanıyorsa bayrak hükmü verilir ve eylem kabul edilmez. 99 ms'lik gösterim tiki bu yüzden yalnızca oyuncuların gördüğünü geciktirir, hakemin saydığını değil: geçen süre her zaman son okumadan itibaren ölçülür, iki tik arasında ne kaybolur ne de yanlış tarafa yazılır. Ölçüm `performance.now()` ile, yani monotonik bir kaynaktan yapılır; sistem saati düzeltilse de süre ne eksilir ne artar.
+
+**Terk, sürücü çevrimiçine taşınırsa.** Tek ekranlı bu sürümde ⚐ sırası gelen oyuncuyu terk ettirir ve bu doğrudur: tahtanın başında yalnız o vardır. Sürücü ileride çevrimiçi oyuna taşınırsa, bunun yerine ⚐'e basan oyuncu esas alınmalıdır: `F(g,1)`, `g` terk eden taraf; bu, sırası gelmeyen taraf da olabilir. Beraberlik teklifi ve talebi ise sıraya bağlı kalır. Saat yine önce sırası gelen oyuncu için kapatılır, çünkü işleyen saat onunkidir.
 
 **Süre kontrolü.** İki alan da kesirli dahil her negatif olmayan sayıyı kabul eder: 2,5 dakika 150 saniyelik oyun, 2,5 saniye 2,5 saniyelik artırım demektir; hiçbir tarafta sessiz yuvarlama yoktur. Sonlu bir sayı olmayan her değer, 24 saat ve üzeri başlangıç süresi, 1 saat ve üzeri artırım oyun başlamadan reddedilir. Saat `DD:SS` okunur ve saat alanını yalnız gerektiğinde açar: `15:00` `15:00` kalır, 90 dakikalık kontrol `1:30:00` görünür.
 
@@ -561,13 +565,13 @@ Algoritmayı bağımsız olarak geliştirdim, ama Ambrona'nın çalışması olm
 
 Chess LUX, [fidelite.art](https://fidelite.art)'taki FideLite motorunun en üst sürümü üzerine kurulu; kuralların ve fonksiyonların ayrıntılı anlatımı orada. FideLite'ın kilit dedektörü yalnızca şah ve piyonlardan oluşan kilitli yapıları tanıyor. Chess LUX, yaklaşık 1 KB'lık ek kodla bunu bütün taşlara genişletiyor; at, kale ve vezir ancak hareketsizken hesaba katılabildiği için bu genişletme pratikte fillerin eklenmesi demek. Kısacası bu repo, FideLite'ın bayt kaygısı hafifletilip kural doğruluğu artırılmış hâli. Adlandırma L3 sürümünü izler: L3'te zaten bulunan her ad korunur — `N` `indexOf`, `Q` `innerHTML`, kilit dedektörünün içindeki piyon kümeleri hâlâ bitişik bir çift (`m`/`n`; `l` artık dedektörün kendi adı) — ve tanımlar L3'teki sırayla gelir, böylece iki kaynak yan yana okunabilir. Yalnızca Chess LUX'ün eklediği şeyler yeni ad taşır.
 
-Farkı en açık biçimde chasolver verisindeki kilitli yapı sınıfı ("Blocked", 50.526 oyun) gösteriyor:
+Farkı en açık biçimde chasolver verisindeki kilitli yapı sınıfı ("Blocked", 51.058 oyun) gösteriyor:
 
 | sürüm | yakalanamayan | kapsama |
 |---|---|---|
-| FideLite (fidelite.art, şah + piyon) | 3.567 | %92,94 |
+| FideLite (fidelite.art, şah + piyon) | 3.567 | %93,01 |
 | Chess LUX (+ filler, yaklaşık 1 KB) | 12 | %99,98 |
-| fark | 3.555 | 7,04 puan |
+| fark | 3.555 | 6,96 puan |
 
 ## Kendin doğrula: BestArbiter.html
 
@@ -582,7 +586,7 @@ Varsayılan ayarlarla (99 yarım hamle, 50.000 düğüm) beklenen sonuçlar:
 | dosya | beklenen |
 |---|---|
 | `chasolver-data-until-08-2026.csv` | 201.048 doğru beraberlik, 12 hükümsüz, 0 çelişki |
-| `chasolver-blocked-until-08-2026.csv` | 50.514 doğru beraberlik, aynı 12 hükümsüz, 0 çelişki |
+| `chasolver-blocked-until-08-2026.csv` | 51.046 doğru beraberlik, aynı 12 hükümsüz, 0 çelişki |
 | `chasolver-positions.txt` | rakibin kazanabildiği 1.945 pozisyonda yanlış beraberlik: 0 |
 | `chasolver-lichess.txt` | yanlış beraberlik: 0 |
 | iki motor sürümü arasında | farklı hüküm: 0 |
@@ -595,8 +599,8 @@ Büyük dosyaların işlenmesi birkaç dakika sürebilir; varsayılanlar 99 yar�
 |---|---|---|---|
 | `index.html` | 7.697 B | oyun ve hakem | bu proje |
 | `BestArbiter.html` | 68.839 B | ölçüm sayfası; iki motor sürümü gömülü | bu proje |
-| `chasolver-data-until-08-2026.csv` | 22,9 MB | chasolver'ın Lichess'te bulduğu 201.060 haksız bayrak sonucu (Ağustos 2026'ya kadar) | [chasolver.org](https://chasolver.org/unfair-games) |
-| `chasolver-blocked-until-08-2026.csv` | 6,2 MB | aynı verinin chasolver'daki "Blocked" (kilitli yapı) sınıfı, 50.526 oyun | [chasolver.org](https://chasolver.org/unfair-games) |
+| `chasolver-data-until-08-2026.csv` | 22,3 MB | chasolver'ın Lichess'te bulduğu 201.060 haksız bayrak sonucu (Ağustos 2026'ya kadar) | [chasolver.org](https://chasolver.org/unfair-games) |
+| `chasolver-blocked-until-08-2026.csv` | 6,1 MB | aynı verinin chasolver'daki "Blocked" (kilitli yapı) sınıfı, 51.058 oyun | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-positions.txt` | 152 KB | chasolver'ın 3.414 etiketli zorlu test pozisyonu | [chasolver `tests/positions.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/positions.txt) (MIT) |
 | `chasolver-lichess.txt` | 3,3 MB | 65.536 etiketli Lichess pozisyonu | [chasolver `tests/lichess.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/lichess.txt) (MIT) |
 | `LICENSE` | | MIT lisansı | bu proje |
@@ -658,9 +662,9 @@ Başlangıç dizilimi onaltılık bir metinden kurulur: ``5d37b3d5${10n**40n-10n
 | `Im(g)` | bayrak hükmü için materyal kısa yolu | 75 | 75 |
 | `Z()` | hamleden sonraki sonuç | 73 | 76 |
 | `A(i,f,u)` | hamle oynatır | 60 | 75 |
-| `D(g)` | beraberlik talebi ve teklifi | 43 | 43 |
+| `D(g)` | beraberlik talebi ve teklifi | 42 | 42 |
 | `H(g,d)` | yardım matı araması | 222 | 252 |
-| `F(g,k)` | bayrak ya da terk hükmü | 43 | 43 |
+| `F(g,k)` | bayrak ya da terk hükmü | 45 | 45 |
 | `l(a,G)` | ölü pozisyon ve kilit dedektörü | 1.213 | 1.326 |
 | **motor dosyası** | | **2.644** | **2.795** |
 
@@ -774,7 +778,7 @@ Hiçbiri tutmazsa bütün legal hamleler ve terfi seçenekleri (`[3,2,1,6]`) den
 | ölçüm | sonuç |
 |---|---|
 | chasolver verisi: kanıtlanan beraberlik | 201.048 / 201.060 (%99,9940) |
-| kilitli yapı sınıfı: kanıtlanan beraberlik | 50.514 / 50.526 (%99,98) |
+| kilitli yapı sınıfı: kanıtlanan beraberlik | 51.046 / 51.058 (%99,98) |
 | hükümsüz | 12; hepsi kilitli yapı sınıfında ve hepsinde arama derinliği yetmiyor |
 | aramanın bulduğu mat (referansla çelişki) | 0 |
 | `chasolver-positions.txt`: rakibin kazanabildiği 1.945 pozisyonda yanlış beraberlik | 0 |
