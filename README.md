@@ -4,7 +4,7 @@
 
 ▶ **[Play in your browser](https://cuneytinann.github.io/Chess-LUX/)** · [Benchmarking page](https://cuneytinann.github.io/Chess-LUX/BestArbiter.html)
 
-**The world's most rule-accurate chess arbiter, in a single 7,697-byte HTML file.**
+**The world's most rule-accurate chess arbiter, in a single 7,985-byte HTML file.**
 
 Chess LUX is a browser-based chess app for two players sharing a single screen. Its real job is arbitration: in line with the FIDE Laws of Chess, it determines whether each move is legal, whether the game is over and what the result is. In particular, it performs a check that most chess sites skip when a flag falls or a position locks up.
 
@@ -12,18 +12,18 @@ Chess LUX is a browser-based chess app for two players sharing a single screen. 
 
 | | |
 |---|---|
-| **Size** | one file, 7,697 bytes: game, clock, interface and arbiter in one |
+| **Size** | one file, 7,985 bytes: game, clock, interface and arbiter in one |
 | **Rules** | checkmate, stalemate, dead positions, flag fall, resignation, the 50- and 75-move rules, threefold and fivefold repetition, draw claims and offers |
-| **On Lichess data** | the correct verdict in 201,048 of 201,060 games wrongly decided on time (99.9940%) |
-| **In locked positions** | the correct verdict in 51,046 of the 51,058 locked-structure games among them (99.98%) |
-| **False draws** | 0 on the test positions |
+| **On Lichess data** | the correct verdict in 201,049 of 201,060 games wrongly decided on time (99.9945%) |
+| **In locked positions** | the correct verdict in 51,047 of the 51,058 locked-structure games among them (99.98%) |
+| **False draws** | 0 on the Lichess test positions; 3 in chasolver's constructed positions, all of them already checkmate and impossible to reach in a game |
 | **Speed** | flag verdict in a median of 0.1 ms on real games; about half a second on the hardest constructed position |
 | **Installation** | none: play online, or download the file and play offline |
 
 ## Try it now
 
-1. Open [cuneytinann.github.io/Chess-LUX](https://cuneytinann.github.io/Chess-LUX/), or download `index.html` and open it locally; the tab will read "FideLite".
-2. In the dialog that appears, keep the starting position and time control (10 min + 5 s) or enter your own FEN, then press **Play**.
+1. Open [cuneytinann.github.io/Chess-LUX](https://cuneytinann.github.io/Chess-LUX/), or download `index.html` and open it locally; the tab will read "FideLite.Art".
+2. In the dialog that appears, keep the starting position and time control (10 min + 5 s, Fischer increment) or enter your own FEN and choose Fischer increment, Bronstein or simple delay, then press **Play**.
 3. Move the pieces by clicking or dragging. Right-drag across the board to mark a line of squares, right-click one square to mark it alone, and any left click clears the marks. Use ½ to claim or offer a draw and ⚐ to resign; once the game is over, ↺ starts a new one.
 
 Any up-to-date browser will do: Chrome/Edge 85+, Firefox 98+, Safari 15.4+ (2022 or later).
@@ -42,7 +42,7 @@ A real example: the Lichess game [ijyj0mHa](https://lichess.org/ijyj0mHa#120) (o
 
 White ran out of time and the game was recorded as a loss for White. Yet the pawn wall is permanently locked, and Black cannot deliver mate even with White's cooperation. Chess LUX rules this position a draw (`TM`). Interestingly, had Black run out of time in the same position, White would have been awarded the win, because a mate for White does exist.
 
-[chasolver](https://chasolver.org) scanned billions of Lichess games and found **201,060** games decided wrongly in exactly this way. Chess LUX reaches the correct verdict, a draw, in **201,048** of them. In the remaining 12 it cannot find a proof and errs on the side of caution by awarding the win. These are not wrong verdicts but undetected draws: the game ends in a win, exactly as it does today. Amounting to roughly 1 in 16,750 of the wrongly decided games, these 12 positions are listed in the technical appendix as targets still to conquer. Since the Lichess database of standard rated games contains more than 7 billion games, the verdicts Chess LUX misses come to fewer than 2 per billion games, or less than 1 in every 500 million.
+[chasolver](https://chasolver.org) scanned billions of Lichess games and found **201,060** games decided wrongly in exactly this way. Chess LUX reaches the correct verdict, a draw, in **201,049** of them. In the remaining 11 it cannot find a proof and errs on the side of caution by awarding the win. These are not wrong verdicts but undetected draws: the game ends in a win, exactly as it does today. Amounting to roughly 1 in 18,280 of the wrongly decided games, these 11 positions are listed in the technical appendix as targets still to conquer. Since the Lichess database of standard rated games contains more than 7 billion games, the verdicts Chess LUX misses come to fewer than 2 per billion games, or less than 1 in every 500 million.
 
 Dead positions tell a similar story. Under FIDE rules (Article 5.2.2), the game is drawn the moment a position arises in which neither player can checkmate. According to chasolver's statistics, the position was already dead in 57.5% of the wrongly decided timeouts: those games were effectively over long before, yet dragged on until a flag fell. Chess LUX declares a dead position, to the extent it can recognize one, on the very move it arises.
 
@@ -58,11 +58,11 @@ Dead positions tell a similar story. Under FIDE rules (Article 5.2.2), the game 
 
 If no proof is found, the side with time remaining wins. The overriding priority is never to award a false draw; missing a draw is the lesser evil.
 
-**The clock is settled before every action.** A move, a draw claim and a resignation all begin by charging the elapsed time to the player on move; if that empties their clock, the flag verdict is issued and the action is refused. The 99 ms display tick therefore only delays what the players see, never what the arbiter counts: elapsed time is always measured from the last reading, so nothing is lost between two ticks and nothing is charged to the wrong side. Measurement uses `performance.now()`, a monotonic source, so a system-clock correction cannot give or take time either.
+**The clock is settled before every action.** A move, a draw claim and a resignation all begin by charging the elapsed time to the player on move; if that empties their clock, the flag verdict is issued and the action is refused. The 99 ms display tick therefore only delays what the players see, never what the arbiter counts: the clock is always recomputed from the moment the turn began, so nothing is lost between two ticks, nothing is charged to the wrong side and no rounding accumulates. Measurement uses `performance.now()`, a monotonic source, so a system-clock correction cannot give or take time either.
 
 **Resignation, if the driver is moved online.** In this single-screen version ⚐ resigns the player on move, and that is correct: only that player is at the board. If the driver is ever ported to online play, the player who pressed ⚐ must be taken instead — `F(g,1)` with `g` the resigning side, which may be the side not on move — while draw offers and claims stay tied to the turn. The clock is still settled first for the player on move, since theirs is the clock that is running.
 
-**The time control.** Both fields take any non-negative number, fractions included: 2.5 minutes is a 150-second game and 2.5 seconds is a 2.5-second increment, with no silent rounding on either side. Anything that is not a finite number, or a starting time of 24 hours or more, or an increment of an hour or more, is refused before the game starts. The clock reads `MM:SS` and grows an hour field only when it needs one, so `15:00` stays `15:00` and a 90-minute control reads `1:30:00`.
+**The time control.** Three modes share the seconds field. *Fischer increment* adds it after every move. *Bronstein* gives back the time the move actually took, up to that amount, after the move; the clock runs from the start of the turn, so a flag can still fall mid-move. *Simple delay* holds the clock for that many seconds at the start of each turn and only then lets it run; the flag can fall only after the delay has passed. With 0 seconds all three are sudden death, so there is no separate option for it. Both fields take any non-negative number, fractions included: 2.5 minutes is a 150-second game and 2.5 seconds is a 2.5-second increment, with no silent rounding on either side. Anything that is not a finite number, or a starting time of 24 hours or more, or an increment of an hour or more, is refused before the game starts. The clock reads `MM:SS` and grows an hour field only when it needs one, so `15:00` stays `15:00` and a 90-minute control reads `1:30:00`.
 
 **The 75-move rule also feeds into the flag verdict.** If mate is only possible after the 75-move limit, a flag fall ends in a draw:
 
@@ -126,8 +126,8 @@ The difference is clearest in the locked-structure class of chasolver's data ("B
 | version | undetected | coverage |
 |---|---|---|
 | FideLite (fidelite.art, king + pawn) | 3,567 | 93.01% |
-| Chess LUX (+ bishops, about 1 KB) | 12 | 99.98% |
-| difference | 3,555 | 6.96 percentage points |
+| Chess LUX (+ bishops, about 1 KB) | 11 | 99.98% |
+| difference | 3,556 | 6.96 percentage points |
 
 ## Verify it yourself: BestArbiter.html
 
@@ -141,9 +141,9 @@ Expected results with the default settings (99 plies, 50,000 nodes):
 
 | file | expected |
 |---|---|
-| `chasolver-data-until-08-2026.csv` | 201,048 correct draws, 12 without a verdict, 0 contradictions |
-| `chasolver-blocked-until-08-2026.csv` | 51,046 correct draws, the same 12 without a verdict, 0 contradictions |
-| `chasolver-positions.txt` | 0 false draws across the 1,945 positions the opponent can win |
+| `chasolver-data-until-08-2026.csv` | 201,049 correct draws, 11 without a verdict, 0 contradictions |
+| `chasolver-missed-draws-08-2026.csv` | the same 11 positions, all without a verdict |
+| `chasolver-positions.txt` | 3 false draws across the 1,945 positions the opponent can win, all of them already checkmate (see the verification details); 867 of the 1,469 draws proven |
 | `chasolver-lichess.txt` | 0 false draws |
 | between the two engine builds | 0 differing verdicts |
 
@@ -153,15 +153,16 @@ Large files can take a few minutes to process; since the defaults were raised to
 
 | file | size | contents | source |
 |---|---|---|---|
-| `index.html` | 7,697 B | game and arbiter | this project |
-| `BestArbiter.html` | 68,839 B | benchmarking page with both engine builds embedded | this project |
+| `index.html` | 7,985 B | game and arbiter | this project |
+| `BestArbiter.html` | 73,643 B | benchmarking page with both engine builds embedded | this project |
 | `chasolver-data-until-08-2026.csv` | 22.3 MB | the 201,060 wrongly decided timeouts chasolver found on Lichess (through August 2026) | [chasolver.org](https://chasolver.org/unfair-games) |
-| `chasolver-blocked-until-08-2026.csv` | 6.1 MB | the "Blocked" (locked-structure) class of the same data, 51,058 games | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-positions.txt` | 152 KB | chasolver's 3,414 labeled challenging test positions | [chasolver `tests/positions.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/positions.txt) (MIT) |
 | `chasolver-lichess.txt` | 3.3 MB | 65,536 labeled Lichess positions | [chasolver `tests/lichess.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/lichess.txt) (MIT) |
+| `chasolver-missed-draws-08-2026.csv` | 2 KB | the 11 games of `chasolver-data-until-08-2026.csv` the arbiter leaves without a verdict at 99 plies and 50,000 nodes, as BestArbiter exports them | this project |
+| `chasolver-missed-draw-positions.csv` | 75 KB | the 602 draws in `chasolver-positions.txt` the arbiter misses at the same settings, as BestArbiter exports them | this project |
 | `LICENSE` | | MIT License | this project |
 
-The four `chasolver-*` data files are Miguel Ambrona's work. They are included here with attribution so that the measurements can be reproduced; the originals are linked in the source column.
+The three chasolver source files (`chasolver-data-until-08-2026.csv`, `chasolver-positions.txt`, `chasolver-lichess.txt`) are Miguel Ambrona's work; the two `chasolver-missed-*` files are this project's exports from them. They are included here with attribution so that the measurements can be reproduced; the originals are linked in the source column.
 
 ## Counterexamples, contributions and license
 
@@ -221,12 +222,12 @@ The starting position is built from a hexadecimal string: ``5d37b3d5${10n**40n-1
 | `D(g)` | draw claims and offers | 42 | 42 |
 | `H(g,d)` | helpmate search | 222 | 252 |
 | `F(g,k)` | flag or resignation verdict | 45 | 45 |
-| `l(a,G)` | dead-position and lock detector | 1,213 | 1,326 |
-| **engine file** | | **2,644** | **2,795** |
+| `l(a,G)` | dead-position and lock detector | 1,204 | 1,321 |
+| **engine file** | | **2,635** | **2,790** |
 
-`index.html` carries the 4x definitions (`G V L C M I Im H l`) byte-for-byte identical to those in `engine_4x.js`; `Z D F A` are interface versions that report the result as a text code. On top of the material test come two layers that most sites lack: `l` (1,326 bytes) and `H` (252 bytes), 1,578 bytes combined.
+`index.html` carries the 4x definitions (`G V L C M I Im H l`) byte-for-byte identical to those in `engine_4x.js`; `Z D F A` are interface versions that report the result as a text code. On top of the material test come two layers that most sites lack: `l` (1,321 bytes) and `H` (252 bytes), 1,573 bytes combined.
 
-**Castling rights in the search.** The two builds solve this differently. 4x updates `c` inside `H`, right before `M`, and leaves `M`, `L` and `A` untouched. 1x puts the line into `M` itself, so `L` has to carry `c` through its save/restore pair and `A` drops its own copy — ten bytes cheaper, but the line then also runs on every pseudo-legal move `L` tries out, about 3% slower over 833 positions. Either way the transposition key becomes `b+t+e+c` and the search snapshot carries `c`.
+**Castling rights in the search.** The two builds solve this differently. 4x updates `c` inside `H`, right before `M`, and leaves `M`, `L` and `A` untouched. 1x puts the line into `M` itself, so `L` has to carry `c` through its save/restore pair and `A` drops its own copy — 11 bytes cheaper, but the line then also runs on every pseudo-legal move `L` tries out, about 3% slower over 833 positions. Either way the transposition key becomes `b+t+e+c` and the search snapshot carries `c`.
 
 **1x and 4x.** Everything shipped to users is written in 4x style: bytes come first, but a few extra bytes are spent whenever they buy a multiplicative speedup. 1x is the shortest source with identical behavior and is offered only as an experimental option on the benchmarking page. The two builds must return the same verdict on every input; on real games 4x stays under 100 ms, whereas 1x can take seconds.
 
@@ -249,7 +250,7 @@ If none of these applies, all legal moves and promotion choices (`[3,2,1,6]`) ar
 - **Leaf with no legal moves:** If `g` is checkmated, the branch returns false; on stalemate or the opponent's checkmate it returns true.
 - **Repetition:** A position that recurs along the same line is cut off the second time it appears; the shortest route to mate never repeats a position.
 - **Castling rights:** They are updated along the line, and `c` is part of both the snapshot and the transposition key, so the search never generates a castling move after the right has been lost.
-- **Budget and depth:** If either runs out, the branch returns false and the verdict defaults to a win. The game history (fivefold repetition) does not enter the flag search. Since the depth limit was raised to 99 plies, the budget is in practice the only bound: a position with no proof spends the full 50,000 nodes, roughly a second in a browser.
+- **Budget and depth:** If either runs out, the branch returns false and the verdict defaults to a win. The game history (fivefold repetition) does not enter the flag search. Because every line must be proven, the first line that fails ends the whole search: most positions without a proof stop the first time a line reaches 99 plies, usually after a few hundred nodes (the 11 missed chasolver draws stop after 130–240). The 50,000-node budget runs out only rarely: of every seventh position in `chasolver-positions.txt` (488 positions), 315 stopped at the depth limit and 13 at the budget.
 
 | where | budget | depth |
 |---|---|---|
@@ -270,16 +271,16 @@ If none of these applies, all legal moves and promotion choices (`[3,2,1,6]`) ar
 **Bitboards.** Each set is a 64-bit `BigInt`; bit `i` represents square `i`.
 - **Masks:** `f` is the whole board, `y` everything but the a-file, `x` everything but the h-file, `d` the light squares.
 - **Helpers:** `S` horizontal neighbors, `N` the 3×3 neighborhood including the square itself, `O` orthogonal neighbors, `T` diagonal neighbors.
-- **Occupancy:** `M` all White men, `D` all Black men; `m`/`n` are the uncapturable pawns of each side within one iteration, and `I`/`J` the two sides' blocked-square sets.
+- **Occupancy:** `M` all White men, `D` all Black men, `F`/`g` the boxed-in knights, rooks and queens of each side; `m`/`n` are the uncapturable pawns of each side within one iteration, and `I`/`J` the two sides' blocked-square sets.
 
 **Fixed point.** Each iteration grows or shrinks the sets:
 - **Blocked pawns:** `P`/`Q` only ever shrink; what remains are the pawns the enemy king can never capture and whose way forward is permanently blocked.
 - **Pawn cones:** `C`/`Z`, the squares the pawns can advance to.
 - **King floods:** `K`/`L`, the squares the kings can reach; they only grow. An enemy pawn touched by the flood counts as capturable via `r`/`q`.
 - **Bishop floods:** `R`/`c`, the squares the bishops can reach; they stop at fixed squares.
-- **Boxed-in pieces:** A knight, rook or queen whose neighborhood opens up, or which the opponent can reach, records its escape in `Y`; the first escape fails that level.
+- **Boxed-in pieces:** A knight, rook or queen whose neighborhood opens up records its escape in `Y`; the first escape fails that level. A boxed piece the enemy king or bishop can reach is not an escape: it can never capture anything, so all that can happen to it is being captured. Its square is dropped from `F`/`g` and treated as empty from then on. A pawn that could take it fails the level through the pawn-capture condition.
 
-In 4x the loop stops as soon as the `z` checksum (`C+Z+K+L+r+q-P-Q+R+c`) stops changing (at most 769 iterations; never more than 69 in fuzzing). 1x always runs 768 iterations.
+In 4x the loop stops as soon as the `z` checksum (`C+Z+K+L+r+q-P-Q+R+c-F-g`) stops changing. The twelve sets in it only ever move one way — `P`, `Q`, `F` and `g` shrink and enter with a minus sign, the rest grow — so the checksum moves on every pass that changes anything, and the loop cannot stop early. The ten flood and pawn sets can change at most 640 bits, `F` and `g` only the squares of the knights, rooks and queens, so fewer than 768 passes ever change anything; 1x always runs 768. In practice 4x needs a median of 11 passes on the chasolver data and never needed more than 69 in fuzzing. The bound relies on `&f` keeping `C` and `q` inside 64 bits: without it, bits pushed past the eighth rank keep the checksum moving and the recursion never ends. 1x needs no such mask, since it stops after 768 passes anyway and those bits change no verdict.
 
 **Lock conditions.**
 - no promotion;
@@ -288,16 +289,16 @@ In 4x the loop stops as soon as the `z` checksum (`C+Z+K+L+r+q-P-Q+R+c`) stops c
 - no piece has escaped its box (`!Y`);
 - if bishops are present, the bishop layer holds.
 
-**Bishop layer.** The king floods must not intersect. For each side and color there may be at most one bishop, and the CAPTURE test must pass: the bishop must not touch any piece or pawn cone. Beyond that, one of two conditions is required: either REGION (the bishop never touches the defending king's flood) or, with all of the defender's pawns blocked, the COLOR certificate.
+**Bishop layer.** The king floods must not intersect. For each side and color there may be at most one bishop, and the CAPTURE test must pass: the bishop must not touch an enemy pawn, bishop or pawn cone (a boxed piece it can reach is dropped instead, see above). Beyond that, one of two conditions is required: either REGION (the bishop never touches the defending king's flood) or, with all of the defender's pawns blocked, the COLOR certificate.
 
 **COLOR certificate.** A bishop can deliver mate only by checking along a diagonal on a square of its own color. The certificate shows that on every such square within the defending king's reach, an escape square remains even when the king is in check.
-- **Hard blockers:** The defender's fixed pieces, the attacker's pawn attacks and the squares adjacent to the attacking king. They can seal any number of squares at once.
+- **Hard blockers:** The defender's fixed pieces (a dropped boxed piece included: while it stands there it seals its square), the attacker's pawn attacks and the squares adjacent to the attacking king. They can seal any number of squares at once.
 - **Soft blocker:** The defender's single bishop of that color, which can seal at most one square at a time. That is why two non-hard squares, or one free square, guarantee an escape.
 
 1x source:
 
 ```js
-|!(o?B^Q:W^P)&(!(a&1+o)|!(i=o?c:R,j=f^(p&~i|(o?S(C)<<8n|N(K):S(Z)>>8n|N(L))|t&~I),u=j&~i,s=j&I,A=u&I,m&I&~(E(9n)&E(7n)|O(u)|j>>8n&j<<8n|j>>1n&j<<1n&x&y|(j>>8n|j<<8n)&S(j))))
+|!(o?B^Q:W^P)&(!(a&1+o)|!(i=o?c:R,j=f^((o?D^v^_:M^V^$)|(o?S(C)<<8n|N(K):S(Z)>>8n|N(L))|t&~I),u=j&~i,s=j&I,A=u&I,m&I&~(E(9n)&E(7n)|O(u)|j>>8n&j<<8n|j>>1n&j<<1n&x&y|(j>>8n|j<<8n)&S(j))))
 ```
 
 - `E=k=>s>>k&s<<k|A>>k|A<<k`: an escape on one diagonal pair;
@@ -333,12 +334,12 @@ In 4x the loop stops as soon as the `z` checksum (`C+Z+K+L+r+q-P-Q+R+c`) stops c
 
 | measurement | result |
 |---|---|
-| chasolver data: proven draws | 201,048 / 201,060 (99.9940%) |
-| locked-structure class: proven draws | 51,046 / 51,058 (99.98%) |
-| no verdict | 12; all in the locked-structure class, and in each the search runs out of depth |
+| chasolver data: proven draws | 201,049 / 201,060 (99.9945%) |
+| locked-structure class: proven draws | 51,047 / 51,058 (99.98%) |
+| no verdict | 11; all in the locked-structure class, and in each the search runs out of depth |
 | mates found by the search (contradicting the reference) | 0 |
-| `chasolver-positions.txt`: false draws across the 1,945 positions the opponent can win | 0 |
-| `chasolver-positions.txt`: proven / missed draws (1,469 targets) | 796 / 673 |
+| `chasolver-positions.txt`: false draws across the 1,945 positions the opponent can win | 3, all positions that are already checkmate by a double check from two same-coloured bishops, which no legal move can produce; `Im` answers before the mate test. In a game the arbiter ends such a position as checkmate before any flag can fall |
+| `chasolver-positions.txt`: proven / missed draws (1,469 targets) | 867 / 602 |
 | `chasolver-lichess.txt`: false draws | 0 |
 | differing verdicts between 1x and 4x | 0 |
 
@@ -350,7 +351,7 @@ In 4x the loop stops as soon as the `z` checksum (`C+Z+K+L+r+q-P-Q+R+c`) stops c
 
 **Speed**
 - **Real games:** On a 10% sample of the chasolver data (20,106 positions), median 0.1 ms, maximum 60 ms.
-- **Hardest position:** `B6b/pr6/8/8/8/4p1pp/P3Pp1p/2b2K1k b - -`. It uses 20,107 nodes and returns the correct verdict (WT); about 0.4 s in a browser on a mid-range laptop. A position with no proof at all now spends the full 50,000-node budget, roughly a second.
+- **Hardest position:** `B6b/pr6/8/8/8/4p1pp/P3Pp1p/2b2K1k b - -`. It uses 20,107 nodes and returns the correct verdict (WT); about 0.4 s in a browser on a mid-range laptop. A position without a proof usually stops at the depth limit after a few hundred nodes; the full 50,000 nodes, roughly a second, are spent only when the budget itself runs out.
 - **What drives the time:** The cost per node. Each node involves legal move generation, a board copy and a call to `l`.
 - **Native code:** Ported to C++ or Rust with 64-bit integers, or compiled to WebAssembly, the engine would shed the memory-allocation overhead of BigInt. Typical positions could drop to microseconds and the hardest one to milliseconds; in practice, though, there is no need.
 
@@ -366,9 +367,9 @@ Castling rights are set only when the king and rook stand on their original squa
 </details>
 
 <details>
-<summary><b>Twelve positions left to conquer, roadmap and verification queue</b></summary>
+<summary><b>Eleven positions left to conquer, roadmap and verification queue</b></summary>
 
-These 12 positions are not wrong verdicts but draws that have yet to be detected. In each of them the search spends 130–240 nodes before hitting the depth limit; no position along the line can be certified by the material or lock analysis.
+These 11 positions (also in `chasolver-missed-draws-08-2026.csv`) are not wrong verdicts but draws that have yet to be detected. In each of them the search spends 130–240 nodes before hitting the depth limit; no position along the line can be certified by the material or lock analysis.
 
 | gameId | flagged | n | FEN |
 |---|---|---|---|
@@ -378,7 +379,6 @@ These 12 positions are not wrong verdicts but draws that have yet to be detected
 | azjorRHB | Black | 0 | `8/4k1p1/4p1Pp/1p1pPp2/pP1P1P1P/P4K2/8/8 b - - 0 48` |
 | lBSDAx07 | White | 0 | `8/4k3/1p4p1/pP1p1pP1/2pP1P2/P1P1KP2/8/8 w - - 0 49` |
 | RwnQJq1k | White | 11 | `8/7p/5p1P/5p1K/5Pp1/6P1/b3k3/8 w - - 11 51` |
-| hPiwD75i | White | 7 | `1n6/2Bp4/p1pPp1k1/PpP1Pp1p/1P3P1P/2K5/8/8 w - - 7 53` |
 | vcaVIyhj | White | 4 | `8/1p1k4/4p3/1P1pP1p1/1p1P2Pp/1P1K3P/8/8 w - - 4 47` |
 | pw3hB0Tp | Black | 0 | `8/1p2k3/8/1P1p2p1/1p1P2P1/1P3K2/8/8 b - - 0 44` |
 | q2K0VFaV | White | 0 | `8/6k1/6p1/p1p1p1P1/P1P1P1p1/6K1/6P1/8 w - a6 0 38` |
@@ -386,9 +386,9 @@ These 12 positions are not wrong verdicts but draws that have yet to be detected
 | o2conOyc | White | 1 | `8/2p2kp1/1pPp4/pP1Pp1P1/P3P1p1/6P1/8/5K2 w - - 1 44` |
 
 **Roadmap**
-1. Teach the lock analysis to recognize these 12 structures.
+1. Teach the lock analysis to recognize these 11 structures. (The twelfth, hPiwD75i, is solved: a boxed knight the bishop can capture no longer breaks the lock.)
 2. Treat trapped bishops as blockers: `1kb5/1p1p4/1P1P4/8/8/4p1p1/4P1P1/5BK1 w - - 0 1` should be `DP` on the first move. Today the flag verdict is correct (`TM`) and the game ends by fivefold repetition, but the dead position is not declared on move one.
-3. Reduce the 673 missed draws in `chasolver-positions.txt`.
+3. Reduce the 602 missed draws in `chasolver-positions.txt` (listed in `chasolver-missed-draw-positions.csv`).
 4. Bring the game history (fivefold repetition) into the flag search.
 5. Adapt the engine to Chess960.
 
@@ -407,8 +407,8 @@ These 12 positions are not wrong verdicts but draws that have yet to be detected
 3. **Three copies:** Apply every change to `index.html` and to both `src_x4` and `src_nm` in `BestArbiter.html`; `index.html` and `src_x4` must stay identical. When porting to 1x, mind the difference between `&` and `&&`.
 4. **Build equivalence:** The two builds must return the same verdict on every input (run both builds).
 5. **Regression:** The positions in the closed-holes table must never be certified in the wrong direction.
-6. **Soundness check:** 0 false draws on both `.txt` files and 0 found mates on the chasolver data.
-7. **No completeness regression:** At least 201,048 correct draws on the chasolver data and at most 673 missed draws on `chasolver-positions.txt`.
+6. **Soundness check:** 0 false draws on `chasolver-lichess.txt`, none on `chasolver-positions.txt` beyond the three already-checkmated positions, and 0 found mates on the chasolver data.
+7. **No completeness regression:** At least 201,049 correct draws on the chasolver data and at most 602 missed draws on `chasolver-positions.txt`.
 8. **New certificate families:** Generate targeted positions and cross-check them against chasolver; ready-made test sets do not cover every corner case of a certificate.
 
 **Pitfalls**
@@ -417,7 +417,7 @@ These 12 positions are not wrong verdicts but draws that have yet to be detected
 - **Negative BigInt:** `~x` yields a negative number; mask it down to 64 bits with `f&~(…)` before shifting.
 - **File wraparound:** Horizontal shifts always need a mask; on a set restricted to one color, diagonal shifts are correct even without one.
 - **Operator precedence:** `&&` and `||` bind more loosely than `|` and `&`; when you convert one, check its neighbors too.
-- **Early-exit checksum:** Growing sets enter with a plus sign, shrinking ones (`P`, `Q`) with a minus sign.
+- **Early-exit checksum:** Growing sets enter with a plus sign, shrinking ones (`P`, `Q`, `F`, `g`) with a minus sign.
 - **`M` is not side-effect-free in 1x:** there it also clears castling rights, so `L` must carry `c` through its save/restore pair. In 4x `M` leaves `c` alone and the search updates it instead. Never port one half of that pair without the other.
 
 **Measuring with Node**
@@ -428,7 +428,7 @@ const html = fs.readFileSync('BestArbiter.html', 'utf8');
 const blocks = [...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
 const SRC = html.match(/id="src_x4">([\s\S]*?)<\/script>/)[1].trim();   // src_nm for 1x
 const chunks = (t) => { const r = []; let d = 0, st = 0; for (let i = 0; i < t.length; i++) { const c = t[i]; if ('([{'.includes(c)) d++; else if (')]}'.includes(c)) d--; else if (c === ',' && d === 0) { r.push(t.slice(st, i)); st = i + 1; } } r.push(t.slice(st)); return r; };
-const mirror = (x) => { const y = x.replace(/^H=/, 'Hd=').split('Ht[').join('Hs[').replace(',H(g,d-1)', ',Hd(g,d-1)'); const k = y.lastIndexOf('&&'); return y.slice(0, k + 2) + '(' + y.slice(k + 2, y.length - 1) + '||(HM=1,0)))'; };
+const mirror = (x) => { const y = x.replace(/^H=/, 'Hd=').split('Ht[').join('Hs[').replace(',H(g,d-1)', ',Hd(g,d-1)'); if (y.endsWith('&v)')) return y.slice(0, -3) + '&&(v||(HM=1,0)))'; const k = y.lastIndexOf('&&(v||'); return y.slice(0, k + 2) + '(' + y.slice(k + 2, y.length - 1) + '||(HM=1,0)))'; };
 const HD = chunks(SRC).filter((c) => c.startsWith('H=')).map(mirror)[0];
 const ctx = { Math, BigInt, performance, console }; ctx.window = ctx; vm.createContext(ctx);
 vm.runInContext(blocks[2], ctx);
@@ -448,7 +448,7 @@ Run with `node --stack-size=4000`.
 
 ▶ **[Tarayıcıda hemen oyna](https://cuneytinann.github.io/Chess-LUX/)** · [Ölçüm sayfası](https://cuneytinann.github.io/Chess-LUX/BestArbiter.html)
 
-**7.697 baytlık tek bir HTML dosyasında, dünyanın kural doğruluğu en yüksek satranç hakemi.**
+**7.985 baytlık tek bir HTML dosyasında, dünyanın kural doğruluğu en yüksek satranç hakemi.**
 
 Chess LUX, tarayıcıda açılan ve aynı ekranda iki kişinin oynadığı bir satranç uygulaması. Asıl işi hakemlik: her hamlenin legal olup olmadığını, oyunun bitip bitmediğini ve sonucu FIDE kurallarına göre belirler. Özellikle bayrak düşmesinde ve kilitli pozisyonlarda, çoğu satranç sitesinin yapmadığı bir denetim yapar.
 
@@ -456,18 +456,18 @@ Chess LUX, tarayıcıda açılan ve aynı ekranda iki kişinin oynadığı bir s
 
 | | |
 |---|---|
-| **Boyut** | tek dosya, 7.697 bayt: oyun, saat, arayüz ve hakem bir arada |
+| **Boyut** | tek dosya, 7.985 bayt: oyun, saat, arayüz ve hakem bir arada |
 | **Kurallar** | mat, pat, ölü pozisyon, bayrak düşmesi, terk, 50 ve 75 hamle kuralı, üçlü ve beşli tekrar, beraberlik talebi ve teklifi |
-| **Lichess verisiyle** | bayrak düşmesiyle haksız sonuçlanmış 201.060 oyunun 201.048'inde doğru hüküm (%99,9940) |
-| **Kilitli yapılarda** | bunların 51.058'ini oluşturan kilitli yapı sınıfında 51.046 doğru hüküm (%99,98) |
-| **Yanlış beraberlik** | test pozisyonlarında 0 |
+| **Lichess verisiyle** | bayrak düşmesiyle haksız sonuçlanmış 201.060 oyunun 201.049'inde doğru hüküm (%99,9945) |
+| **Kilitli yapılarda** | bunların 51.058'ini oluşturan kilitli yapı sınıfında 51.047 doğru hüküm (%99,98) |
+| **Yanlış beraberlik** | Lichess test pozisyonlarında 0; chasolver'ın kurgu pozisyonlarında 3, üçü de zaten mat ve oyunda oluşamayan pozisyonlar |
 | **Hız** | bayrak hükmü gerçek oyunlarda medyan 0,1 ms; en zor kurgulanmış pozisyonda yaklaşık yarım saniye |
 | **Kurulum** | yok: çevrimiçi oynayın ya da dosyayı indirip internetsiz oynayın |
 
 ## Hemen dene
 
-1. [cuneytinann.github.io/Chess-LUX](https://cuneytinann.github.io/Chess-LUX/) adresini açın ya da `index.html`'i indirip tarayıcıda açın. Sekmede "FideLite" başlığı görünür.
-2. Açılan pencerede başlangıç pozisyonunu ve süreyi (10 dk + 5 sn) olduğu gibi bırakın ya da kendi FEN'inizi girin, ardından **Play**'e basın.
+1. [cuneytinann.github.io/Chess-LUX](https://cuneytinann.github.io/Chess-LUX/) adresini açın ya da `index.html`'i indirip tarayıcıda açın. Sekmede "FideLite.Art" başlığı görünür.
+2. Açılan pencerede başlangıç pozisyonunu ve süreyi (10 dk + 5 sn, Fischer artırımı) olduğu gibi bırakın ya da kendi FEN'inizi girip Fischer artırımı, Bronstein ya da simple delay seçin, ardından **Play**'e basın.
 3. Taşları tıklayarak ya da sürükleyerek oynayın. Sağ tuşla tahtada sürüklerseniz aradaki bütün kareler işaretlenir, tek kareye sağ tıklarsanız yalnız o kare işaretlenir; sol tıklama işaretleri siler. ½ beraberlik talebi ve teklifi, ⚐ terk içindir; oyun bitince ↺ yeni bir oyun açar.
 
 Güncel bir tarayıcı yeterli: Chrome/Edge 85+, Firefox 98+, Safari 15.4+ (2022 ve sonrası).
@@ -486,7 +486,7 @@ Gerçek bir örnek: Lichess'te oynanan [ijyj0mHa](https://lichess.org/ijyj0mHa#1
 
 Beyazın süresi bitti ve oyun beyazın yenilgisiyle sonuçlandı. Oysa piyon duvarı kalıcı olarak kilitli; siyah, beyaz yardım etse bile mat edemez. Chess LUX burada beraberlik (`TM`) verir. İlginç olan şu: aynı pozisyonda süresi biten siyah olsaydı hüküm beyazın galibiyeti olurdu, çünkü beyazın mat edebileceği bir yol var.
 
-[chasolver](https://chasolver.org), Lichess'in milyarlarca oyununu tarayarak bu şekilde haksız sonuçlanmış **201.060** oyun buldu. Chess LUX bunların **201.048'inde** doğru hükmü, yani beraberliği veriyor. Kalan 12 pozisyonda kanıt bulamıyor ve güvenli tarafta kalarak galibiyet veriyor. Bunlar yanlış hüküm değil, yakalanamayan beraberlikler: oyun, bugünkü uygulamada olduğu gibi galibiyetle sonuçlanıyor. Haksız sonuçlanan oyunların yaklaşık 16.750'de 1'i olan bu 12 pozisyon, fethedilecek hedefler olarak teknik ekte listeleniyor. Lichess'in standart dereceli oyun veritabanı 7 milyarı aşkın oyun içeriyor; buna göre Chess LUX'ın kaçırdığı hükümler milyar oyunda 2'nin, yani her 500 milyon oyunda 1'in altında kalıyor.
+[chasolver](https://chasolver.org), Lichess'in milyarlarca oyununu tarayarak bu şekilde haksız sonuçlanmış **201.060** oyun buldu. Chess LUX bunların **201.049'inde** doğru hükmü, yani beraberliği veriyor. Kalan 11 pozisyonda kanıt bulamıyor ve güvenli tarafta kalarak galibiyet veriyor. Bunlar yanlış hüküm değil, yakalanamayan beraberlikler: oyun, bugünkü uygulamada olduğu gibi galibiyetle sonuçlanıyor. Haksız sonuçlanan oyunların yaklaşık 18.280'de 1'i olan bu 11 pozisyon, fethedilecek hedefler olarak teknik ekte listeleniyor. Lichess'in standart dereceli oyun veritabanı 7 milyarı aşkın oyun içeriyor; buna göre Chess LUX'ın kaçırdığı hükümler milyar oyunda 2'nin, yani her 500 milyon oyunda 1'in altında kalıyor.
 
 Ölü pozisyonda da benzer bir durum var. FIDE'ye göre (madde 5.2.2) iki taraf için de matın imkânsız olduğu bir pozisyon oluştuğu anda oyun berabere biter. chasolver'ın istatistiklerine göre haksız bayrak sonuçlarının %57,5'inde pozisyon zaten ölüydü; bu oyunlar aslında çoktan bitmişti ama bayrak düşene kadar sürdü. Chess LUX ölü pozisyonu, tanıyabildiği ölçüde, oluştuğu hamlede ilan eder.
 
@@ -502,11 +502,11 @@ Beyazın süresi bitti ve oyun beyazın yenilgisiyle sonuçlandı. Oysa piyon du
 
 Kanıt bulunamazsa süresi kalan taraf kazanır. Öncelik hiçbir zaman yanlış beraberlik vermemek; bir beraberliği kaçırmak daha küçük bir kusur.
 
-**Her eylemden önce saat kapatılır.** Hamle de, beraberlik talebi de, terk de önce geçen süreyi sırası gelen oyuncunun saatine yazar; bu saat sıfırlanıyorsa bayrak hükmü verilir ve eylem kabul edilmez. 99 ms'lik gösterim tiki bu yüzden yalnızca oyuncuların gördüğünü geciktirir, hakemin saydığını değil: geçen süre her zaman son okumadan itibaren ölçülür, iki tik arasında ne kaybolur ne de yanlış tarafa yazılır. Ölçüm `performance.now()` ile, yani monotonik bir kaynaktan yapılır; sistem saati düzeltilse de süre ne eksilir ne artar.
+**Her eylemden önce saat kapatılır.** Hamle de, beraberlik talebi de, terk de önce geçen süreyi sırası gelen oyuncunun saatine yazar; bu saat sıfırlanıyorsa bayrak hükmü verilir ve eylem kabul edilmez. 99 ms'lik gösterim tiki bu yüzden yalnızca oyuncuların gördüğünü geciktirir, hakemin saydığını değil: saat her zaman hamlenin başladığı andan yeniden hesaplanır; iki tik arasında ne süre kaybolur ne yanlış tarafa yazılır, yuvarlama da birikmez. Ölçüm `performance.now()` ile, yani monotonik bir kaynaktan yapılır; sistem saati düzeltilse de süre ne eksilir ne artar.
 
 **Terk, sürücü çevrimiçine taşınırsa.** Tek ekranlı bu sürümde ⚐ sırası gelen oyuncuyu terk ettirir ve bu doğrudur: tahtanın başında yalnız o vardır. Sürücü ileride çevrimiçi oyuna taşınırsa, bunun yerine ⚐'e basan oyuncu esas alınmalıdır: `F(g,1)`, `g` terk eden taraf; bu, sırası gelmeyen taraf da olabilir. Beraberlik teklifi ve talebi ise sıraya bağlı kalır. Saat yine önce sırası gelen oyuncu için kapatılır, çünkü işleyen saat onunkidir.
 
-**Süre kontrolü.** İki alan da kesirli dahil her negatif olmayan sayıyı kabul eder: 2,5 dakika 150 saniyelik oyun, 2,5 saniye 2,5 saniyelik artırım demektir; hiçbir tarafta sessiz yuvarlama yoktur. Sonlu bir sayı olmayan her değer, 24 saat ve üzeri başlangıç süresi, 1 saat ve üzeri artırım oyun başlamadan reddedilir. Saat `DD:SS` okunur ve saat alanını yalnız gerektiğinde açar: `15:00` `15:00` kalır, 90 dakikalık kontrol `1:30:00` görünür.
+**Süre kontrolü.** Üç mod aynı saniye alanını kullanır. *Fischer artırımı* her hamleden sonra o süreyi ekler. *Bronstein* hamlenin gerçekten harcadığı süreyi, o miktara kadar, hamleden sonra geri verir; saat hamlenin başından itibaren akar, yani bayrak hamlenin ortasında da düşebilir. *Simple delay* her hamlenin başında saati o kadar saniye bekletir, ancak sonra akıtır; bayrak ancak gecikme bittikten sonra düşebilir. 0 saniyede üçü de sudden death olur, bu yüzden onun için ayrı bir seçenek yok. İki alan da kesirli dahil her negatif olmayan sayıyı kabul eder: 2,5 dakika 150 saniyelik oyun, 2,5 saniye 2,5 saniyelik artırım demektir; hiçbir tarafta sessiz yuvarlama yoktur. Sonlu bir sayı olmayan her değer, 24 saat ve üzeri başlangıç süresi, 1 saat ve üzeri artırım oyun başlamadan reddedilir. Saat `DD:SS` okunur ve saat alanını yalnız gerektiğinde açar: `15:00` `15:00` kalır, 90 dakikalık kontrol `1:30:00` görünür.
 
 **75 hamle kuralı bayrak hükmüne de girer.** Mat ancak 75 hamle sınırından sonra mümkünse bayrak düşmesi beraberlikle sonuçlanır:
 
@@ -570,8 +570,8 @@ Farkı en açık biçimde chasolver verisindeki kilitli yapı sınıfı ("Blocke
 | sürüm | yakalanamayan | kapsama |
 |---|---|---|
 | FideLite (fidelite.art, şah + piyon) | 3.567 | %93,01 |
-| Chess LUX (+ filler, yaklaşık 1 KB) | 12 | %99,98 |
-| fark | 3.555 | 6,96 puan |
+| Chess LUX (+ filler, yaklaşık 1 KB) | 11 | %99,98 |
+| fark | 3.556 | 6,96 puan |
 
 ## Kendin doğrula: BestArbiter.html
 
@@ -585,9 +585,9 @@ Varsayılan ayarlarla (99 yarım hamle, 50.000 düğüm) beklenen sonuçlar:
 
 | dosya | beklenen |
 |---|---|
-| `chasolver-data-until-08-2026.csv` | 201.048 doğru beraberlik, 12 hükümsüz, 0 çelişki |
-| `chasolver-blocked-until-08-2026.csv` | 51.046 doğru beraberlik, aynı 12 hükümsüz, 0 çelişki |
-| `chasolver-positions.txt` | rakibin kazanabildiği 1.945 pozisyonda yanlış beraberlik: 0 |
+| `chasolver-data-until-08-2026.csv` | 201.049 doğru beraberlik, 11 hükümsüz, 0 çelişki |
+| `chasolver-missed-draws-08-2026.csv` | aynı 11 pozisyon, hepsi hükümsüz |
+| `chasolver-positions.txt` | rakibin kazanabildiği 1.945 pozisyonda 3 yanlış beraberlik, üçü de zaten mat (bkz. doğrulama ayrıntıları); 1.469 beraberliğin 867'si kanıtlı |
 | `chasolver-lichess.txt` | yanlış beraberlik: 0 |
 | iki motor sürümü arasında | farklı hüküm: 0 |
 
@@ -597,15 +597,16 @@ Büyük dosyaların işlenmesi birkaç dakika sürebilir; varsayılanlar 99 yar�
 
 | dosya | boyut | içerik | kaynak |
 |---|---|---|---|
-| `index.html` | 7.697 B | oyun ve hakem | bu proje |
-| `BestArbiter.html` | 68.839 B | ölçüm sayfası; iki motor sürümü gömülü | bu proje |
+| `index.html` | 7.985 B | oyun ve hakem | bu proje |
+| `BestArbiter.html` | 73.643 B | ölçüm sayfası; iki motor sürümü gömülü | bu proje |
 | `chasolver-data-until-08-2026.csv` | 22,3 MB | chasolver'ın Lichess'te bulduğu 201.060 haksız bayrak sonucu (Ağustos 2026'ya kadar) | [chasolver.org](https://chasolver.org/unfair-games) |
-| `chasolver-blocked-until-08-2026.csv` | 6,1 MB | aynı verinin chasolver'daki "Blocked" (kilitli yapı) sınıfı, 51.058 oyun | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-positions.txt` | 152 KB | chasolver'ın 3.414 etiketli zorlu test pozisyonu | [chasolver `tests/positions.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/positions.txt) (MIT) |
 | `chasolver-lichess.txt` | 3,3 MB | 65.536 etiketli Lichess pozisyonu | [chasolver `tests/lichess.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/lichess.txt) (MIT) |
+| `chasolver-missed-draws-08-2026.csv` | 2 KB | `chasolver-data-until-08-2026.csv`'deki, hakemin 99 yarım hamle ve 50.000 düğümle hükümsüz bıraktığı 11 oyun, BestArbiter'in dışa aktardığı biçimde | bu proje |
+| `chasolver-missed-draw-positions.csv` | 75 KB | `chasolver-positions.txt`'te aynı ayarlarla kaçan 602 beraberlik, BestArbiter'in dışa aktardığı biçimde | bu proje |
 | `LICENSE` | | MIT lisansı | bu proje |
 
-Dört `chasolver-*` veri dosyası Miguel Ambrona'nın çalışmasıdır. Ölçümler tekrarlanabilsin diye atıfla birlikte bu repoya eklendi; özgün kaynakları tablodaki bağlantılarda.
+Üç chasolver kaynak dosyası (`chasolver-data-until-08-2026.csv`, `chasolver-positions.txt`, `chasolver-lichess.txt`) Miguel Ambrona'nın çalışmasıdır; iki `chasolver-missed-*` dosyası bu projenin onlardan aldığı dışa aktarımlardır. Ölçümler tekrarlanabilsin diye atıfla birlikte bu repoya eklendi; özgün kaynakları tablodaki bağlantılarda.
 
 ## Karşı örnek, katkı ve lisans
 
@@ -665,12 +666,12 @@ Başlangıç dizilimi onaltılık bir metinden kurulur: ``5d37b3d5${10n**40n-10n
 | `D(g)` | beraberlik talebi ve teklifi | 42 | 42 |
 | `H(g,d)` | yardım matı araması | 222 | 252 |
 | `F(g,k)` | bayrak ya da terk hükmü | 45 | 45 |
-| `l(a,G)` | ölü pozisyon ve kilit dedektörü | 1.213 | 1.326 |
-| **motor dosyası** | | **2.644** | **2.795** |
+| `l(a,G)` | ölü pozisyon ve kilit dedektörü | 1.204 | 1.321 |
+| **motor dosyası** | | **2.635** | **2.790** |
 
-`index.html`, 4x tanımlarını (`G V L C M I Im H l`) `engine_4x.js` ile bayt bayt aynı taşır; `Z D F A` ise sonucu metin koduyla yazan arayüz sürümleridir. Materyal testinin üstüne çoğu sitede olmayan iki katman ekleniyor: `l` (1.326 bayt) ve `H` (252 bayt), birlikte 1.578 bayt.
+`index.html`, 4x tanımlarını (`G V L C M I Im H l`) `engine_4x.js` ile bayt bayt aynı taşır; `Z D F A` ise sonucu metin koduyla yazan arayüz sürümleridir. Materyal testinin üstüne çoğu sitede olmayan iki katman ekleniyor: `l` (1.321 bayt) ve `H` (252 bayt), birlikte 1.573 bayt.
 
-**Aramada rok hakları.** İki sürüm bunu farklı çözüyor. 4x `c`'yi `H`'nin içinde, `M`'den hemen önce güncelliyor; `M`, `L` ve `A` değişmiyor. 1x satırı `M`'in kendisine koyuyor, bu yüzden `L` `c`'yi kaydet/geri yaz çiftinde taşımak zorunda kalıyor ve `A` kendi kopyasını bırakıyor — on bayt ucuz, ama satır bu kez `L`'nin denediği her sözde-legal hamlede de çalışıyor, 833 pozisyonda ~%3 yavaş. İki durumda da transpozisyon anahtarı `b+t+e+c` oluyor ve aramanın anlık görüntüsü `c`'yi taşıyor.
+**Aramada rok hakları.** İki sürüm bunu farklı çözüyor. 4x `c`'yi `H`'nin içinde, `M`'den hemen önce güncelliyor; `M`, `L` ve `A` değişmiyor. 1x satırı `M`'in kendisine koyuyor, bu yüzden `L` `c`'yi kaydet/geri yaz çiftinde taşımak zorunda kalıyor ve `A` kendi kopyasını bırakıyor — 11 bayt ucuz, ama satır bu kez `L`'nin denediği her sözde-legal hamlede de çalışıyor, 833 pozisyonda ~%3 yavaş. İki durumda da transpozisyon anahtarı `b+t+e+c` oluyor ve aramanın anlık görüntüsü `c`'yi taşıyor.
 
 **1x ve 4x.** Kullanıcıya sunulan her şey 4x yazılır: bayt önceliklidir, ama birkaç bayt karşılığında katlanarak hız kazanılıyorsa o bayt harcanır. 1x, aynı davranışın en kısa metnidir ve yalnızca ölçüm sayfasında deneysel seçenek olarak durur. İki sürüm her girdide aynı hükmü vermek zorundadır; gerçek oyunlarda 4x 100 ms'nin altında kalırken 1x saniyelere çıkabilir.
 
@@ -693,7 +694,7 @@ Hiçbiri tutmazsa bütün legal hamleler ve terfi seçenekleri (`[3,2,1,6]`) den
 - **Hamlesiz uç:** Uçta mat olan `g` ise dal yanlış döner; pat ya da rakibin matıysa doğru döner.
 - **Tekrar:** Aynı varyantta tekrar eden bir pozisyon ikinci kez görüldüğünde kesilir; mata giden en kısa yol hiçbir pozisyonu tekrar etmez.
 - **Rok hakları:** Varyant boyunca güncellenir; `c` hem anlık görüntüde hem transpozisyon anahtarındadır, dolayısıyla arama hakkı düşmüş bir rok hamlesini hiç üretmez.
-- **Bütçe ve derinlik:** Biri biterse dal yanlış döner ve hüküm galibiyete düşer. Bayrak aramasına oyun geçmişi (beşli tekrar) girmez. Derinlik sınırı 99 yarım hamleye çıktığı için pratikte tek sınır bütçedir: kanıt bulunamayan bir pozisyon 50.000 düğümün tamamını harcar, tarayıcıda kabaca bir saniye.
+- **Bütçe ve derinlik:** Biri biterse dal yanlış döner ve hüküm galibiyete düşer. Bayrak aramasına oyun geçmişi (beşli tekrar) girmez. Her varyantın kanıtlanması gerektiği için kanıtlanamayan ilk varyant bütün aramayı bitirir: kanıtı olmayan pozisyonların çoğu, bir varyant ilk kez 99 yarım hamleye ulaştığında, genellikle birkaç yüz düğüm sonra durur (kaçan 11 chasolver beraberliği 130–240 düğümde duruyor). 50.000 düğümlük bütçe nadiren tükenir: `chasolver-positions.txt`'teki her yedinci pozisyonda (488 pozisyon) 315'i derinlik sınırında, 13'ü bütçede durdu.
 
 | yer | bütçe | derinlik |
 |---|---|---|
@@ -714,16 +715,16 @@ Hiçbiri tutmazsa bütün legal hamleler ve terfi seçenekleri (`[3,2,1,6]`) den
 **Bitboard.** Her küme 64 bitlik bir `BigInt`; bit `i`, kare `i`'yi temsil eder.
 - **Maskeler:** `f` bütün tahta, `y` a sütunu hariç, `x` h sütunu hariç, `d` açık renkli kareler.
 - **Yardımcılar:** `S` yatay komşular, `N` karenin kendisi dahil 3×3 komşuluk, `O` ortogonal komşular, `T` çapraz komşular.
-- **Taş kümeleri:** `M` bütün beyaz taşlar, `D` bütün siyah taşlar; `m`/`n` bir tur içinde her iki tarafın alınamayan piyonları, `I`/`J` ise iki tarafın kapalı kare kümeleri.
+- **Taş kümeleri:** `M` bütün beyaz taşlar, `D` bütün siyah taşlar, `F`/`g` iki tarafın kutulu at, kale ve vezirleri; `m`/`n` bir tur içinde her iki tarafın alınamayan piyonları, `I`/`J` ise iki tarafın kapalı kare kümeleri.
 
 **Sabit nokta.** Her tur kümeleri büyütür ya da daraltır:
 - **Tıkalı piyonlar:** `P`/`Q` yalnız küçülür; rakip şahın alamadığı ve önü kalıcı olarak kapalı piyonlar kalır.
 - **Piyon konileri:** `C`/`Z`, piyonların ilerleyebileceği kareler.
 - **Şah selleri:** `K`/`L`, şahların ulaşabileceği kareler; yalnız büyür. Selin değdiği rakip piyon `r`/`q` üzerinden alınabilir sayılır.
 - **Fil selleri:** `R`/`c`, fillerin ulaşabileceği kareler; sabit karelerde durur.
-- **Kutulu taşlar:** Komşuluğu açılan ya da rakibin ulaştığı at, kale veya vezir kaçışını `Y`'ye yazar; ilk kaçışta o seviye düşer.
+- **Kutulu taşlar:** Komşuluğu açılan at, kale veya vezir kaçışını `Y`'ye yazar; ilk kaçışta o seviye düşer. Rakip şahın ya da filin ulaşabildiği kutulu taş kaçış sayılmaz: hiçbir şey alamaz, başına gelebilecek tek şey alınmaktır. Karesi `F`/`g`'den düşer ve o andan sonra boş sayılır. Onu alabilecek bir piyon, piyon alımı koşuluyla seviyeyi düşürür.
 
-4x'te `z` sağlaması (`C+Z+K+L+r+q-P-Q+R+c`) değişmeyince döngü durur (en fazla 769 tur; fuzz testlerinde 69'u geçmedi). 1x her zaman 768 tur döner.
+4x'te `z` sağlaması (`C+Z+K+L+r+q-P-Q+R+c-F-g`) değişmeyince döngü durur. İçindeki on iki küme yalnız tek yönde hareket eder — `P`, `Q`, `F` ve `g` küçülür ve eksi işaretle girer, gerisi büyür — bu yüzden sağlama bir şeyi değiştiren her turda değişir, döngü erken duramaz. On sel ve piyon kümesi toplamda en fazla 640 bit, `F` ile `g` yalnız at, kale ve vezir karelerini değiştirebildiği için 768'den az tur bir şey değiştirir; 1x her zaman 768 tur döner. Pratikte 4x'e chasolver verisinde medyan 11 tur yetiyor, fuzz testlerinde 69'u hiç geçmedi. Bu sınır, `C` ve `q`'yu 64 bitte tutan `&f`'ye dayanır: o olmadan sekizinci sıranın ötesine itilen bitler sağlamayı kıpırdatmaya devam eder ve özyineleme hiç bitmez. 1x'in böyle bir maskeye ihtiyacı yok, çünkü 768 turdan sonra zaten duruyor ve o bitler hiçbir hükmü değiştirmiyor.
 
 **Kilit koşulları.**
 - terfi yok;
@@ -732,16 +733,16 @@ Hiçbiri tutmazsa bütün legal hamleler ve terfi seçenekleri (`[3,2,1,6]`) den
 - hiçbir taş kutudan çıkmadı (`!Y`);
 - fil varsa fil katmanı tutuyor.
 
-**Fil katmanı.** Şah selleri kesişmemeli. Her taraf ve renk için en fazla bir fil olmalı ve ALIM testi tutmalı: fil hiçbir taşa ve piyon konisine değmemeli. Ardından iki yoldan biri gerekir: ya BÖLGE (fil savunan şahın seline hiç değmez) ya da savunanın bütün piyonları tıkalıyken RENK sertifikası.
+**Fil katmanı.** Şah selleri kesişmemeli. Her taraf ve renk için en fazla bir fil olmalı ve ALIM testi tutmalı: fil rakibin hiçbir piyonuna, filine ve piyon konisine değmemeli (ulaştığı kutulu taş bunun yerine düşer, bkz. yukarı). Ardından iki yoldan biri gerekir: ya BÖLGE (fil savunan şahın seline hiç değmez) ya da savunanın bütün piyonları tıkalıyken RENK sertifikası.
 
 **RENK sertifikası.** Fil ancak kendi rengindeki bir karede, çaprazdan şah çekerek mat edebilir. Sertifika, savunan şahın ulaşabildiği ve filin renginde olan her karede, şah çekilse bile bir kaçış karesi kaldığını gösterir.
-- **Sert engelleyiciler:** Savunanın sabit taşları, saldıranın piyon saldırıları ve saldıran şahın komşu kareleri. Aynı anda istedikleri kadar kareyi kapatabilirler.
+- **Sert engelleyiciler:** Savunanın sabit taşları (düşürülmüş kutulu taş dahil: yerinde durduğu sürece karesini kapatır), saldıranın piyon saldırıları ve saldıran şahın komşu kareleri. Aynı anda istedikleri kadar kareyi kapatabilirler.
 - **Yumuşak engelleyici:** Savunanın o renkteki tek fili; aynı anda en fazla bir kare kapatır. Bu yüzden iki sert olmayan kare ya da bir serbest kare, kaçışı garanti eder.
 
 1x metni:
 
 ```js
-|!(o?B^Q:W^P)&(!(a&1+o)|!(i=o?c:R,j=f^(p&~i|(o?S(C)<<8n|N(K):S(Z)>>8n|N(L))|t&~I),u=j&~i,s=j&I,A=u&I,m&I&~(E(9n)&E(7n)|O(u)|j>>8n&j<<8n|j>>1n&j<<1n&x&y|(j>>8n|j<<8n)&S(j))))
+|!(o?B^Q:W^P)&(!(a&1+o)|!(i=o?c:R,j=f^((o?D^v^_:M^V^$)|(o?S(C)<<8n|N(K):S(Z)>>8n|N(L))|t&~I),u=j&~i,s=j&I,A=u&I,m&I&~(E(9n)&E(7n)|O(u)|j>>8n&j<<8n|j>>1n&j<<1n&x&y|(j>>8n|j<<8n)&S(j))))
 ```
 
 - `E=k=>s>>k&s<<k|A>>k|A<<k`: bir çapraz çiftte kaçış;
@@ -777,12 +778,12 @@ Hiçbiri tutmazsa bütün legal hamleler ve terfi seçenekleri (`[3,2,1,6]`) den
 
 | ölçüm | sonuç |
 |---|---|
-| chasolver verisi: kanıtlanan beraberlik | 201.048 / 201.060 (%99,9940) |
-| kilitli yapı sınıfı: kanıtlanan beraberlik | 51.046 / 51.058 (%99,98) |
-| hükümsüz | 12; hepsi kilitli yapı sınıfında ve hepsinde arama derinliği yetmiyor |
+| chasolver verisi: kanıtlanan beraberlik | 201.049 / 201.060 (%99,9945) |
+| kilitli yapı sınıfı: kanıtlanan beraberlik | 51.047 / 51.058 (%99,98) |
+| hükümsüz | 11; hepsi kilitli yapı sınıfında ve hepsinde arama derinliği yetmiyor |
 | aramanın bulduğu mat (referansla çelişki) | 0 |
-| `chasolver-positions.txt`: rakibin kazanabildiği 1.945 pozisyonda yanlış beraberlik | 0 |
-| `chasolver-positions.txt`: kanıtlanan / kaçan beraberlik (1.469 hedef) | 796 / 673 |
+| `chasolver-positions.txt`: rakibin kazanabildiği 1.945 pozisyonda yanlış beraberlik | 3; üçü de aynı renkli iki filin çifte şahıyla zaten mat olan, hiçbir legal hamlenin üretemeyeceği pozisyonlar; `Im` mat testinden önce cevap veriyor. Oyunda hakem böyle bir pozisyonu bayrak düşmeden mat olarak bitirir |
+| `chasolver-positions.txt`: kanıtlanan / kaçan beraberlik (1.469 hedef) | 867 / 602 |
 | `chasolver-lichess.txt`: yanlış beraberlik | 0 |
 | 1x ve 4x arasında farklı hüküm | 0 |
 
@@ -794,7 +795,7 @@ Hiçbiri tutmazsa bütün legal hamleler ve terfi seçenekleri (`[3,2,1,6]`) den
 
 **Hız**
 - **Gerçek oyunlar:** chasolver verisinin %10'luk örnekleminde (20.106 pozisyon) medyan 0,1 ms, en uzun 60 ms.
-- **En zor pozisyon:** `B6b/pr6/8/8/8/4p1pp/P3Pp1p/2b2K1k b - -`. 20.107 düğüm kullanıyor ve doğru hükmü (WT) veriyor; orta sınıf bir dizüstü bilgisayarda, tarayıcıda yaklaşık 0,4 s. Hiç kanıt bulunamayan bir pozisyon ise artık 50.000 düğümlük bütçenin tamamını harcıyor, kabaca bir saniye.
+- **En zor pozisyon:** `B6b/pr6/8/8/8/4p1pp/P3Pp1p/2b2K1k b - -`. 20.107 düğüm kullanıyor ve doğru hükmü (WT) veriyor; orta sınıf bir dizüstü bilgisayarda, tarayıcıda yaklaşık 0,4 s. Kanıtı olmayan bir pozisyon genellikle birkaç yüz düğüm sonra derinlik sınırında duruyor; 50.000 düğümün tamamı, kabaca bir saniye, yalnız bütçenin kendisi tükendiğinde harcanıyor.
 - **Süreyi belirleyen:** Düğüm başına maliyet. Her düğümde legal hamle üretimi, tahta kopyası ve `l` çağrısı var.
 - **Yerel kod:** Motor 64 bitlik tamsayılarla C++ ya da Rust'a çevrilir veya WebAssembly'ye derlenirse BigInt'in bellek ayırma yükü ortadan kalkar. Tipik pozisyonlar mikrosaniyeler, en zor pozisyon milisaniyeler düzeyine inebilir; pratikte buna gerek yok.
 
@@ -810,9 +811,9 @@ Rok hakkı yalnız şah ve kale yerindeyse, geçerken alma alanı yalnız gerçe
 </details>
 
 <details>
-<summary><b>Fethedilecek 12 pozisyon, yol haritası ve doğrulama kuyruğu</b></summary>
+<summary><b>Fethedilecek 11 pozisyon, yol haritası ve doğrulama kuyruğu</b></summary>
 
-Bu 12 pozisyon yanlış hüküm değil, henüz yakalanamayan beraberlikler. Hepsinde arama 130–240 düğüm harcayıp derinlik sınırına takılıyor; varyant üzerindeki hiçbir pozisyon materyal ya da kilit analiziyle sertifikalanamıyor.
+Bu 11 pozisyon (`chasolver-missed-draws-08-2026.csv`'de de var) yanlış hüküm değil, henüz yakalanamayan beraberlikler. Hepsinde arama 130–240 düğüm harcayıp derinlik sınırına takılıyor; varyant üzerindeki hiçbir pozisyon materyal ya da kilit analiziyle sertifikalanamıyor.
 
 | gameId | bayrak | n | FEN |
 |---|---|---|---|
@@ -822,7 +823,6 @@ Bu 12 pozisyon yanlış hüküm değil, henüz yakalanamayan beraberlikler. Heps
 | azjorRHB | siyah | 0 | `8/4k1p1/4p1Pp/1p1pPp2/pP1P1P1P/P4K2/8/8 b - - 0 48` |
 | lBSDAx07 | beyaz | 0 | `8/4k3/1p4p1/pP1p1pP1/2pP1P2/P1P1KP2/8/8 w - - 0 49` |
 | RwnQJq1k | beyaz | 11 | `8/7p/5p1P/5p1K/5Pp1/6P1/b3k3/8 w - - 11 51` |
-| hPiwD75i | beyaz | 7 | `1n6/2Bp4/p1pPp1k1/PpP1Pp1p/1P3P1P/2K5/8/8 w - - 7 53` |
 | vcaVIyhj | beyaz | 4 | `8/1p1k4/4p3/1P1pP1p1/1p1P2Pp/1P1K3P/8/8 w - - 4 47` |
 | pw3hB0Tp | siyah | 0 | `8/1p2k3/8/1P1p2p1/1p1P2P1/1P3K2/8/8 b - - 0 44` |
 | q2K0VFaV | beyaz | 0 | `8/6k1/6p1/p1p1p1P1/P1P1P1p1/6K1/6P1/8 w - a6 0 38` |
@@ -830,9 +830,9 @@ Bu 12 pozisyon yanlış hüküm değil, henüz yakalanamayan beraberlikler. Heps
 | o2conOyc | beyaz | 1 | `8/2p2kp1/1pPp4/pP1Pp1P1/P3P1p1/6P1/8/5K2 w - - 1 44` |
 
 **Yol haritası**
-1. Kilit analizinin bu 12 yapıyı tanıması.
+1. Kilit analizinin bu 11 yapıyı tanıması. (On ikincisi hPiwD75i çözüldü: filin alabildiği kutulu at artık kilidi bozmuyor.)
 2. Hapsolmuş filleri engel olarak saymak: `1kb5/1p1p4/1P1P4/8/8/4p1p1/4P1P1/5BK1 w - - 0 1` ilk hamlede `DP` olmalı. Bugün bayrak hükmü doğru (`TM`) ve oyun beşli tekrarla berabere bitiyor, ama ölü pozisyon ilk hamlede ilan edilmiyor.
-3. `chasolver-positions.txt`'te kaçan 673 beraberliği azaltmak.
+3. `chasolver-positions.txt`'te kaçan 602 beraberliği azaltmak (listesi `chasolver-missed-draw-positions.csv`'de).
 4. Oyun geçmişini (beşli tekrar) bayrak aramasına katmak.
 5. Chess960 uyarlaması.
 
@@ -851,8 +851,8 @@ Bu 12 pozisyon yanlış hüküm değil, henüz yakalanamayan beraberlikler. Heps
 3. **Üç kopya:** Değişiklik `index.html`'e, `BestArbiter.html`'deki `src_x4`'e ve `src_nm`'ye uygulanır; `index.html` ile `src_x4` birebir aynı kalır. 1x'e taşırken `&` ile `&&` farkına dikkat edin.
 4. **Sürüm denkliği:** İki sürüm her girdide aynı hükmü vermeli (run both builds).
 5. **Regresyon:** Kapatılmış açıklar tablosundaki pozisyonlar yanlış yönde sertifika almamalı.
-6. **Soundness ölçümü:** İki `.txt` dosyasında yanlış beraberlik 0, chasolver verisinde found mate 0 olmalı.
-7. **Completeness gerilemesi yok:** chasolver verisinde doğru beraberlik ≥ 201.048; `chasolver-positions.txt`'te kaçan beraberlik ≤ 673 kalmalı.
+6. **Soundness ölçümü:** `chasolver-lichess.txt`'te yanlış beraberlik 0, `chasolver-positions.txt`'te zaten mat olan üç pozisyon dışında 0, chasolver verisinde found mate 0 olmalı.
+7. **Completeness gerilemesi yok:** chasolver verisinde doğru beraberlik ≥ 201.049; `chasolver-positions.txt`'te kaçan beraberlik ≤ 602 kalmalı.
 8. **Yeni sertifika ailesi:** Hedefli pozisyonlar üretip chasolver'la çapraz kontrol edin; hazır test pozisyonları bir sertifikanın bütün köşe durumlarını göstermez.
 
 **Tuzaklar**
@@ -861,7 +861,7 @@ Bu 12 pozisyon yanlış hüküm değil, henüz yakalanamayan beraberlikler. Heps
 - **Negatif BigInt:** `~x` negatif bir sayı üretir; kaydırmadan önce `f&~(…)` ile 64 bite indirin.
 - **Sütun taşması:** Yatay kaydırmada maske her zaman şart; tek renge kısıtlanmış kümede çapraz kaydırma maskesiz de doğrudur.
 - **Operatör önceliği:** `&&` ve `||`, `|` ile `&`'den düşük önceliklidir; birini dönüştürünce komşularını da kontrol edin.
-- **Erken çıkış sağlaması:** Büyüyen kümeler artı, küçülenler (`P`, `Q`) eksi işaretle girer.
+- **Erken çıkış sağlaması:** Büyüyen kümeler artı, küçülenler (`P`, `Q`, `F`, `g`) eksi işaretle girer.
 - **1x'te `M` yan etkisiz değil:** orada rok haklarını da siliyor, bu yüzden `L` `c`'yi kaydet/geri yaz çiftinde taşımak zorunda. 4x'te `M` `c`'ye dokunmuyor, güncellemeyi arama yapıyor. Bu çiftin bir yarısını diğeri olmadan taşımayın.
 
 **Node ile ölçüm**
@@ -872,7 +872,7 @@ const html = fs.readFileSync('BestArbiter.html', 'utf8');
 const blocks = [...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
 const SRC = html.match(/id="src_x4">([\s\S]*?)<\/script>/)[1].trim();   // 1x için src_nm
 const chunks = (t) => { const r = []; let d = 0, st = 0; for (let i = 0; i < t.length; i++) { const c = t[i]; if ('([{'.includes(c)) d++; else if (')]}'.includes(c)) d--; else if (c === ',' && d === 0) { r.push(t.slice(st, i)); st = i + 1; } } r.push(t.slice(st)); return r; };
-const mirror = (x) => { const y = x.replace(/^H=/, 'Hd=').split('Ht[').join('Hs[').replace(',H(g,d-1)', ',Hd(g,d-1)'); const k = y.lastIndexOf('&&'); return y.slice(0, k + 2) + '(' + y.slice(k + 2, y.length - 1) + '||(HM=1,0)))'; };
+const mirror = (x) => { const y = x.replace(/^H=/, 'Hd=').split('Ht[').join('Hs[').replace(',H(g,d-1)', ',Hd(g,d-1)'); if (y.endsWith('&v)')) return y.slice(0, -3) + '&&(v||(HM=1,0)))'; const k = y.lastIndexOf('&&(v||'); return y.slice(0, k + 2) + '(' + y.slice(k + 2, y.length - 1) + '||(HM=1,0)))'; };
 const HD = chunks(SRC).filter((c) => c.startsWith('H=')).map(mirror)[0];
 const ctx = { Math, BigInt, performance, console }; ctx.window = ctx; vm.createContext(ctx);
 vm.runInContext(blocks[2], ctx);
