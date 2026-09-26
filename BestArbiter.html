@@ -113,8 +113,10 @@ summary{cursor:pointer;color:var(--dim)}
 <div class="ctl">
   <label><span data-i="lblEngine">engine</span>
     <select id="eng">
-      <option value="x4" data-i="optX4">engine_4x.js — speed</option>
-      <option value="nm" data-i="optNm">engine.js — compact</option>
+      <option value="x4" data-i="optX4">LUX — fast</option>
+      <option value="nm" data-i="optNm">LUX — normal</option>
+      <option value="l3x4" data-i="optL3x4">L3 — fast</option>
+      <option value="l3nm" data-i="optL3nm">L3 — normal</option>
     </select></label>
   <label><span data-i="lblLang">language</span>
     <select id="lang">
@@ -233,11 +235,11 @@ summary{cursor:pointer;color:var(--dim)}
 </div>
 
 <script type="text/plain" id="src_nm">
-c=15,U=N='indexOf',e=Y=-1,t=1,b=[...`5d37b3d5${10n**40n-10n**32n}888888884c26a2c4`].map(u=>'0x'+u-0),z=n=o=0,R={[b+t+e+c]:$=1},a=Math.abs,G=(i,f,T,g=b[i],P=g>>1,y=i>>3,h=a(i%8-f%8),v=a(y-(f>>3)),d=h|v,k=(f-i)/d,S=Q=>(i+=k)==f||!b[i]&&S())=>P>5?h*v==2:P>4?T|v|h^2?d<2:c&C(r=i+3.5*k-.5)&&G(r,i)&&!V(t,i)&!V(t,i+k):P>3?f<i^g&1&&(h?d<2&v&&T|b[f]|f==e:T|b[f]?0:v<2|v<3&!b[i+f>>1]&66>>y):P&(h*v?h==v:2)&&S(),V=(s,u=b[N](10+s))=>b.some((p,i)=>p&1^s&&G(i,u,1)),L=(i,q=[],g=b[i]&1)=>b.map((p,f)=>!p|p&1^g&&G(i,f)&&(p=[b,e,n,c],M(i,f),V(g)||q.push(f),[b,e,n,c]=p))&&q,C=i=>'20003001'[i%56]<<i/28,M=(i,f,u=3,p=(b=[...b])[i],P=p>>1==4,d=a(i-f),q=i+f>>1)=>(c&=~C(i)&~C(f),n=P|b[f]?0:n+1,b[f]=P&f%56<8?u*2+t:p,b[i]=b[P&f==e?f^8:i]=0,d==2&p>9&&(b[q]=b[r=f>i?i+3:i-4],b[r]=0),e=P&d>9&&[f-1,f+1,e=q].some(x=>b[x]==17-p&&~L(x)[N](e))?e:Y),I=g=>(m=W=0,b.map((p,i)=>p&&g>1|p%2==g&&(p<4?m|=(i/8^i)%2+1:W+=p<10?9:p>11)),W*2+m<3),Im=g=>(O=u=>!~b[N](u+g),I(g),B=m,I(!g)&(m+W<1|O(12)&O(8)&O(4)+m>0&!(B&~m))),Z=Q=>b.some((p,i)=>p%2==t&&L(i)+'')?I(2)|l()?6:$>4?5:n>149?4:0:V(t)?t+1:3,A=(i,f,u)=>(M(i,f,u),t^=1,o|=4<<t,$=R[s=b+t+e+c]=-~R[s],Z()),D=g=>(o^=2-g,Z()||(n>99?7:$>2?8:o>14?9:0)),H=(g,d,v=t^g|!V(g))=>Im(g)||Ht[s=b+t+e+c]>=d||l(2-g)||(Ht[s]=d,b.every((p,i)=>p&1^t||L(i).every(f=>v=n>149||d&&Hn-->0&&[3,2,1,6].every((u,x,w)=>x&&p>>1^4|f%56>7||(w=[b,e,n,t,c],M(i,f,u),t^=1,H(g,d-1)|([b,e,n,t,c]=w)))))&v),F=(g,k)=>(Hn=5e4,Ht={},H(g,99))?14+k:10+2*k+g;
+c=15,U=N='indexOf',e=Y=-1,t=1,b=[...`5d37b3d5${10n**40n-10n**32n}888888884c26a2c4`].map(u=>'0x'+u-0),z=n=o=0,R={[b+t+e+c]:$=1},a=Math.abs,G=(i,f,T,P=b[i]>>1,y=i>>3,h=a(i%8-f%8),v=a(y-(f>>3)),d=h|v,k=(f-i)/d,x=T|b[f],S=Q=>(i+=k)==f||!b[i]&&S())=>P>5?h*v==2:P>4?T|v|h^2?d<2:c&C(f+=1.5*k-.5)&&!V(t)&&!V(t,i+k)&&S():P>3?f<i^b[i]&1&&(h*v==1?x|f==e:h|x?0:v<2+(y%5==1)&&S()):P&(h*v?h==v:2)&&S(),V=(s,u=b[N](10+s))=>b.some((p,i)=>p&1^s&&G(i,u,1)),L=(i,q=[],g=b[i]&1)=>b.map((p,f)=>!p|p&1^g&&G(i,f)&&(p=[b,e,n,c],M(i,f),V(g)||q.push(f),[b,e,n,c]=p))&&q,C=i=>'20003001'[i%56]<<i/28,M=(i,f,u=3,p=(b=[...b])[i],P=p>>1==4,d=a(i-f),q=i+f>>1)=>(c&=~C(i)&~C(f),n=P|b[f]?0:n+1,b[f]=P&f%56<8?u*2+t:p,b[i]=b[P&f==e?f^8:i]=0,d==2&p>9&&(b[q]=b[r=f>i?i+3:i-4],b[r]=0),e=P&d>9&&[f-1,f+1,e=q].some(x=>b[x]==17-p&&~L(x)[N](e))?e:Y),I=g=>(m=W=0,b.map((p,i)=>p&&p%2^g&&(p<4?m|=1<<i*9/8%2:W+=p<10?9:p>11)),W*2+m<3),Im=g=>(O=u=>!~b[N](u+g),I(!g),B=m,I(g)&(m+W<1|O(12)&O(8)&O(4)+m>0&!(B&~m))),Z=Q=>b.some((p,i)=>p%2==t&&L(i)+'')?I(2)|l()?6:$>4?5:n>149?4:0:V(t)?t+1:3,A=(i,f,u)=>(M(i,f,u),t^=1,o|=4<<t,$=R[s=b+t+e+c]=-~R[s],Z()),D=g=>(o^=2-g,Z()||(n>99?7:$>2?8:o>14?9:0)),H=(g,d,v=t^g|!V(g))=>Im(g)||Ht[s=b+t+e+c]>=d||l(2-g)||(Ht[s]=d,b.every((p,i)=>p&1^t||L(i).every(f=>v=n>149||d&&Hn-->0&&[3,2,1,6].every((u,x,w)=>x&&p>>1^4|f%56>7||(w=[b,e,n,t,c],M(i,f,u),t^=1,H(g,d-1)|([b,e,n,t,c]=w)))))&v),F=(g,k)=>(Hn=5e4,Ht={},H(g,99))?14+k:10+2*k+g;
 l=(a=3,G=0,f=2n**64n-1n,y=f^f/255n,x=y>>1n,d=f/3n^f/257n,S=s=>s+s&y|s>>1n&x,N=s=>s|O(s)|T(s),O=s=>S(s)|s<<8n&f|s>>8n,T=s=>S(s<<8n|s>>8n),W=0n,B=W,V,v,M=W,D=W,C,Z,K,L,q=r=W,P,Q,F=W,g=W,R,c,$=W,_=W,E=k=>s>>k&s<<k|A>>k|A<<k,X=k=>k&&(m=W&~r,n=B&~q,t=F|g|A|H,I=n|P|t,J=m|Q|t,P=m&I>>8n,Q=n&J<<8n,C|=C<<8n&~I,Z|=Z>>8n&~J,K|=N(K)&~(P|F|N(A)|S(Q)>>8n),L|=N(L)&~(Q|g|N(H)|S(P)<<8n),r|=L|(r&~I)>>8n,q|=K|(q&~J)<<8n,t|=P|Q,R|=T(R)&~t,c|=T(c)&~t,F&=~(L|T(c)),g&=~(K|T(R)),U.map(([u,s])=>Y|=s&~(u&M?P|F:Q|g)),X(k-1)),U=[],u=1n,A,H,i,s,t,p,o,j,I,J,m,n,Y=W,)=>~e?0:(b.map(p=>(p&&(j=p&1,j?M|=u:D|=u,(o=p>>1)==4?j?W|=u:B|=u:o==5?j?K=V=u:L=v=u:o<2?j?$|=u:_|=u:(j?F|=u:g|=u,U.push([u,o>5?O(T(u))^O(u):o>2?N(u)^u:O(u)]))),u+=u)),C=P=W,Z=Q=B,R=$,c=_,A=G&1?v:r,H=G&2?V:r,!(X(768),C>>56n|Z&255n|S(C)<<8n&((a&2?D:D^v)|Z)|S(Z)>>8n&((a&1?M:M^V)|C)|S(C^W)<<8n&L|S(Z^B)>>8n&K)&&!(G&&(A?L^A:K^H))&&!Y&&(!(R|c)|!(K&L)&[d,f^d,d,f^d].every((I,w)=>!(s=((o=w<2)?$:_)&I)|!(s&s-1n)&(t=o?R:c,t|=T(t),p=o?B|_|Z:W|$|C,m=o?L:K,!(t&p)&(!(t&m)|!(o?B^Q:W^P)&(!(a&1+o)|!(i=o?c:R,j=f^((o?D^v^_:M^V^$)|(o?S(C)<<8n|N(K):S(Z)>>8n|N(L))|t&~I),u=j&~i,s=j&I,A=u&I,m&I&~(E(9n)&E(7n)|O(u)|j>>8n&j<<8n|j>>1n&j<<1n&x&y|(j>>8n|j<<8n)&S(j))))))))||G<2&&l(a,G+1))
 </script>
 <script type="text/plain" id="src_x4">
-c=15,U=N='indexOf',e=Y=-1,t=1,b=[...`5d37b3d5${10n**40n-10n**32n}888888884c26a2c4`].map(u=>'0x'+u-0),z=n=o=0,R={[b+t+e+c]:$=1},a=Math.abs,G=(i,f,T,g=b[i],P=g>>1,y=i>>3,h=a(i%8-f%8),v=a(y-(f>>3)),d=h|v,k=(f-i)/d,S=Q=>(i+=k)==f||!b[i]&&S())=>P>5?h*v==2:P>4?T|v|h^2?d<2:c&C(r=i+3.5*k-.5)&&G(r,i)&&!V(t,i)&&!V(t,i+k):P>3?f<i^g&1&&(h?d<2&v&&T|b[f]|f==e:T|b[f]?0:v<2|v<3&!b[i+f>>1]&66>>y):P&(h*v?h==v:2)&&S(),V=(s,u=b[N](10+s))=>b.some((p,i)=>p&&p&1^s&&G(i,u,1)),L=(i,q=[],g=b[i]&1)=>(b.forEach((p,f)=>!p|p&1^g&&G(i,f)&&(p=[b,e,n],M(i,f),V(g)||q.push(f),[b,e,n]=p)),q),C=i=>'20003001'[i%56]<<i/28,M=(i,f,u=3,p=(b=[...b])[i],P=p>>1==4,d=a(i-f),q=i+f>>1)=>(n=P|b[f]?0:n+1,b[f]=P&f%56<8?u*2+t:p,b[i]=b[P&f==e?f^8:i]=0,d==2&p>9&&(b[q]=b[r=f>i?i+3:i-4],b[r]=0),e=P&d>9&&[f-1,f+1,e=q].some(x=>b[x]==17-p&&~L(x)[N](e))?e:Y),I=g=>(m=W=0,b.map((p,i)=>p&&g>1|p%2==g&&(p<4?m|=(i/8^i)%2+1:W+=p<10?9:p>11)),W*2+m<3),Im=g=>(O=u=>!~b[N](u+g),I(g),B=m,I(!g)&(m+W<1|O(12)&O(8)&O(4)+m>0&!(B&~m))),Z=Q=>b.some((p,i)=>p&&p%2==t&&L(i)+'')?I(2)|l()?6:$>4?5:n>149?4:0:V(t)?t+1:3,A=(i,f,u)=>(c&=~C(i)&~C(f),M(i,f,u),t^=1,o|=4<<t,$=R[s=b+t+e+c]=-~R[s],Z()),D=g=>(o^=2-g,Z()||(n>99?7:$>2?8:o>14?9:0)),H=(g,d,v=0)=>Im(g)||Ht[s=b+t+e+c]>=d||l(2-g)||(Ht[s]=d,b.every((p,i)=>!p||p&1^t||L(i).every(f=>v=n>149||d&&Hn-->0&&[3,2,1,6].every((u,x,w)=>x&&(f%56>7||p>>1^4)||(w=[b,e,n,t,c],c&=~C(i)&~C(f),M(i,f,u),t^=1,H(g,d-1)|([b,e,n,t,c]=w,0)))))&&(v||t^g|!V(g))),F=(g,k)=>(Hn=5e4,Ht={},H(g,99))?14+k:10+2*k+g;
+c=15,U=N='indexOf',e=Y=-1,t=1,b=[...`5d37b3d5${10n**40n-10n**32n}888888884c26a2c4`].map(u=>'0x'+u-0),z=n=o=0,R={[b+t+e+c]:$=1},a=Math.abs,G=(i,f,T,g=b[i],P=g>>1,y=i>>3,h=a(i%8-f%8),v=a(y-(f>>3)),d=h|v,k=(f-i)/d,S=Q=>(i+=k)==f||!b[i]&&S())=>P>5?h*v==2:P>4?T|v|h^2?d<2:c&C(f+=1.5*k-.5)&&!V(t)&&!V(t,i+k)&&S():P>3?f<i^g&1&&(h?d<2&v&&T|b[f]|f==e:T|b[f]?0:v<2+(y%5==1)&&S()):P&(h*v?h==v:2)&&S(),V=(s,u=b[N](10+s))=>b.some((p,i)=>p&&p&1^s&&(p<8|a(i-u)<18)&&G(i,u,1)),L=(i,q=[],g=b[i]&1)=>b.forEach((p,f)=>!p|p&1^g&&G(i,f)&&(p=[b,e,n],M(i,f),V(g)||q.push(f),[b,e,n]=p))||q,C=i=>'20003001'[i%56]<<i/28,M=(i,f,u=3,p=(b=[...b])[i],P=p>>1==4,d=a(i-f),q=i+f>>1)=>(n=P|b[f]?0:n+1,b[f]=P&f%56<8?u*2+t:p,b[i]=b[P&f==e?f^8:i]=0,d==2&p>9&&(b[q]=b[r=f>i?i+3:i-4],b[r]=0),e=P&d>9&&[f-1,f+1,e=q].some(x=>b[x]==17-p&&~L(x)[N](e))?e:Y),I=g=>(m=W=0,b.map((p,i)=>p&&p%2^g&&(p<4?m|=1<<i*9/8%2:W+=p<10?9:p>11)),W*2+m<3),Im=g=>(O=u=>!~b[N](u+g),I(!g),B=m,I(g)&(m+W<1|O(12)&O(8)&O(4)+m>0&!(B&~m))),Z=Q=>b.some((p,i)=>p&&p%2==t&&L(i)+'')?I(2)|l()?6:$>4?5:n>149?4:0:V(t)?t+1:3,A=(i,f,u)=>(c&=~C(i)&~C(f),M(i,f,u),t^=1,o|=4<<t,$=R[s=b+t+e+c]=-~R[s],Z()),D=g=>(o^=2-g,Z()||(n>99?7:$>2?8:o>14?9:0)),H=(g,d,v=0)=>Im(g)||Ht[s=b+t+e+c]>=d||l(2-g)||(Ht[s]=d,b.every((p,i)=>!p||p&1^t||L(i).every(f=>v=n>149||d&&Hn-->0&&[3,2,1,6].every((u,x,w)=>x&&(f%56>7||p>>1^4)||(w=[b,e,n,t,c],c&=~C(i)&~C(f),M(i,f,u),t^=1,H(g,d-1)|([b,e,n,t,c]=w,0)))))&&(v||t^g|!V(g))),F=(g,k)=>(Hn=5e4,Ht={},H(g,99))?14+k:10+2*k+g;
 l=(a=3,G=0,f=2n**64n-1n,y=f^f/255n,x=y>>1n,d=f/3n^f/257n,S=s=>s<<1n&y|s>>1n&x,N=s=>s|O(s)|T(s),O=s=>S(s)|s<<8n&f|s>>8n,T=s=>s&&S(s<<8n|s>>8n),W=0n,B=W,V,v,M=W,D=W,C,Z,K,L,r=W,q=W,P,Q,F=W,g=W,R,c,$=W,_=W,E=k=>s>>k&s<<k|A>>k|A<<k,X=k=>z^(z=C+Z+K+L+r+q-P-Q+R+c-F-g)&&(m=W&~r,n=B&~q,t=F|g|A|H,I=n|P|t,J=m|Q|t,P=m&I>>8n,Q=n&J<<8n,C|=C<<8n&~I&f,Z|=Z>>8n&~J,K|=N(K)&~(P|F|N(A)|S(Q)>>8n),L|=N(L)&~(Q|g|N(H)|S(P)<<8n),r|=L|(r&~I)>>8n,q|=K|(q&~J)<<8n&f,t|=P|Q,R|=T(R)&~t,c|=T(c)&~t,F&=~(L|T(c)),g&=~(K|T(R)),U.map(([u,s])=>Y|=s&~(u&M?P|F:Q|g)),X()),U=[],u=1n,z=W,A,H,i,s,t,p,o,j,I,J,m,n,Y=W,)=>~e?0:(b.map(p=>(p&&(j=p&1,j?M|=u:D|=u,(o=p>>1)==4?j?W|=u:B|=u:o==5?j?K=V=u:L=v=u:o<2?j?$|=u:_|=u:(j?F|=u:g|=u,U.push([u,o>5?O(T(u))^O(u):o>2?N(u)^u:O(u)]))),u+=u)),C=P=W,Z=Q=B,R=$,c=_,A=G&1?v:r,H=G&2?V:r,!U.some(h=>h[1]&~(h[0]&M?W|F:B|g))&&(!(N(A|H)&~(A?D|S(W)<<8n:M|S(B)>>8n))&&!(X(),C>>56n|Z&255n|S(C)<<8n&((a&2?D:D^v)|Z)|S(Z)>>8n&((a&1?M:M^V)|C)|S(C^W)<<8n&L|S(Z^B)>>8n&K)&&!(G&&(A?L^A:K^H))&&!Y&&(!(R|c)|!(K&L)&[d,f^d,d,f^d].every((I,w)=>!(s=((o=w<2)?$:_)&I)|!(s&s-1n)&(t=o?R:c,t|=T(t),p=o?B|_|Z:W|$|C,m=o?L:K,!(t&p)&&(!(t&m)||!(o?B^Q:W^P)&&(!(a&1+o)||!(i=o?c:R,j=f^((o?D^v^_:M^V^$)|(o?S(C)<<8n|N(K):S(Z)>>8n|N(L))|t&~I),u=j&~i,s=j&I,A=u&I,m&I&~(E(9n)&E(7n)|O(u)|j>>8n&j<<8n|j>>1n&j<<1n&x&y|(j>>8n|j<<8n)&S(j))))))))||G<2&&l(a,G+1)))
 </script>
 
@@ -282,6 +284,14 @@ function judge(fen,ply,bud,forced){
 }
 </script>
 
+<!-- FideLite L3: builds/engine.js and builds/engine_4x.js, verbatim -->
+<script type="text/plain" id="src_l3nm">
+c=15,U=[600,600],N='indexOf',e=Y=-1,t=1,b=[...`5d37b3d5${10n**40n-10n**32n}888888884c26a2c4`].map(u=>'0x'+u-0),z=n=o=0,R={[b+t+e+c]:$=1},a=Math.abs,G=(i,f,T,P=b[i]>>1,y=i>>3,h=a(i%8-f%8),v=a(y-(f>>3)),d=h|v,k=(f-i)/d,x=T|b[f],S=Q=>(i+=k)==f||!b[i]&&S())=>P>5?h*v==2:P>4?T|v|h^2?d<2:c&C(f+=1.5*k-.5)&&!V(t)&&!V(t,i+k)&&S():P>3?f<i^b[i]&1&&(h*v==1?x|f==e:h|x?0:v<2+(y%5==1)&&S()):(h*v?h==v:2)&P&&S(),V=(s,u=b[N](10+s))=>b.some((p,i)=>p&1^s&&G(i,u,1)),L=(i,q=[],g=b[i]&1)=>b.map((p,f)=>!p|p&1^g&&G(i,f)&&(p=[b,e,n,c],M(i,f),V(g)||q.push(f),[b,e,n,c]=p))&&q,C=i=>'20003001'[i%56]<<i/28,M=(i,f,u=3,p=b[i],P=p>>1==4,d=a(i-f),q=i+f>>1)=>(c&=~C(i)&~C(f),b=[...b],n=P|b[f]?0:n+1,b[f]=P&f%56<8?u*2+t:p,b[i]=b[P&f==e?f^8:i]=0,d==2&p>9&&(b[q]=b[r=f>i?i+3:i-4],b[r]=0),e=P&d>9&&[f-1,f+1,e=q].some(x=>b[x]==17-p&&~L(x)[N](e))?e:Y),I=g=>(m=W=0,b.map((p,i)=>p&&p%2^g&&(p<4?m|=1<<i*9/8%2:W+=p<10?9:p>11)),W*2+m<3),Im=g=>(O=u=>!~b[N](u+g),I(!g),B=m,I(g)&(m+W<1|O(12)&O(8)&O(4)+m>0&!(B&~m))),Z=Q=>b.some((p,i)=>p%2==t&&L(i)+'')?I(2)|l()?6:$>4?5:n>149?4:0:V(t)?t+1:3,A=(i,f,u)=>(M(i,f,u),t^=1,$=R[s=b+t+e+c]=-~R[s],Z()),D=g=>(o^=2-g,n>99?7:$>2?8:o>2?9:Z()),H=(g,d,v=t^g|!V(g))=>Im(g)||Ht[s=b+t+e+c]>=d||l()||(Ht[s]=d,b.every((p,i)=>p&1^t||L(i).every(f=>v=n>149||d&&Hn-->0&&[3,2,1,6].every((u,x,w)=>x&&p>>1^4|f%56>7||(w=[b,e,n,t,c],M(i,f,u),t^=1,H(g,d-1)|([b,e,n,t,c]=w)))))&v),F=(g,k)=>(Hn=2e4,Ht={},H(g,15))?14+k:10+2*k+g,l=(f=2n**64n-1n,y=f^f/255n,S=s=>s+s&y|(s&y)/2n,W=0n,B=W,V,v,K,L,C,Z,q=r=W,P,Q,l,u=1n,w=0,N=s=>(S(s|=s<<8n|s>>8n)|s)&f,X=k=>k&&(l=W&~r,m=B&~q,P=l&(m|P)>>8n,Q=m&(l|Q)<<8n,C|=C<<8n&~m,Z|=Z>>8n&~l,K|=N(K)&~(P|S(Q)>>8n),L|=N(L)&~(Q|S(P)<<8n),r|=L|(r&~m)>>8n,q|=K|(q&~l)<<8n,X(k-1)))=>~e?0:(b.map(p=>(p-8>>2?w|=p:p>9?p&1?K=V=u:L=v=u:p&1?W|=u:B|=u,u+=u)),C=P=W,Z=Q=B,!w&&!(X(600),C>>56n|Z&255n|S(C)<<8n&(Z|v)|S(C^W)<<8n&L|S(Z)>>8n&(C|V)|S(Z^B)>>8n&K))
+</script>
+<script type="text/plain" id="src_l3x4">
+c=15,U=[600,600],N='indexOf',e=Y=-1,t=1,b=[...`5d37b3d5${10n**40n-10n**32n}888888884c26a2c4`].map(u=>'0x'+u-0),z=n=o=0,R={[b+t+e+c]:$=1},a=Math.abs,G=(i,f,T,g=b[i],P=g>>1,y=i>>3,h=a(i%8-f%8),v=a(y-(f>>3)),d=h|v,k=(f-i)/d,S=Q=>(i+=k)==f||!b[i]&&S())=>P>5?h*v==2:P>4?T|v|h^2?d<2:c&C(f+=1.5*k-.5)&&!V(t)&&!V(t,i+k)&&S():P>3?f<i^g&1&&(h?h*v==1&&T|b[f]|f==e:T|b[f]?0:v<2+(y%5==1)&&S()):(h*v?h==v:2)&P&&S(),V=(s,u=b[N](10+s))=>b.some((p,i)=>p&&p&1^s&&(p<8|a(i-u)<18)&&G(i,u,1)),L=(i,q=[],g=b[i]&1)=>b.forEach((p,f)=>!p|p&1^g&&G(i,f)&&(p=[b,e,n],b=[...b],M(i,f),V(g)||q.push(f),[b,e,n]=p))||q,C=i=>'20003001'[i%56]<<i/28,M=(i,f,u=3,p=b[i],P=p>>1==4,d=a(i-f),q=i+f>>1)=>(n=P|b[f]?0:n+1,b[f]=P&f%56<8?u*2+t:p,b[i]=b[P&f==e?f^8:i]=0,d==2&p>9&&(b[q]=b[r=f>i?i+3:i-4],b[r]=0),e=P&d>9&&[f-1,f+1,e=q].some(x=>b[x]==17-p&&~L(x)[N](e))?e:Y),I=g=>(m=W=0,b.map((p,i)=>p&&p%2^g&&(p<4?m|=1<<i*9/8%2:W+=p<10?9:p>11)),W*2+m<3),Im=g=>(O=u=>!~b[N](u+g),I(!g),B=m,I(g)&(m+W<1|O(12)&O(8)&O(4)+m>0&!(B&~m))),Z=Q=>b.some((p,i)=>p&&p%2==t&&L(i)+'')?I(2)|l()?6:$>4?5:n>149?4:0:V(t)?t+1:3,A=(i,f,u)=>(c&=~C(i)&~C(f),M(i,f,u),t^=1,$=R[s=b+t+e+c]=-~R[s],Z()),D=g=>(o^=2-g,n>99?7:$>2?8:o>2?9:Z()),H=(g,d,v=0)=>Im(g)||Ht[s=b+t+e+c]>=d||l()||(Ht[s]=d,b.every((p,i)=>!p||p&1^t||L(i).every(f=>v=n>149||d&&Hn-->0&&[3,2,1,6].every((u,x,w)=>x&&(f%56>7||p>>1^4)||(w=[b,e,n,t,c],c&=~C(i)&~C(f),b=[...b],M(i,f,u),t^=1,H(g,d-1)|([b,e,n,t,c]=w,0)))))&&(v||t^g|!V(g))),F=(g,k)=>(Hn=2e4,Ht={},H(g,15))?14+k:10+2*k+g,l=(f=2n**64n-1n,y=f^f/255n,S=s=>s+s&y|(s&y)>>1n,W=0n,B=W,V,v,K,L,C,Z,r=W,q=W,P,Q,l,m,u=1n,w=0,o=W,N=s=>(S(s|=s<<8n|s>>8n)|s)&f,X=_=>(o^(o=C+Z+K+L+r+q-P-Q))&&(l=W&~r,m=B&~q,P=l&(m|P)>>8n,Q=m&(l|Q)<<8n,C|=C<<8n&~m&f,Z|=Z>>8n&~l,K|=N(K)&~(P|S(Q)>>8n),L|=N(L)&~(Q|S(P)<<8n),r|=L|(r&~m)>>8n,q|=K|(q&~l)<<8n&f,X()))=>~e?0:(b.every(p=>(p-8>>2?w|=p:p>9?p&1?K=V=u:L=v=u:p&1?W|=u:B|=u,u+=u,!w))&&(C=P=W,Z=Q=B,!(X(),C>>56n|Z&255n|S(C)<<8n&(Z|v)|S(C^W)<<8n&L|S(Z)>>8n&(C|V)|S(Z^B)>>8n&K)))
+</script>
+
 <script>
 (function(){
 "use strict";
@@ -298,23 +308,23 @@ en:{
  h1:'referee — FIDE 6.9 coverage',
  sub:"The verdict is produced by the engine itself. The side whose flag falls is read from the FEN: the side to move.",
  lblEngine:'build', lblLang:'language',
- optX4:'engine_4x.js — speed', optNm:'engine.js — compact',
+ optX4:'LUX — fast', optNm:'LUX — normal', optL3x4:'L3 — fast', optL3nm:'L3 — normal',
  engnote:'{0} B loaded · {1}',
  nmTag:'shorter file', x4Tag:'faster search',
- secDiff:'What separates the two builds',
+ secDiff:'What separates the two LUX builds',
  diffSub:'Both files are embedded verbatim. The table and the diff below are computed from those two sources at load time, so what you read is exactly what runs.',
  thFn:'function', thNm:'engine.js', thX4:'engine_4x.js', thD:'Δ', thWhat:'what changes',
  totalRow:'whole file',
  same:'{0} of {1} definitions are byte-identical in both builds.',
  diffKey:'<del>red</del> — only in <code>engine.js</code> (compact) &nbsp;·&nbsp; <ins>green</ins> — only in <code>engine_4x.js</code> (speed). Everything unmarked is shared.',
  wJ:'The lock detector, called from <code>Z</code> for FIDE 5.2.2 (beside the material test <code>I</code>) and from <code>H</code> for 6.9. It grows the pawn cones <code>C</code>/<code>Z</code>, the king floods <code>K</code>/<code>L</code>, the capture-reach sets <code>r</code>/<code>q</code> and the bishop floods <code>R</code>/<code>c</code>, and drains the permanently blocked pawns <code>P</code>/<code>Q</code>, to a fixpoint; then it asks whether a pawn can promote, capture or give check, whether a king assumed frozen really is frozen, whether a boxed-in knight, rook or queen has escaped (one the enemy king or bishop can reach has not: it can never capture, so it is dropped from <code>F</code>/<code>g</code> and its square counts as empty from then on), and whether the bishop layer holds. The compact build runs the relaxation a fixed 768 passes. The speed build keeps the sum <code>C+Z+K+L+r+q-P-Q+R+c-F-g</code> and stops the moment it stops moving. Those twelve sets only ever move one way — eight grow; <code>P</code>, <code>Q</code> and the boxed sets <code>F</code>/<code>g</code> shrink, which is why they enter with a minus sign — so the sum changes on every pass that changes anything and stands still only at the fixpoint; the loop can never stop early. The ten flood and pawn masks can change at most 640 bits and <code>F</code>/<code>g</code> only the squares of the knights, rooks and queens, so the compact build’s 768 passes always converge as well. On real games the speed build stops after a median of 11 passes (at most 29 over the first 20,000 games of the chasolver data). For the sum to settle, the speed build masks the two upward-growing sets <code>C</code> and <code>q</code> back to 64 bits with <code>&amp;f</code>; otherwise bits pushed past the eighth rank would keep it moving forever. The compact build needs no mask: it stops after 768 passes regardless, and those bits change no verdict — nothing reads <code>q</code> above the eighth rank, and a cone that reaches it has already failed the promotion test. Before the fixpoint the speed build runs two cheap checks that fail fast: a boxed-in knight, rook or queen with a step square its own pawns and boxed pieces do not hold, and, at the frozen-king levels, a king with a neighbouring square that is neither held by its own men nor covered by an enemy pawn. The diagonal step <code>T</code> opens with <code>s&amp;&amp;</code>, so an empty set — a side with no bishop — comes straight back; <code>S</code> shifts (<code>s&lt;&lt;1n</code>) where the compact build adds (<code>s+s</code>); and in the bishop layer <code>&amp;</code>/<code>|</code> become <code>&amp;&amp;</code>/<code>||</code>, so the rest is skipped once the outcome is decided.',
- wG:'Only the castling test changes: the <code>&amp;</code> between its two attack scans becomes <code>&amp;&amp;</code>, so when the king is already in check (<code>V(t,i)</code>) the scan of the square it would cross (<code>V(t,i+k)</code>) is skipped. The rest of the geometry test is shared.',
- wV:'A <code>p&amp;&amp;</code> guard: an empty square leaves the attack scan at once. Without it <code>p&amp;1^s</code> reduces to <code>s</code>, so whenever <code>s</code> is 1 the compact build sends every empty square through a full <code>G</code> call that can only return false. <code>V</code> scans up to 64 squares on every check test.',
- wL:'<code>map</code> becomes <code>forEach</code>: the 64-element result array that <code>map</code> has to allocate — and immediately throw away — is never built. One allocation per legal-move generation. The compact build also carries <code>c</code> through the save/restore pair, because <code>M</code> now changes it.',
- wM:'Castling rights. The compact build has <code>M</code> itself clear the rights the from- and to-squares touch (<code>c&amp;=~C(i)&amp;~C(f)</code>), so every caller gets it for free: <code>A</code> drops its own copy of the line and the search needs no extra code. That is 11 bytes cheaper, but the line then also runs on every pseudo-legal move <code>L</code> tries out — roughly twice as often as it has to. Measured over 833 positions it costs about 3%.',
+ wG:'The pawn branch. The speed build keeps the piece code in <code>g=b[i]</code> and opens the pawn branch with <code>h?</code>, so <code>T|b[f]</code> is read only inside that branch. The compact build reads <code>b[i]</code> twice and computes the question capture and push share, <code>x=T|b[f]</code>, in its header — on every call. Each choice costs the speed build one byte and buys it about 7% and 10% respectively. Inside that branch <code>h</code> is at least 1, so the speed build tests the diagonal step as <code>d&lt;2&amp;v</code> — one byte shorter than the compact build’s <code>h*v==1</code> and just as fast. The compact build cannot use it: its capture test is not behind <code>h?</code>, and there <code>d&lt;2&amp;v</code> would also accept a straight one-square push.',
+ wV:'A <code>p&amp;&amp;</code> guard: an empty square leaves the attack scan at once. Without it <code>p&amp;1^s</code> reduces to <code>s</code>, so whenever <code>s</code> is 1 the compact build sends every empty square through a full <code>G</code> call that can only return false. <code>V</code> scans up to 64 squares on every check test. A second guard, <code>(p&lt;8|a(i-u)&lt;18)</code>, skips pawns, knights and the king when they stand more than 17 squares away in index — none of them can reach that far — so only the sliders are asked from across the board.',
+ wL:'<code>map</code> becomes <code>forEach</code>: the 64-element result array that <code>map</code> has to allocate — and immediately throw away — is never built. One allocation per legal-move generation. Because <code>forEach</code> returns <code>undefined</code>, the speed build ends with <code>||q</code>; the compact build, whose <code>map</code> returns an array, ends with <code>&amp;&amp;q</code>. Neither build copies the board here: both leave that to <code>M</code>. The compact build carries <code>c</code> through the save/restore pair, because its <code>M</code> changes it.',
+ wM:'Castling rights. The compact build has <code>M</code> itself clear the rights the from- and to-squares touch (<code>c&amp;=~C(i)&amp;~C(f)</code>), so every caller gets it for free: <code>A</code> drops its own copy of the line and the search needs no extra code. That is 11 bytes cheaper, but the line then also runs on every pseudo-legal move <code>L</code> tries out — roughly twice as often as it has to. Measured over 833 positions it costs about 3%. Both builds make the board copy in <code>M</code>’s own parameter list (<code>p=(b=[...b])[i]</code>), so no caller — <code>L</code>, the search or <code>A</code> — has to copy for itself. The two builds’ <code>M</code> differ only in the castling line.',
  wA:'The mirror image of the <code>M</code> change: the compact build drops <code>c&amp;=~C(i)&amp;~C(f)</code> from <code>A</code> because <code>M</code> has already done it, while the speed build keeps the line here so that <code>M</code> stays a pure board operation.',
  wZ:'The same <code>p&amp;&amp;</code> guard on the position-result scan, before the legal-move generation is called at all.',
- wX:'The FIDE 6.9 helpmate search. Both builds now consult <code>l</code> right after the transposition cut: a locked node certifies that no mate lies below it, exactly as <code>Im</code> does for material, which is what lets a position that only becomes dead after a forced reply be judged correctly. The compact build folds the "side to move is not in check" test into the parameter default of <code>v</code> and lets the restore expression be the value of the branch — the destructuring result is not a number, and a NaN is falsy, which is exactly what the search needs. The speed build starts from <code>v=0</code>, evaluates the check test only once at the terminal, appends <code>,0</code> so the restore expression is a plain zero, adds a <code>!p||</code> guard so empty squares are skipped, and puts the promotion filter into short-circuiting form that tests the target square first (<code>f%56&gt;7||p&gt;&gt;1^4</code>). Both builds now keep castling rights correct inside the search and put <code>c</code> in the transposition key; the speed build updates them here, right before <code>M</code>, so the line never runs on a move that <code>L</code> was only trying out.',
+ wX:'The FIDE 6.9 helpmate search. Both builds consult <code>l</code> right after the transposition cut: a locked node certifies that no mate lies below it, exactly as <code>Im</code> does for material, which is what lets a position that only becomes dead after a forced reply be judged correctly. The compact build folds the "side to move is not in check" test into the parameter default of <code>v</code> and lets the restore expression be the value of the branch — the destructuring result is not a number, and a NaN is falsy, which is exactly what the search needs. The speed build starts from <code>v=0</code>, evaluates the check test only once at the terminal, appends <code>,0</code> so the restore expression is a plain zero, adds a <code>!p||</code> guard so empty squares are skipped, and puts the promotion filter into short-circuiting form that tests the target square first (<code>f%56&gt;7||p&gt;&gt;1^4</code>). The speed build updates the castling rights here, right before <code>M</code>, so the line never runs on a move that <code>L</code> was only trying out. The board copy is left to <code>M</code>, as in the compact build.',
  secSolo:'Single position', btnJudge:'judge', btnBoth:'run both builds',
  secInput:'What to judge', btnOne:'judge this position', btnRun:'judge the files',
  sharedNote:'ply and node budget apply to both',
@@ -366,30 +376,30 @@ en:{
  sDone:'done · {0} s · {1} rows/s · {2}',
  sPhase:'[{0}/2 {1}] ',
  sFail:'could not read: {0}',
- foot:'The engine block is <code>engine.js</code> and <code>engine_4x.js</code>; the lock detector <code>l</code> is part of both, called from <code>Z</code> for dead positions and from <code>H</code> for the flag verdict. Nothing else was rewritten for this page. The verdict is what <code>F</code> returns: the same <code>H</code> search, run with the ply and node budget set above (<code>F</code> itself uses 99 and 50,000). A second, marked copy of <code>H</code> is used only to tell a horizon miss from a real mate; it never touches the verdict.'
+ foot:'Each engine, LUX and L3, is embedded as <code>engine.js</code> and <code>engine_4x.js</code>; the lock detector <code>l</code> is part of every build, called from <code>Z</code> for dead positions and from <code>H</code> for the flag verdict. Nothing else was rewritten for this page. The verdict is what <code>F</code> returns: the same <code>H</code> search, run with the ply and node budget set above (<code>F</code> itself uses 99 and 50,000 in LUX, 15 and 20,000 in L3). A second, marked copy of <code>H</code> is used only to tell a horizon miss from a real mate; it never touches the verdict.'
 },
 tr:{
  title:'hakem — FIDE 6.9 örtüşmesi',
  h1:'hakem — FIDE 6.9 örtüşmesi',
  sub:'Hükmü motorun kendisi veriyor. Bayrağı düşen taraf FEN’den okunuyor: sırası gelen.',
  lblEngine:'sürüm', lblLang:'dil',
- optX4:'engine_4x.js — hız', optNm:'engine.js — kısa',
+ optX4:'LUX — hızlı', optNm:'LUX — normal', optL3x4:'L3 — hızlı', optL3nm:'L3 — normal',
  engnote:'{0} B yüklü · {1}',
  nmTag:'daha kısa dosya', x4Tag:'daha hızlı arama',
- secDiff:'İki sürümü ayıran şey',
+ secDiff:'İki LUX sürümünü ayıran şey',
  diffSub:'İki dosya da birebir gömülü. Aşağıdaki tablo ve fark, sayfa açılırken o iki kaynaktan hesaplanıyor; yani okuduğunuz şey birebir çalışan şey.',
  thFn:'fonksiyon', thNm:'engine.js', thX4:'engine_4x.js', thD:'Δ', thWhat:'ne değişiyor',
  totalRow:'dosyanın tamamı',
  same:'{0} tanımın {1} tanesi iki sürümde bayt bayt aynı.',
  diffKey:'<del>kırmızı</del> — yalnız <code>engine.js</code>’de (kısa) &nbsp;·&nbsp; <ins>yeşil</ins> — yalnız <code>engine_4x.js</code>’de (hız). İşaretsiz olan her şey ortak.',
  wJ:'Kilit dedektörü: FIDE 5.2.2 için <code>Z</code>’den (materyal testi <code>I</code>’nin yanında), 6.9 için <code>H</code>’den çağrılıyor. Piyon konileri <code>C</code>/<code>Z</code>’yi, şah selleri <code>K</code>/<code>L</code>’yi, alınabilirlik kümeleri <code>r</code>/<code>q</code>’yu ve fil selleri <code>R</code>/<code>c</code>’yi büyütüp kalıcı olarak tıkalı piyonlar <code>P</code>/<code>Q</code>’yu daraltarak bir sabit noktaya götürüyor; sonra bir piyonun terfi edip edemeyeceğini, taş alıp alamayacağını ya da şah çekip çekemeyeceğini, donmuş varsayılan şahın gerçekten donmuş olup olmadığını, kutulu bir at, kale ya da vezirin kaçıp kaçmadığını (rakip şahın ya da filin ulaştığı kutulu taş kaçmış sayılmaz: hiçbir şey alamaz, <code>F</code>/<code>g</code>’den düşer ve karesi o andan sonra boş sayılır) ve fil katmanının tutup tutmadığını soruyor. Kısa sürüm gevşetmeyi sabit 768 tur koşuyor. Hız sürümü <code>C+Z+K+L+r+q-P-Q+R+c-F-g</code> toplamını tutuyor ve toplam kıpırdamayı bıraktığı anda duruyor. Bu on iki küme yalnızca tek yönde hareket ediyor — sekizi büyüyor; <code>P</code>, <code>Q</code> ve kutulu kümeler <code>F</code>/<code>g</code> küçülüyor, eksi işaretle girmelerinin nedeni bu — dolayısıyla toplam, bir şeyi değiştiren her turda değişiyor ve yalnızca sabit noktada duruyor; döngü asla erken bitemez. On sel ve piyon maskesi toplamda en fazla 640 bit, <code>F</code>/<code>g</code> ise yalnız at, kale ve vezir karelerini değiştirebildiği için kısa sürümün 768 turu da her zaman yakınsıyor. Gerçek oyunlarda hız sürümü medyan 11 turda duruyor (chasolver verisinin ilk 20.000 oyununda en fazla 29). Toplamın durulabilmesi için hız sürümü yukarı doğru büyüyen iki küme <code>C</code> ve <code>q</code>’yu <code>&amp;f</code> ile 64 bite geri kırpıyor; kırpmasa sekizinci sıranın ötesine itilen bitler toplamı sonsuza dek kıpırdatırdı. Kısa sürümün kırpmaya ihtiyacı yok: 768 turdan sonra zaten duruyor ve o bitler hiçbir hükmü değiştirmiyor — <code>q</code>’yu sekizinci sıranın üstünde okuyan bir şey yok, oraya ulaşan bir koni de terfi testine çoktan takılmış oluyor. Hız sürümü sabit noktadan önce hızlı eleyen iki ucuz kontrol yapıyor: kendi piyonlarının ve kutulu taşlarının tutmadığı bir adım karesi olan kutulu at, kale ya da vezir ve, donmuş şah seviyelerinde, komşu karelerinden biri ne kendi taşlarınca tutulan ne de rakip piyonca görülen şah. Köşegen adımı <code>T</code> <code>s&amp;&amp;</code> ile açılıyor, böylece boş bir küme — fili olmayan taraf — hemen geri dönüyor; <code>S</code>, kısa sürümün toplamayla (<code>s+s</code>) yaptığını kaydırmayla (<code>s&lt;&lt;1n</code>) yapıyor; fil katmanında da <code>&amp;</code>/<code>|</code>, <code>&amp;&amp;</code>/<code>||</code> oluyor, yani sonuç belli olunca geri kalanı atlanıyor.',
- wG:'Yalnızca rok testi değişiyor: iki saldırı taraması arasındaki <code>&amp;</code>, <code>&amp;&amp;</code> oluyor; şah zaten şah altındaysa (<code>V(t,i)</code>) üzerinden geçeceği karenin taraması (<code>V(t,i+k)</code>) atlanıyor. Geometri testinin geri kalanı ortak.',
- wV:'<code>p&amp;&amp;</code> koruması: boş kare saldırı taramasından hemen çıkıyor. Koruma olmasa <code>p&amp;1^s</code> düpedüz <code>s</code>’ye iniyor; <code>s</code> 1 olduğunda kısa sürüm her boş kareyi, yalnızca yanlış dönebilecek tam bir <code>G</code> çağrısından geçiriyor. <code>V</code> her şah testinde 64 kareye kadar tarıyor.',
- wL:'<code>map</code> yerine <code>forEach</code>: <code>map</code>’in ayırmak ve hemen atmak zorunda olduğu 64 elemanlık sonuç dizisi hiç kurulmuyor. Her legal hamle üretiminde bir tahsis eksiliyor. Derli toplu sürüm ayrıca <code>c</code>’yi de kaydedip geri yazıyor, çünkü <code>M</code> artık onu değiştiriyor.',
- wM:'Rok hakları. Derli toplu sürümde <code>M</code>’in kendisi, kalkış ve varış karelerinin düşürdüğü hakları siliyor (<code>c&amp;=~C(i)&amp;~C(f)</code>); böylece her çağıran bedavaya alıyor: <code>A</code> kendi kopyasını bırakıyor, aramaya da ek kod gerekmiyor. 11 bayt ucuza geliyor, ama satır bu kez <code>L</code>’nin denediği her sözde-legal hamlede de çalışıyor, gerekenin kabaca iki katı sıklıkta. 833 pozisyonluk ölçümde bedeli yaklaşık %3.',
+ wG:'Piyon dalı. Hız sürümü taş kodunu <code>g=b[i]</code>’de tutuyor ve piyon dalını <code>h?</code> ile açıyor; <code>T|b[f]</code> yalnızca o dalın içinde okunuyor. Kısa sürüm <code>b[i]</code>’yi iki kez okuyor ve alma ile itişin ortak sorusu <code>x=T|b[f]</code>’yi başlıkta, yani her çağrıda hesaplıyor. İki tercih hız sürümüne birer bayta mal oluyor, karşılığında sırasıyla yaklaşık %7 ve %10 kazandırıyor. O dalın içinde <code>h</code> en az 1 olduğu için hız sürümü çapraz adımı <code>d&lt;2&amp;v</code> ile sınıyor — kısa sürümün <code>h*v==1</code>’inden bir bayt kısa, hızı aynı. Kısa sürüm bunu kullanamaz: onun alma testi <code>h?</code>’nin arkasında değil, orada <code>d&lt;2&amp;v</code> tek karelik düz itişi de kabul ederdi.',
+ wV:'<code>p&amp;&amp;</code> koruması: boş kare saldırı taramasından hemen çıkıyor. Koruma olmasa <code>p&amp;1^s</code> düpedüz <code>s</code>’ye iniyor; <code>s</code> 1 olduğunda kısa sürüm her boş kareyi, yalnızca yanlış dönebilecek tam bir <code>G</code> çağrısından geçiriyor. <code>V</code> her şah testinde 64 kareye kadar tarıyor. İkinci bir koruma, <code>(p&lt;8|a(i-u)&lt;18)</code>, indekste 17 kareden uzaktaki piyon, at ve şahı atlıyor — hiçbiri o kadar uzağa ulaşamaz — yani tahtanın öbür ucundan yalnızca kayan taşlara soruluyor.',
+ wL:'<code>map</code> yerine <code>forEach</code>: <code>map</code>’in ayırmak ve hemen atmak zorunda olduğu 64 elemanlık sonuç dizisi hiç kurulmuyor. Her legal hamle üretiminde bir tahsis eksiliyor. <code>forEach</code> <code>undefined</code> döndürdüğü için hız sürümü <code>||q</code> ile bitiyor; <code>map</code>’i dizi döndüren kısa sürüm ise <code>&amp;&amp;q</code> ile. Tahta kopyasını iki sürüm de burada almıyor, ikisi de bunu <code>M</code>’e bırakıyor. Derli toplu sürüm <code>c</code>’yi de kaydedip geri yazıyor, çünkü onun <code>M</code>’i bunu değiştiriyor.',
+ wM:'Rok hakları. Derli toplu sürümde <code>M</code>’in kendisi, kalkış ve varış karelerinin düşürdüğü hakları siliyor (<code>c&amp;=~C(i)&amp;~C(f)</code>); böylece her çağıran bedavaya alıyor: <code>A</code> kendi kopyasını bırakıyor, aramaya da ek kod gerekmiyor. 11 bayt ucuza geliyor, ama satır bu kez <code>L</code>’nin denediği her sözde-legal hamlede de çalışıyor, gerekenin kabaca iki katı sıklıkta. 833 pozisyonluk ölçümde bedeli yaklaşık %3. İki sürüm de tahta kopyasını <code>M</code>’in kendi parametre listesinde alıyor (<code>p=(b=[...b])[i]</code>); böylece hiçbir çağıran — <code>L</code>, arama ya da <code>A</code> — kendi kopyasını almak zorunda kalmıyor. İki sürümün <code>M</code>’i yalnızca rok satırında ayrılıyor.',
  wA:'<code>M</code>’deki değişikliğin aynası: derli toplu sürüm <code>c&amp;=~C(i)&amp;~C(f)</code> satırını <code>A</code>’dan atıyor, çünkü <code>M</code> zaten yapmış oluyor; hız sürümü satırı burada tutuyor, böylece <code>M</code> saf bir tahta işlemi olarak kalıyor.',
  wZ:'Aynı <code>p&amp;&amp;</code> koruması, bu kez pozisyon sonucu taramasında — hamle üretimi çağrılmadan önce.',
- wX:'FIDE 6.9 yardımcı-mat araması. İki sürüm de artık transpozisyon kesmesinin hemen ardından <code>l</code>’ye danışıyor: kilitli bir düğüm, altında mat olmadığının belgesi — tıpkı <code>Im</code>’nin materyal için yaptığı gibi. Zorunlu bir cevaptan sonra ölüleşen pozisyonların doğru yargılanmasını sağlayan şey bu. Kısa sürüm “sırası gelen şahta değil” testini <code>v</code>’nin parametre varsayılanına katlıyor ve geri-yükleme ifadesinin değerini dalın değeri olarak bırakıyor — destructuring sonucu sayı değil, NaN de yanlış sayılıyor; aramanın istediği tam olarak bu. Hız sürümü <code>v=0</code>’dan başlıyor, şah testini yalnız terminalde bir kez hesaplıyor, geri-yüklemeye <code>,0</code> ekleyip düz bir sıfır döndürüyor, boş kareleri atlayan bir <code>!p||</code> koruması ekliyor ve terfi süzgecini önce hedef kareye bakan kısa devre biçimine (<code>f%56&gt;7||p&gt;&gt;1^4</code>) çeviriyor. İki sürüm de artık aramanın içinde rok haklarını doğru tutuyor ve <code>c</code>’yi transpozisyon anahtarına koyuyor; hız sürümü güncellemeyi burada, <code>M</code>’in hemen öncesinde yapıyor, böylece satır <code>L</code>’nin yalnızca denediği hamlelerde hiç çalışmıyor.',
+ wX:'FIDE 6.9 yardımcı-mat araması. İki sürüm de transpozisyon kesmesinin hemen ardından <code>l</code>’ye danışıyor: kilitli bir düğüm, altında mat olmadığının belgesi — tıpkı <code>Im</code>’nin materyal için yaptığı gibi. Zorunlu bir cevaptan sonra ölüleşen pozisyonların doğru yargılanmasını sağlayan şey bu. Kısa sürüm “sırası gelen şahta değil” testini <code>v</code>’nin parametre varsayılanına katlıyor ve geri-yükleme ifadesinin değerini dalın değeri olarak bırakıyor — destructuring sonucu sayı değil, NaN de yanlış sayılıyor; aramanın istediği tam olarak bu. Hız sürümü <code>v=0</code>’dan başlıyor, şah testini yalnız terminalde bir kez hesaplıyor, geri-yüklemeye <code>,0</code> ekleyip düz bir sıfır döndürüyor, boş kareleri atlayan bir <code>!p||</code> koruması ekliyor ve terfi süzgecini önce hedef kareye bakan kısa devre biçimine (<code>f%56&gt;7||p&gt;&gt;1^4</code>) çeviriyor. Hız sürümü rok haklarını burada, <code>M</code>’in hemen öncesinde güncelliyor; böylece satır <code>L</code>’nin yalnızca denediği hamlelerde hiç çalışmıyor. Tahta kopyasını, kısa sürümde olduğu gibi, <code>M</code>’e bırakıyor.',
  secSolo:'Tek pozisyon', btnJudge:'hüküm ver', btnBoth:'iki sürümü de koştur',
  secInput:'Neyi yargılayalım', btnOne:'bu pozisyona hüküm ver', btnRun:'dosyalara hüküm ver',
  sharedNote:'ply ve düğüm bütçesi ikisinde de geçerli',
@@ -441,7 +451,7 @@ tr:{
  sDone:'bitti · {0} sn · {1} satır/sn · {2}',
  sPhase:'[{0}/2 {1}] ',
  sFail:'okunamadı: {0}',
- foot:'Motor bloğu <code>engine.js</code> ve <code>engine_4x.js</code>; kilit dedektörü <code>l</code> ikisinin de parçası, ölü pozisyon için <code>Z</code>’den, bayrak hükmü için <code>H</code>’den çağrılıyor. Başka hiçbir şey bu sayfa için yeniden yazılmadı. Hüküm, <code>F</code>’in döndürdüğü şey: aynı <code>H</code> araması, yukarıda ayarlanan ply ve düğüm bütçesiyle koşuluyor (<code>F</code>’in kendisi 99 ve 50.000 kullanıyor). Ufuk ıskası ile gerçek matı ayırmak için <code>H</code>’in ikinci, işaretlenmiş bir kopyası kullanılıyor; hükme karışmıyor.'
+ foot:'LUX ve L3 motorlarının her biri <code>engine.js</code> ve <code>engine_4x.js</code> olarak gömülü; kilit dedektörü <code>l</code> hepsinin parçası, ölü pozisyon için <code>Z</code>’den, bayrak hükmü için <code>H</code>’den çağrılıyor. Başka hiçbir şey bu sayfa için yeniden yazılmadı. Hüküm, <code>F</code>’in döndürdüğü şey: aynı <code>H</code> araması, yukarıda ayarlanan ply ve düğüm bütçesiyle koşuluyor (<code>F</code>’in kendisi LUX’ta 99 ve 50.000, L3’te 15 ve 20.000 kullanıyor). Ufuk ıskası ile gerçek matı ayırmak için <code>H</code>’in ikinci, işaretlenmiş bir kopyası kullanılıyor; hükme karışmıyor.'
 }};
 var lang='en';
 function T(k){var v=DICT[lang][k];return v===undefined?DICT.en[k]:v}
@@ -450,8 +460,14 @@ function num(x){return Number(x).toLocaleString(lang=='tr'?'tr-TR':'en-US')}
 function why(w){return w=='horizon'?T('rHorizon'):w=='budget'?T('rBudget'):w=='mate'?T('rMate'):w}
 
 /* ================= engine sources ================= */
-var SRC={nm:$('src_nm').textContent.trim(), x4:$('src_x4').textContent.trim()};
-var NAME={nm:'engine.js', x4:'engine_4x.js'};
+var SRC={nm:$('src_nm').textContent.trim(), x4:$('src_x4').textContent.trim(),
+         l3nm:$('src_l3nm').textContent.trim(), l3x4:$('src_l3x4').textContent.trim()};
+var NAME={nm:'engine.js', x4:'engine_4x.js', l3nm:'L3 engine.js', l3x4:'L3 engine_4x.js'};
+/* two engines, two builds each; a key's family is its prefix ('' = LUX, 'l3' = L3) */
+function fam(k){return k.slice(0,k.length-2)}
+function pair(k){var f=fam(k);return{nm:f+'nm',x4:f+'x4'}}
+function tagOf(k){return T(/nm$/.test(k)?'nmTag':'x4Tag')}
+var DEFS={'':[99,50000],l3:[15,20000]};   /* each engine's own F limits: ply, nodes */
 function chunks(s){var r=[],d=0,st=0,i,c;
   for(i=0;i<s.length;i++){c=s.charAt(i);
     if(c=='('||c=='['||c=='{')d++; else if(c==')'||c==']'||c=='}')d--;
@@ -467,7 +483,7 @@ function mirror(x){
   if(k<0) throw Error('mirror: terminal test of H not found');
   return y.slice(0,k+2)+'('+y.slice(k+2,y.length-1)+'||(HM=1,0)))'
 }
-var CH={nm:chunks(SRC.nm), x4:chunks(SRC.x4)};
+var CH={nm:chunks(SRC.nm), x4:chunks(SRC.x4), l3nm:chunks(SRC.l3nm), l3x4:chunks(SRC.l3x4)};
 var HD={}, k0;
 for(k0 in CH){ (function(k){ var i,c=CH[k];
   for(i=0;i<c.length;i++) if(c[i].indexOf('H=')===0) HD[k]=mirror(c[i]) })(k0) }
@@ -477,7 +493,7 @@ function loadEngine(k){
   if(cur===k)return;
   (new Function(SRC[k]+';'+HD[k]+';HM=0;Hs={};Ht={};Hn=0'))();
   cur=k;
-  $('engnote').textContent=F('engnote',num(SRC[k].length),k=='nm'?T('nmTag'):T('x4Tag'))
+  $('engnote').textContent=F('engnote',num(SRC[k].length),tagOf(k))
 }
 
 /* ================= difference view ================= */
@@ -521,11 +537,11 @@ function renderDiff(){
     '</p><h3 style="margin-top:14px">engine_4x.js — '+num(SRC.x4.length)+' B</h3><p class="src">'+esc(SRC.x4)+'</p>'
 }
 function shortWhat(f){
-  var m={G:{en:'castling test: <code>&amp;</code> → <code>&amp;&amp;</code> between the two attack scans',
-            tr:'rok testi: iki saldırı taraması arasında <code>&amp;</code> → <code>&amp;&amp;</code>'},
-         V:{en:'<code>p&amp;&amp;</code> guard on empty squares', tr:'boş kareler için <code>p&amp;&amp;</code> koruması'},
-         L:{en:'<code>map</code> → <code>forEach</code>: no result array; <code>c</code> joins the save/restore',
-            tr:'<code>map</code> → <code>forEach</code>: sonuç dizisi yok; <code>c</code> de kaydedilip geri yazılıyor'},
+  var m={G:{en:'pawn branch: the speed build keeps <code>g</code>, reads <code>T|b[f]</code> only inside the branch and tests the capture as <code>d&lt;2&amp;v</code>',
+            tr:'piyon dalı: hız sürümü <code>g</code>’yi tutuyor, <code>T|b[f]</code>’yi yalnız dalın içinde okuyor, alımı <code>d&lt;2&amp;v</code> ile sınıyor'},
+         V:{en:'<code>p&amp;&amp;</code> guard on empty squares; distant pawns, knights and king skipped', tr:'boş kareler için <code>p&amp;&amp;</code> koruması; uzak piyon, at ve şah atlanıyor'},
+         L:{en:'<code>map</code> → <code>forEach</code>: no result array; <code>c</code> stays out of the save/restore pair',
+            tr:'<code>map</code> → <code>forEach</code>: sonuç dizisi yok; <code>c</code> kaydet/geri yaz çiftine girmiyor'},
          M:{en:'castling rights cleared inside <code>M</code>: 11 bytes less, about 3% slower',
             tr:'rok hakları <code>M</code>’in içinde düşürülüyor: 11 bayt az, ~%3 yavaş'},
          A:{en:'the castling line moved into <code>M</code>', tr:'rok satırı <code>M</code>’e taşındı'},
@@ -693,31 +709,31 @@ runEl.onclick=function(){
     say(F('sDone',secs.toFixed(1),num(Math.round(work.length/Math.max(secs,.001))),NAME[key]));
     lock(false) })};
 bothEl.onclick=function(){
-  var P=ply(), B=bud(), work=workset(), pick=engEl.value;
-  lock(true); snap={};
-  runBatch('x4',work,P,B,[1],function(r2,s2){
-    snap.x4={res:r2,secs:s2,work:work,P:P,B:B};
-    runBatch('nm',work,P,B,[2],function(r1,s1){
-      snap.nm={res:r1,secs:s1,work:work,P:P,B:B};
+  var P=ply(), B=bud(), work=workset(), pick=engEl.value, p=pair(pick);
+  lock(true); delete snap[p.nm]; delete snap[p.x4];
+  runBatch(p.x4,work,P,B,[1],function(r2,s2){
+    snap[p.x4]={res:r2,secs:s2,work:work,P:P,B:B};
+    runBatch(p.nm,work,P,B,[2],function(r1,s1){
+      snap[p.nm]={res:r1,secs:s1,work:work,P:P,B:B};
       loadEngine(pick);
       results={rows:work,res:snap[pick].res,key:pick}; page=0; render(); showCmp();
-      say(F('sDone',(s1+s2).toFixed(1),num(Math.round(2*work.length/Math.max(s1+s2,.001))),NAME.x4+' + '+NAME.nm));
+      say(F('sDone',(s1+s2).toFixed(1),num(Math.round(2*work.length/Math.max(s1+s2,.001))),NAME[p.x4]+' + '+NAME[p.nm]));
       lock(false) })})};
 function showCmp(){
-  if(!snap.nm||!snap.x4||snap.nm.work.length!==snap.x4.work.length||snap.nm.P!==snap.x4.P||snap.nm.B!==snap.x4.B){ $('cmp').classList.add('hide'); return }
-  var a=snap.nm,b=snap.x4,i,mis=0;
+  var p=pair(engEl.value), a=snap[p.nm], b=snap[p.x4], i, mis=0;
+  if(!a||!b||a.work.length!==b.work.length||a.P!==b.P||a.B!==b.B){ $('cmp').classList.add('hide'); return }
   for(i=0;i<a.res.length;i++){ var x=a.res[i],y=b.res[i];
     if(!x&&!y)continue;
     if(!x||!y||x.code!==y.code){mis++} }
   var ta=tally(a.res), tb=tally(b.res),
-      fast=a.secs<b.secs?'nm':'x4', slow=fast=='nm'?'x4':'nm',
+      fast=a.secs<b.secs?p.nm:p.x4, slow=fast==p.nm?p.x4:p.nm,
       ratio=(snap[slow].secs/Math.max(snap[fast].secs,1e-9)).toFixed(2);
   $('cmpnote').innerHTML= mis
     ? F('cmpDiff',num(mis))
     : F('cmpSame',num(a.res.length),NAME[fast],snap[fast].secs.toFixed(2),NAME[slow],snap[slow].secs.toFixed(2),ratio);
   var h='<tr><th>'+T('thBuild')+'</th><th>'+T('thBytes')+'</th><th>'+T('thTime')+'</th><th>'+T('thRate')+'</th><th>'+
         T('thNodes')+'</th><th>'+T('thEq')+'</th><th>'+T('thUn')+'</th><th>'+T('thMt')+'</th></tr>';
-  [['x4',tb,b],['nm',ta,a]].forEach(function(o){
+  [[p.x4,tb,b],[p.nm,ta,a]].forEach(function(o){
     h+='<tr'+(results&&results.key===o[0]?' class="act"':'')+'><td>'+NAME[o[0]]+'</td><td>'+num(SRC[o[0]].length)+
        '</td><td>'+o[2].secs.toFixed(2)+'</td><td>'+num(Math.round(o[2].res.length/Math.max(o[2].secs,1e-9)))+
        '</td><td>'+num(o[1].nodes)+'</td><td>'+num(o[1].eq)+'</td><td>'+num(o[1].un)+'</td><td>'+num(o[1].mt)+'</td></tr>' });
@@ -757,6 +773,7 @@ function renderBad(){
   $('badgrid').innerHTML=h }
 function render(){
   if(!results)return;
+  outEl.classList.remove('hide');
   renderRef();
   $('h2tot').textContent=T('secTotal')+' — '+NAME[results.key];
   var R=results.res, W=results.rows, n=0, eq=0, un=0, mt=0, k;
@@ -880,14 +897,19 @@ function applyI18n(){
     if(el.hasAttribute('data-ihtml'))el.innerHTML=T(k); else el.textContent=T(k) }
   els=document.querySelectorAll('[data-ip]');
   for(i=0;i<els.length;i++)els[i].placeholder=T(els[i].getAttribute('data-ip'));
-  if(cur)$('engnote').textContent=F('engnote',num(SRC[cur].length),cur=='nm'?T('nmTag'):T('x4Tag'));
+  if(cur)$('engnote').textContent=F('engnote',num(SRC[cur].length),tagOf(cur));
   renderDiff();
   if(results)render();
-  if(snap.nm&&snap.x4)showCmp();
+  showCmp();
   if(lastSolo)renderSolo(lastSolo)}
 engEl.onchange=function(){ if(busy){engEl.value=cur;return}
+  var was=DEFS[fam(cur)], now=DEFS[fam(engEl.value)];
+  /* switching engine: fields still at the old engine's own limits follow the new one's */
+  if(was!==now){ if(ply()===was[0])$('ply').value=now[0]; if(bud()===was[1])$('bud').value=now[1] }
   loadEngine(engEl.value);
-  if(snap[engEl.value]){ results={rows:snap[engEl.value].work,res:snap[engEl.value].res,key:engEl.value}; page=0; render(); showCmp() }
+  if(snap[engEl.value]){ results={rows:snap[engEl.value].work,res:snap[engEl.value].res,key:engEl.value}; page=0; render() }
+  else if(results&&fam(results.key)!==fam(engEl.value)){ results=null; outEl.classList.add('hide'); $('srcb').innerHTML='' }
+  showCmp();
   if(lastSolo)renderSolo(lastSolo) };
 langEl.onchange=function(){ lang=langEl.value; applyI18n() };
 engEl.value='x4'; langEl.value='en';
