@@ -142,7 +142,7 @@ summary{cursor:pointer;color:var(--dim)}
   <div class="col">
     <h3 data-i="secSolo">Single position</h3>
     <input type="text" id="fen" data-ip="fenPh" placeholder="paste a FEN — the halfmove clock is field 5"
-           value="4k1n1/8/8/8/8/8/8/4K1N1 w - - 146 1">
+           value="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1">
     <div class="opts"><button id="one" data-i="btnOne">judge this position</button></div>
   </div>
   <div class="col">
@@ -235,11 +235,11 @@ summary{cursor:pointer;color:var(--dim)}
 </div>
 
 <script type="text/plain" id="src_nm">
-c=15,U=N='indexOf',e=Y=-1,t=1,b=[...`5d37b3d5${10n**40n-10n**32n}888888884c26a2c4`].map(u=>'0x'+u-0),z=n=o=0,R={[b+t+e+c]:$=1},a=Math.abs,G=(i,f,T,P=b[i]>>1,y=i>>3,h=a(i%8-f%8),v=a(y-(f>>3)),d=h|v,k=(f-i)/d,x=T|b[f],S=Q=>(i+=k)==f||!b[i]&&S())=>P>5?h*v==2:P>4?T|v|h^2?d<2:c&C(f+=1.5*k-.5)&&!V(t)&&!V(t,i+k)&&S():P>3?f<i^b[i]&1&&(h*v==1?x|f==e:h|x?0:v<2+(y%5==1)&&S()):P&(h*v?h==v:2)&&S(),V=(s,u=b[N](10+s))=>b.some((p,i)=>p&1^s&&G(i,u,1)),L=(i,q=[],g=b[i]&1)=>b.map((p,f)=>!p|p&1^g&&G(i,f)&&(p=[b,e,n,c],M(i,f),V(g)||q.push(f),[b,e,n,c]=p))&&q,C=i=>'20003001'[i%56]<<i/28,M=(i,f,u=3,p=(b=[...b])[i],P=p>>1==4,d=a(i-f),q=i+f>>1)=>(c&=~C(i)&~C(f),n=P|b[f]?0:n+1,b[f]=P&f%56<8?u*2+t:p,b[i]=b[P&f==e?f^8:i]=0,d==2&p>9&&(b[q]=b[r=f>i?i+3:i-4],b[r]=0),e=P&d>9&&[f-1,f+1,e=q].some(x=>b[x]==17-p&&~L(x)[N](e))?e:Y),I=g=>(m=W=0,b.map((p,i)=>p&&p%2^g&&(p<4?m|=1<<i*9/8%2:W+=p<10?9:p>11)),W*2+m<3),Im=g=>(O=u=>!~b[N](u+g),I(!g),B=m,I(g)&(m+W<1|O(12)&O(8)&O(4)+m>0&!(B&~m))),Z=Q=>b.some((p,i)=>p%2==t&&L(i)+'')?I(2)|l()?6:$>4?5:n>149?4:0:V(t)?t+1:3,A=(i,f,u)=>(M(i,f,u),t^=1,o|=4<<t,$=R[s=b+t+e+c]=-~R[s],Z()),D=g=>(o^=2-g,Z()||(n>99?7:$>2?8:o>14?9:0)),H=(g,d,v=t^g|!V(g))=>Im(g)||Ht[s=b+t+e+c]>=d||l(2-g)||(Ht[s]=d,b.every((p,i)=>p&1^t||L(i).every(f=>v=n>149||d&&Hn-->0&&[3,2,1,6].every((u,x,w)=>x&&p>>1^4|f%56>7||(w=[b,e,n,t,c],M(i,f,u),t^=1,H(g,d-1)|([b,e,n,t,c]=w)))))&v),F=(g,k)=>(Hn=5e4,Ht={},H(g,99))?14+k:10+2*k+g;
+c=15,X='20003001',U=N='indexOf',e=Y=-1,t=1,b=[...`5d37b3d5${10n**40n-10n**32n}888888884c26a2c4`].map(u=>'0x'+u-0),z=n=o=0,R={[b+t+e+c]:$=1},a=Math.abs,G=(i,f,T,P=b[i]>>1,y=i>>3,h=a(i%8-f%8),v=a(y-(f>>3)),d=h|v,k=(f-i)/d,x=T|b[f],S=Q=>(i+=k)==f||!b[i]&&S())=>P>5?h*v==2:P>4?T|b[f]^b[i]-6?d<2:c&C(f)&&b.every((p,s,_,x=s&7,A=(x-i%8)*(x-4-2*k)<1)=>s>>3^y||(!p|s==i|s==f||!A&(x-f%8)*(x-4-k)>0)&&!(A&&V(t,s))):P>3?f<i^b[i]&1&&(h*v==1?x|f==e:h|x?0:v<2+(y%5==1)&&S()):P&(h*v?h==v:2)&&S(),V=(s,u=b[N](10+s))=>b.some((p,i)=>p&1^s&&G(i,u,1)),L=(i,q=[],g=b[i]&1)=>b.map((p,f)=>!p|p&1^g|b[i]-p==6&p%6>3&&G(i,f)&&(p=[b,e,n,c],M(i,f),V(g)||q.push(f),[b,e,n,c]=p))&&q,C=i=>X[i%56]<<i/28,M=(i,f,u=3,p=(b=[...b])[i],P=p>>1==4,d=a(i-f),q=i+f>>1,w=p>9&p-b[f]==6,x=f>i||-1)=>(c&=~C(i)&~C(f),n=P|b[f]*!w?0:n+1,b[f]=P&f%56<8?u*2+t:p,b[i]=b[P&f==e?f^8:i]=0,w&&(b[f]=0,b[q=i&56|4+2*x]=p,b[q-x]=p-6),e=P&d>9&&[f-1,f+1,e=q].some(x=>b[x]==17-p&&~L(x)[N](e))?e:Y),I=g=>(m=W=0,b.map((p,i)=>p&&p%2^g&&(p<4?m|=1<<i*9/8%2:W+=p<10?9:p>11)),W*2+m<3),Im=g=>(O=u=>!~b[N](u+g),I(!g),B=m,I(g)&(m+W<1|O(12)&O(8)&O(4)+m>0&!(B&~m))),Z=Q=>b.some((p,i)=>p%2==t&&L(i)+'')?I(2)|l()?6:$>4?5:n>149?4:0:V(t)?t+1:3,A=(i,f,u)=>(M(i,f,u),t^=1,o|=4<<t,$=R[s=b+t+e+c]=-~R[s],Z()),D=g=>(o^=2-g,Z()||(n>99?7:$>2?8:o>14?9:0)),H=(g,d,v=t^g|!V(g))=>Im(g)||Ht[s=b+t+e+c]>=d||l(2-g)||(Ht[s]=d,b.every((p,i)=>p&1^t||L(i).every(f=>v=n>149||d&&Hn-->0&&[3,2,1,6].every((u,x,w)=>x&&p>>1^4|f%56>7||(w=[b,e,n,t,c],M(i,f,u),t^=1,H(g,d-1)|([b,e,n,t,c]=w)))))&v),F=(g,k)=>(Hn=5e4,Ht={},H(g,99))?14+k:10+2*k+g;
 l=(a=3,G=0,f=2n**64n-1n,y=f^f/255n,x=y>>1n,d=f/3n^f/257n,S=s=>s+s&y|s>>1n&x,N=s=>s|O(s)|T(s),O=s=>S(s)|s<<8n&f|s>>8n,T=s=>S(s<<8n|s>>8n),W=0n,B=W,V,v,M=W,D=W,C,Z,K,L,q=r=W,P,Q,F=W,g=W,R,c,$=W,_=W,E=k=>s>>k&s<<k|A>>k|A<<k,X=k=>k&&(m=W&~r,n=B&~q,t=F|g|A|H,I=n|P|t,J=m|Q|t,P=m&I>>8n,Q=n&J<<8n,C|=C<<8n&~I,Z|=Z>>8n&~J,K|=N(K)&~(P|F|N(A)|S(Q)>>8n),L|=N(L)&~(Q|g|N(H)|S(P)<<8n),r|=L|(r&~I)>>8n,q|=K|(q&~J)<<8n,t|=P|Q,R|=T(R)&~t,c|=T(c)&~t,F&=~(L|T(c)),g&=~(K|T(R)),U.map(([u,s])=>Y|=s&~(u&M?P|F:Q|g)),X(k-1)),U=[],u=1n,A,H,i,s,t,p,o,j,I,J,m,n,Y=W,)=>~e?0:(b.map(p=>(p&&(j=p&1,j?M|=u:D|=u,(o=p>>1)==4?j?W|=u:B|=u:o==5?j?K=V=u:L=v=u:o<2?j?$|=u:_|=u:(j?F|=u:g|=u,U.push([u,o>5?O(T(u))^O(u):o>2?N(u)^u:O(u)]))),u+=u)),C=P=W,Z=Q=B,R=$,c=_,A=G&1?v:r,H=G&2?V:r,!(X(768),C>>56n|Z&255n|S(C)<<8n&((a&2?D:D^v)|Z)|S(Z)>>8n&((a&1?M:M^V)|C)|S(C^W)<<8n&L|S(Z^B)>>8n&K)&&!(G&&(A?L^A:K^H))&&!Y&&(!(R|c)|!(K&L)&[d,f^d,d,f^d].every((I,w)=>!(s=((o=w<2)?$:_)&I)|!(s&s-1n)&(t=o?R:c,t|=T(t),p=o?B|_|Z:W|$|C,m=o?L:K,!(t&p)&(!(t&m)|!(o?B^Q:W^P)&(!(a&1+o)|!(i=o?c:R,j=f^((o?D^v^_:M^V^$)|(o?S(C)<<8n|N(K):S(Z)>>8n|N(L))|t&~I),u=j&~i,s=j&I,A=u&I,m&I&~(E(9n)&E(7n)|O(u)|j>>8n&j<<8n|j>>1n&j<<1n&x&y|(j>>8n|j<<8n)&S(j))))))))||G<2&&l(a,G+1))
 </script>
 <script type="text/plain" id="src_x4">
-c=15,U=N='indexOf',e=Y=-1,t=1,b=[...`5d37b3d5${10n**40n-10n**32n}888888884c26a2c4`].map(u=>'0x'+u-0),z=n=o=0,R={[b+t+e+c]:$=1},a=Math.abs,G=(i,f,T,g=b[i],P=g>>1,y=i>>3,h=a(i%8-f%8),v=a(y-(f>>3)),d=h|v,k=(f-i)/d,S=Q=>(i+=k)==f||!b[i]&&S())=>P>5?h*v==2:P>4?T|v|h^2?d<2:c&C(f+=1.5*k-.5)&&!V(t)&&!V(t,i+k)&&S():P>3?f<i^g&1&&(h?d<2&v&&T|b[f]|f==e:T|b[f]?0:v<2+(y%5==1)&&S()):P&(h*v?h==v:2)&&S(),V=(s,u=b[N](10+s))=>b.some((p,i)=>p&&p&1^s&&(p<8|a(i-u)<18)&&G(i,u,1)),L=(i,q=[],g=b[i]&1)=>b.forEach((p,f)=>!p|p&1^g&&G(i,f)&&(p=[b,e,n],M(i,f),V(g)||q.push(f),[b,e,n]=p))||q,C=i=>'20003001'[i%56]<<i/28,M=(i,f,u=3,p=(b=[...b])[i],P=p>>1==4,d=a(i-f),q=i+f>>1)=>(n=P|b[f]?0:n+1,b[f]=P&f%56<8?u*2+t:p,b[i]=b[P&f==e?f^8:i]=0,d==2&p>9&&(b[q]=b[r=f>i?i+3:i-4],b[r]=0),e=P&d>9&&[f-1,f+1,e=q].some(x=>b[x]==17-p&&~L(x)[N](e))?e:Y),I=g=>(m=W=0,b.map((p,i)=>p&&p%2^g&&(p<4?m|=1<<i*9/8%2:W+=p<10?9:p>11)),W*2+m<3),Im=g=>(O=u=>!~b[N](u+g),I(!g),B=m,I(g)&(m+W<1|O(12)&O(8)&O(4)+m>0&!(B&~m))),Z=Q=>b.some((p,i)=>p&&p%2==t&&L(i)+'')?I(2)|l()?6:$>4?5:n>149?4:0:V(t)?t+1:3,A=(i,f,u)=>(c&=~C(i)&~C(f),M(i,f,u),t^=1,o|=4<<t,$=R[s=b+t+e+c]=-~R[s],Z()),D=g=>(o^=2-g,Z()||(n>99?7:$>2?8:o>14?9:0)),H=(g,d,v=0)=>Im(g)||Ht[s=b+t+e+c]>=d||l(2-g)||(Ht[s]=d,b.every((p,i)=>!p||p&1^t||L(i).every(f=>v=n>149||d&&Hn-->0&&[3,2,1,6].every((u,x,w)=>x&&(f%56>7||p>>1^4)||(w=[b,e,n,t,c],c&=~C(i)&~C(f),M(i,f,u),t^=1,H(g,d-1)|([b,e,n,t,c]=w,0)))))&&(v||t^g|!V(g))),F=(g,k)=>(Hn=5e4,Ht={},H(g,99))?14+k:10+2*k+g;
+c=15,X='20003001',U=N='indexOf',e=Y=-1,t=1,b=[...`5d37b3d5${10n**40n-10n**32n}888888884c26a2c4`].map(u=>'0x'+u-0),z=n=o=0,R={[b+t+e+c]:$=1},a=Math.abs,G=(i,f,T,g=b[i],P=g>>1,y=i>>3,h=a(i%8-f%8),v=a(y-(f>>3)),d=h|v,k=(f-i)/d,S=Q=>(i+=k)==f||!b[i]&&S())=>P>5?h*v==2:P>4?T|b[f]^g-6?d<2:c&C(f)&&b.every((p,s,_,x=s&7,A=(x-i%8)*(x-4-2*k)<1)=>s>>3^y||(!p|s==i|s==f||!A&(x-f%8)*(x-4-k)>0)&&!(A&&V(t,s))):P>3?f<i^g&1&&(h?d<2&v&&T|b[f]|f==e:T|b[f]?0:v<2+(y%5==1)&&S()):P&(h*v?h==v:2)&&S(),V=(s,u=b[N](10+s))=>b.some((p,i)=>p&&p&1^s&&(p<8|a(i-u)<18)&&G(i,u,1)),L=(i,q=[],g=b[i]&1)=>b.forEach((p,f)=>!p|p&1^g|b[i]-p==6&p%6>3&&G(i,f)&&(p=[b,e,n],M(i,f),V(g)||q.push(f),[b,e,n]=p))||q,C=i=>X[i%56]<<i/28,M=(i,f,u=3,p=(b=[...b])[i],P=p>>1==4,d=a(i-f),q=i+f>>1,w=p>9&p-b[f]==6,x=f>i||-1)=>(n=P|b[f]*!w?0:n+1,b[f]=P&f%56<8?u*2+t:p,b[i]=b[P&f==e?f^8:i]=0,w&&(b[f]=0,b[q=i&56|4+2*x]=p,b[q-x]=p-6),e=P&d>9&&[f-1,f+1,e=q].some(x=>b[x]==17-p&&~L(x)[N](e))?e:Y),I=g=>(m=W=0,b.map((p,i)=>p&&p%2^g&&(p<4?m|=1<<i*9/8%2:W+=p<10?9:p>11)),W*2+m<3),Im=g=>(O=u=>!~b[N](u+g),I(!g),B=m,I(g)&(m+W<1|O(12)&O(8)&O(4)+m>0&!(B&~m))),Z=Q=>b.some((p,i)=>p&&p%2==t&&L(i)+'')?I(2)|l()?6:$>4?5:n>149?4:0:V(t)?t+1:3,A=(i,f,u)=>(c&=~C(i)&~C(f),M(i,f,u),t^=1,o|=4<<t,$=R[s=b+t+e+c]=-~R[s],Z()),D=g=>(o^=2-g,Z()||(n>99?7:$>2?8:o>14?9:0)),H=(g,d,v=0)=>Im(g)||Ht[s=b+t+e+c]>=d||l(2-g)||(Ht[s]=d,b.every((p,i)=>!p||p&1^t||L(i).every(f=>v=n>149||d&&Hn-->0&&[3,2,1,6].every((u,x,w)=>x&&(f%56>7||p>>1^4)||(w=[b,e,n,t,c],c&=~C(i)&~C(f),M(i,f,u),t^=1,H(g,d-1)|([b,e,n,t,c]=w,0)))))&&(v||t^g|!V(g))),F=(g,k)=>(Hn=5e4,Ht={},H(g,99))?14+k:10+2*k+g;
 l=(a=3,G=0,f=2n**64n-1n,y=f^f/255n,x=y>>1n,d=f/3n^f/257n,S=s=>s<<1n&y|s>>1n&x,N=s=>s|O(s)|T(s),O=s=>S(s)|s<<8n&f|s>>8n,T=s=>s&&S(s<<8n|s>>8n),W=0n,B=W,V,v,M=W,D=W,C,Z,K,L,r=W,q=W,P,Q,F=W,g=W,R,c,$=W,_=W,E=k=>s>>k&s<<k|A>>k|A<<k,X=k=>z^(z=C+Z+K+L+r+q-P-Q+R+c-F-g)&&(m=W&~r,n=B&~q,t=F|g|A|H,I=n|P|t,J=m|Q|t,P=m&I>>8n,Q=n&J<<8n,C|=C<<8n&~I&f,Z|=Z>>8n&~J,K|=N(K)&~(P|F|N(A)|S(Q)>>8n),L|=N(L)&~(Q|g|N(H)|S(P)<<8n),r|=L|(r&~I)>>8n,q|=K|(q&~J)<<8n&f,t|=P|Q,R|=T(R)&~t,c|=T(c)&~t,F&=~(L|T(c)),g&=~(K|T(R)),U.map(([u,s])=>Y|=s&~(u&M?P|F:Q|g)),X()),U=[],u=1n,z=W,A,H,i,s,t,p,o,j,I,J,m,n,Y=W,)=>~e?0:(b.map(p=>(p&&(j=p&1,j?M|=u:D|=u,(o=p>>1)==4?j?W|=u:B|=u:o==5?j?K=V=u:L=v=u:o<2?j?$|=u:_|=u:(j?F|=u:g|=u,U.push([u,o>5?O(T(u))^O(u):o>2?N(u)^u:O(u)]))),u+=u)),C=P=W,Z=Q=B,R=$,c=_,A=G&1?v:r,H=G&2?V:r,!U.some(h=>h[1]&~(h[0]&M?W|F:B|g))&&(!(N(A|H)&~(A?D|S(W)<<8n:M|S(B)>>8n))&&!(X(),C>>56n|Z&255n|S(C)<<8n&((a&2?D:D^v)|Z)|S(Z)>>8n&((a&1?M:M^V)|C)|S(C^W)<<8n&L|S(Z^B)>>8n&K)&&!(G&&(A?L^A:K^H))&&!Y&&(!(R|c)|!(K&L)&[d,f^d,d,f^d].every((I,w)=>!(s=((o=w<2)?$:_)&I)|!(s&s-1n)&(t=o?R:c,t|=T(t),p=o?B|_|Z:W|$|C,m=o?L:K,!(t&p)&&(!(t&m)||!(o?B^Q:W^P)&&(!(a&1+o)||!(i=o?c:R,j=f^((o?D^v^_:M^V^$)|(o?S(C)<<8n|N(K):S(Z)>>8n|N(L))|t&~I),u=j&~i,s=j&I,A=u&I,m&I&~(E(9n)&E(7n)|O(u)|j>>8n&j<<8n|j>>1n&j<<1n&x&y|(j>>8n|j<<8n)&S(j))))))))||G<2&&l(a,G+1)))
 </script>
 
@@ -255,9 +255,30 @@ function setFen(str){
           Bd[rk*8+fl++]=vv+(ch==ch.toUpperCase()?1:0)} }
   if(Bd.indexOf(10)<0||Bd.indexOf(11)<0)return 0;
   b=Bd; t=A[1]=='w'?1:0; c=0;
-  var ca=A[2]||'-';
-  if(ca.indexOf('K')>=0)c|=1; if(ca.indexOf('Q')>=0)c|=2;
-  if(ca.indexOf('k')>=0)c|=4; if(ca.indexOf('q')>=0)c|=8;
+  /* castling: KQkq (standard, or X-FEN: the outermost rook on that side of the king) or
+     Shredder-FEN file letters (HAha). Every right is read against the board: its rook must
+     stand on the back rank beside a king that is still there, otherwise the right is dropped.
+     The files found build the engine's castling skeleton X (king 3, queen-side rook 2,
+     king-side rook 1); both colours share it, so rights that disagree on files are refused.
+     An engine without X (FideLite L3) only knows the orthodox files: other rights are ignored
+     and CASTLE_DROP records it. */
+  var ca=A[2]||'-', sk=[0,0,0,0,0,0,0,0], has960=String(C).indexOf('X[')>=0, drop=0, j, ch, up, w, base, kf, rf, x, d;
+  for(j=0;j<ca.length;j++){ ch=ca[j]; if(ch=='-')continue;
+    up=ch.toUpperCase(); w=ch==up; base=w?0:56; kf=Bd.indexOf(w?11:10)-base; rf=-1;
+    if(kf<0||kf>7)continue;
+    if(up=='K'){ for(x=7;x>kf;x--) if(Bd[base+x]==(w?5:4)){rf=x;break} }
+    else if(up=='Q'){ for(x=0;x<kf;x++) if(Bd[base+x]==(w?5:4)){rf=x;break} }
+    else if(up>='A'&&up<='H'){ x=up.charCodeAt(0)-65; if(x!=kf&&Bd[base+x]==(w?5:4))rf=x }
+    else return 0;
+    if(rf<0)continue;
+    if(!has960&&(kf!=4||rf%7)){ drop=1; continue }
+    d=rf>kf?1:2;
+    if(sk[kf]&&sk[kf]!=3||sk[rf]&&sk[rf]!=d)return 0;
+    sk[kf]=3; sk[rf]=d; c|=d<<(w?0:2) }
+  if(sk.filter(function(v){return v==3}).length>1||sk.filter(function(v){return v==1}).length>1||
+     sk.filter(function(v){return v==2}).length>1)return 0;
+  if(has960)X=c?sk.join(''):'20003001';
+  window.CASTLE_DROP=drop;
   var ep=A[3]||'-';
   e=(ep=='-'||ep.length<2)?-1:(ep.charCodeAt(0)-97)+(+ep[1]-1)*8;
   n=+A[4]||0; $=1; o=0; z=0;
@@ -280,7 +301,8 @@ function judge(fen,ply,bud,forced){
   if(!ok){ setFen(fen); Hn=bud; Hs={}; HM=0; Hd(side,ply); mate=HM;
            why=mate?'mate':(Hn<0?'budget':'horizon') }
   if(dp) why='static';
-  return{side:side,n:nn,nGiven:given,moves:mv,hOnly:hOnly,ok:ok,dp:dp,src:src,code:code,used:used,ms:ms,why:why,mate:mate}
+  return{side:side,n:nn,nGiven:given,moves:mv,hOnly:hOnly,ok:ok,dp:dp,src:src,code:code,used:used,ms:ms,why:why,mate:mate,
+         drop:window.CASTLE_DROP,castle:c?'KQkq'.replace(/./g,function(L,i){return c>>i&1?L:''})+(String(C).indexOf('X[')>=0?' · '+X:''):'-'}
 }
 </script>
 
@@ -364,7 +386,8 @@ en:{
  noneUn:'No row went unjudged.',
  prev:'previous', next:'next', pgOf:'{0} / {1} ({2} rows)',
  badFen:'Could not read that FEN. At least the piece placement and the side-to-move field are needed, and both kings must be on the board.',
- kFlag:'flag fell for', kMoves:'legal moves', kClock:'halfmove clock n', kHOnly:'material alone (Im)',
+ kFlag:'flag fell for', kMoves:'legal moves', kCastle:'castling',
+ noCastle960:'L3 knows only the orthodox castling files; this right was ignored', sDrop:'{0} rows with Chess960 castling rights judged without them (L3)', kClock:'halfmove clock n', kHOnly:'material alone (Im)',
  kUsed:'nodes spent', kMs:'time', kPly:'ply ceiling', kBuild:'build', kReason:'reason',
  white:'white', black:'black', toMove:'(side to move)',
  noN:"(absent from the FEN, 0 assumed)", z75:' — inside the 75-move rule', z50:' — inside the 50-move rule',
@@ -439,7 +462,8 @@ tr:{
  noneUn:'Hüküm veremediğimiz satır yok.',
  prev:'önceki', next:'sonraki', pgOf:'{0} / {1} ({2} satır)',
  badFen:'FEN okunamadı. En az taş dizilimi ve sıra alanı gerekiyor, iki şah şart.',
- kFlag:'bayrağı düşen', kMoves:'legal hamle', kClock:'hamle sayacı n', kHOnly:'yalnız materyal (Im)',
+ kFlag:'bayrağı düşen', kMoves:'legal hamle', kCastle:'rok',
+ noCastle960:'L3 yalnızca klasik rok sütunlarını tanır; bu hak yok sayıldı', sDrop:'Chess960 rok hakkı taşıyan {0} satır bu haklar olmadan yargılandı (L3)', kClock:'hamle sayacı n', kHOnly:'yalnız materyal (Im)',
  kUsed:'harcanan düğüm', kMs:'süre', kPly:'ply tavanı', kBuild:'sürüm', kReason:'sebep',
  white:'beyaz', black:'siyah', toMove:'(sırası gelen)',
  noN:'(FEN’de yok, 0 varsayıldı)', z75:' — 75 kuralı bölgesi', z50:' — 50 kuralı bölgesi',
@@ -584,6 +608,7 @@ function renderSolo(fen){
    '<b>'+T('kBuild')+'</b> '+NAME[cur]+'<br>'+
    '<b>'+T('kFlag')+'</b> '+(r.side?T('white'):T('black'))+' '+T('toMove')+'<br>'+
    '<b>'+T('kMoves')+'</b> '+r.moves+'<br>'+
+   '<b>'+T('kCastle')+'</b> '+r.castle+(r.drop?' <span style="color:#800">'+T('noCastle960')+'</span>':'')+'<br>'+
    '<b>'+T('kClock')+'</b> '+r.n+(r.nGiven?'':' <span style="color:#800">'+T('noN')+'</span>')+
       (r.n>149?T('z75'):(r.n>99?T('z50'):''))+'<br>'+
    '<b>'+T('kHOnly')+'</b> '+(r.hOnly?T('hYes'):T('hNo'))+'<br>'+
@@ -667,6 +692,8 @@ function runBatch(key,work,P,B,phase,done){
     else done(res,(performance.now()-T0)/1000)
   }
   setTimeout(chunk,20)}
+function dropNote(res){ var k,m=0; for(k=0;k<res.length;k++)if(res[k]&&res[k].drop)m++;
+  return m?' · '+F('sDrop',num(m)):'' }
 function tally(res){ var eq=0,un=0,mt=0,nd=0,k;
   for(k=0;k<res.length;k++){ if(!res[k])continue; nd+=res[k].used;
     if(res[k].ok||res[k].dp)eq++; else if(res[k].mate)mt++; else un++ }
@@ -706,7 +733,7 @@ runEl.onclick=function(){
   runBatch(key,work,P,B,null,function(res,secs){
     snap[key]={res:res,secs:secs,work:work,P:P,B:B};
     results={rows:work,res:res,key:key}; page=0; render(); showCmp();
-    say(F('sDone',secs.toFixed(1),num(Math.round(work.length/Math.max(secs,.001))),NAME[key]));
+    say(F('sDone',secs.toFixed(1),num(Math.round(work.length/Math.max(secs,.001))),NAME[key])+dropNote(res));
     lock(false) })};
 bothEl.onclick=function(){
   var P=ply(), B=bud(), work=workset(), pick=engEl.value, p=pair(pick);
@@ -717,7 +744,7 @@ bothEl.onclick=function(){
       snap[p.nm]={res:r1,secs:s1,work:work,P:P,B:B};
       loadEngine(pick);
       results={rows:work,res:snap[pick].res,key:pick}; page=0; render(); showCmp();
-      say(F('sDone',(s1+s2).toFixed(1),num(Math.round(2*work.length/Math.max(s1+s2,.001))),NAME[p.x4]+' + '+NAME[p.nm]));
+      say(F('sDone',(s1+s2).toFixed(1),num(Math.round(2*work.length/Math.max(s1+s2,.001))),NAME[p.x4]+' + '+NAME[p.nm])+dropNote(r1));
       lock(false) })})};
 function showCmp(){
   var p=pair(engEl.value), a=snap[p.nm], b=snap[p.x4], i, mis=0;

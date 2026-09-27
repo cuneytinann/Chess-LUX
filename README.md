@@ -4,7 +4,7 @@
 
 ▶ **[Play in your browser](https://cuneytinann.github.io/Chess-LUX/)** · [Benchmarking page](https://cuneytinann.github.io/Chess-LUX/BestArbiter.html)
 
-**The world's most rule-accurate chess arbiter, in a single 7,984-byte HTML file.**
+**The world's most rule-accurate chess arbiter, in a single 9,782-byte HTML file.**
 
 Chess LUX is [FideLite](https://www.fidelite.art)'s full FIDE arbiter with its lock detector rewritten. FideLite's detector, `l`, recognizes locked structures made of kings and pawns only; a wider version is [on hold](https://www.fidelite.art/#bishops) there, for its bytes, its speed cost and the risk it poses to the engine's guarantee. Chess LUX builds that wider version: with a looser budget, `l` also handles bishops and boxed-in knights, rooks and queens.
 
@@ -15,8 +15,9 @@ Everything else is FideLite's: how each FIDE article is read and applied, the bo
 | | |
 |---|---|
 | **Base** | FideLite's full arbiter (`L3` rule level), `engine_4x.js` build |
-| **What changes** | the lock detector `l`, and how the flag-fall search consults it |
-| **Size** | one file, 7,984 bytes: game, clock, interface and arbiter |
+| **What changes** | the lock detector `l` and how the flag-fall search consults it; Chess960 |
+| **Size** | one file, 9,782 bytes: game, clock, interface and arbiter |
+| **Chess960** | every starting position by its official number (0–959) or at random; castling by moving the king onto its own rook |
 | **On Lichess data** | the correct verdict in 201,049 of the 201,060 games chasolver found wrongly decided on time (99.9945%); FideLite: 197,493 (98.2%) |
 | **In locked positions** | 51,047 of 51,058 (99.98%); FideLite: 47,491 (93.01%) |
 | **False draws** | 0 on the Lichess test positions; 3 in chasolver's constructed positions, all of them already checkmate and impossible to reach in a game |
@@ -26,10 +27,21 @@ Everything else is FideLite's: how each FIDE article is read and applied, the bo
 ## Try it now
 
 1. Open [cuneytinann.github.io/Chess-LUX](https://cuneytinann.github.io/Chess-LUX/), or download `index.html` and open it locally; the tab will read "FideLite.Art".
-2. In the dialog, keep the starting position and the time (10 min + 5 s, Fischer increment), or enter your own FEN and choose Fischer increment, Bronstein or simple delay, then press **Play**.
-3. Play by clicking or dragging the pieces. Right-drag across the board to mark every square in between, or right-click a single square to mark just that one; a left click clears the marks. ½ claims or offers a draw and ⚐ resigns; when the game ends, ↺ starts a new one.
+2. In the dialog, keep the starting position and the time (10 min + 5 s, Fischer increment), or enter your own FEN and choose Fischer increment, Bronstein or simple delay, then press **Play**. Untick **⚖** to give Black a different time: a second minutes box appears, and the first becomes White's. For Chess960, tick **960** and pick the starting position by its number (0–959) with the arrows, by typing it, or with 🎲; the arrangement appears beside it and the FEN field fills in with that start, which you can still edit. Below the time, **per2** and **per3** add up to two further periods: the move (**#**, 40 and 60 by default), the minutes added when that move is completed, and the seconds added to the increment or delay from the next move on (negative values reduce it); left at 0 they change nothing. **½ Offer** sets how many moves must pass between a player's draw offers (1 by default), and **Auto 3R/50** makes threefold repetition and the 50-move rule end the game automatically instead of by claim. Beside **Play**, choose whether the board turns after every move (**Flip**) or stays with **White** or **Black** at the bottom; **⌫** restores every setting.
+3. Play by clicking or dragging the pieces. Right-drag across the board to mark every square in between, or right-click a single square to mark just that one; a left click clears the marks. ½ claims, offers or accepts a draw (with Auto 3R/50 it only offers and accepts) and ⚐ resigns. While the game is on, ½ lights up green when a 50-move or threefold claim is available or the opponent has offered a draw. When the game ends, ↺ starts a new one. To castle in standard chess, click the king and then its destination or the rook; in Chess960, move the king onto its own rook.
 
 Any current browser will do: Chrome/Edge 85+, Firefox 98+, Safari 15.4+ (2022 or later). How claims, offers, the counters and the result codes work is explained on [fidelite.art](https://www.fidelite.art/#gameplay).
+
+## Armageddon
+
+Armageddon is a decisive game in which a draw counts as a win for Black; in return, Black starts with less time. Chess LUX needs no separate mode for it, because the dialog can set it up:
+
+1. Tick **Auto 3R/50**, so that threefold repetition and the 50-move rule end the game on their own instead of waiting for a claim.
+2. Untick **⚖** and give Black less time, for example 5 minutes for White and 4 for Black.
+3. Optionally, set **½ Offer** to a very large number, such as 99999, so that no draw can be offered. Unlike the first two steps this is not required: an agreed draw counts as a win for Black anyway.
+4. If the format adds an increment later in the game, use a period. For example, 2 seconds per move from move 61 on is **per2** `# 60 +0 min +2 s`, with the main increment at 0.
+
+The arbiter reports a drawn game as ½-½, like any other draw. This includes a flag fall after which White cannot mate (FIDE 6.9). Under Armageddon rules, that result means Black wins.
 
 ## What Chess LUX changes
 
@@ -40,8 +52,9 @@ Compared definition by definition with FideLite's [`builds/engine.js`](https://g
 | `l` | kings and pawns only; returns at once when any other piece is on the board | also bishops (bishop floods and a bishop layer) and boxed-in knights, rooks and queens; can be asked about one side only (`a`) and can assume a frozen king (`G`) |
 | `H` | asks `l()`: is the position dead for both sides? | asks `l(2-g)`: can the opponent still win? |
 | `F` | search limits of 20,000 nodes and 15 plies | 50,000 nodes and 99 plies |
-| `A`, `D` | an agreement needs both offer bits | `A` also records that each side has moved (`o\|=4<<t`); `D` accepts an agreement only once both have (`o>14`, FIDE 5.2.3), and reads the board (`Z()`) before any claim |
-| header | carries a default clock, `U=[600,600]` | no clock; the driver owns it |
+| `A`, `D` | an agreement needs both offer bits | `A` also records that each side has moved (`o\|=4<<t`); `D` accepts an agreement only once both have (`o>14`, FIDE 5.2.3), and reads the board (`Z()`) before any claim. In `index.html` the interface versions reach 5.2.3 through the draw-offer interval instead |
+| `C`, header | castling files fixed in `C` (`'20003001'`); the header carries a default clock, `U=[600,600]` | `C` reads the castling skeleton `X` (king 3, queen-side rook 2, king-side rook 1), `20003001` for standard chess; no clock in the header, the driver owns it |
+| `G`, `L`, `M` | castling is a two-square king move with the rook on the a- or h-file | castling is the king moving onto its own rook, in both games: `G` checks the right, that the spans of king and rook are empty and that no square of the king's path is attacked; `L` lets the king target its own rook; `M` puts the king on the g- or c-file and the rook on the f- or d-file. Standard chess is the special case: same perft, same verdicts, same search nodes |
 | rewrites | | `G` and `M` in both builds, `L` and `H` in 4x: the board copy moves into `M`'s parameter list and the 4x pawn-capture test becomes `d<2&v`; 9 bytes shorter in 4x, the same size in 1x; same perft, same search nodes |
 
 Everything not in the table is FideLite's, byte for byte.
@@ -54,7 +67,13 @@ Everything not in the table is FideLite's, byte for byte.
 
 The pawn wall is permanently locked; Black cannot mate even with White's help, so the correct result is a draw. With a bishop on the board FideLite's `l` does not run, its search reaches the 15-ply limit after 17 nodes, and the verdict is a win. Chess LUX's `l(1)` certifies at the root that Black cannot win: a draw, without any search. Had Black's flag fallen instead, both engines would rightly award White the win, since White does have a mating line.
 
-**The driver.** The interface in `index.html` is Chess LUX's own: a FEN and time-control dialog with Fischer, Bronstein and simple-delay modes; a clock read from `performance.now()` and settled before every action, claims and resignation included; drag and drop, right-click marks, captured material, last-move and check highlights. It runs the 4x build. The rule layer does not depend on it: without an interface the engine is `engine_4x.js`, embedded in `BestArbiter.html`.
+**The driver.** The interface in `index.html` is Chess LUX's own: a FEN and time-control dialog with Fischer, Bronstein and simple-delay modes, up to three periods, separate times for White and Black, a draw-offer interval, automatic 3R/50, a Chess960 option and a board-orientation choice; a clock read from `performance.now()` and settled before every action, claims and resignation included; drag and drop, right-click marks, outlined pieces, captured material, last-move and check highlights. It runs the 4x build. The rule layer does not depend on it: without an interface the engine is `engine_4x.js`, embedded in `BestArbiter.html`.
+
+**Chess960.** The starting position is generated from its number with Scharnagl's formula, the official Chess960 numbering (518 is the standard position): light-squared bishop, dark-squared bishop, queen, the two knights, then rook, king and rook in the three squares left. No table of positions is embedded, and all 960 numbers match the official list. The castling skeleton `X` is derived from the arrangement, so the `KQkq` rights of an edited FEN refer to its rook files. In Chess960, castling is king-takes-rook only, because the king's distance to its destination varies from 0 to 5 squares and a one-square castle would be indistinguishable from an ordinary king move; standard chess keeps its clicks on the destination square or the rook.
+
+**Time controls.** Every game has three periods; the second and third change nothing until they are given values. The move counter is the FEN's fullmove number (its sixth field): the move a player is making carries that number, and it goes up after Black's move, exactly as on a scoresheet (`b … 0 1` starts with `1...`, and White's first move is then move 2). When a player completes move #, that period's minutes are added; from the next move on, its seconds change the increment (Fischer or Bronstein) or the delay. The two thresholds are independent, so their order does not matter. In Bronstein mode the refund is capped at the time used before the period's minutes are added, so they are never cut. The time entered in the dialog is the time left on each clock: a game set up past a threshold (say, from move 65 with # 40 and 60) gets no minutes for it, but plays at the rate that applies from its move number. Unticking ⚖ gives Black its own starting time; the increment, the delay and the periods stay common to both players.
+
+**Draw offers and claims.** A player may offer a draw only when at least ½ Offer moves (1 by default) have passed since their own last offer, counted with the same move numbers. The first offer becomes possible once both players have completed that many moves: Black may offer with move ½ Offer, White with the move after it. An offer counts when the move carrying it is made, so taking it back before moving costs nothing. ½ can always be pressed: until the interval has passed, a move made with it only claims a draw and sends no offer. Accepting an offer and claiming a draw are never restricted. With the default of 1 this is exactly FIDE 5.2.3: an agreement needs both players to have moved, so White's offer with its first move could never be accepted, while Black may offer with its first move and White may accept. With **Auto 3R/50**, threefold repetition and the 50-move rule end the game automatically, as on online servers, and ½ only offers and accepts; the flag-fall search then also ends its lines at 50 moves instead of 75. Without it the game follows FIDE's over-the-board rules: those two are claimed, while fivefold repetition and the 75-move rule end the game automatically.
 
 **Naming.** Chess LUX follows the naming of FideLite's `L3`: every name `L3` already has keeps it — `N` is `indexOf`, `Q` is `innerHTML`, the pawn sets inside the lock detector are still an adjacent pair (`m`/`n`, since `l` names the detector itself) — and the declarations appear in `L3`'s order, so the two sources can be read side by side. Only what Chess LUX adds carries new names.
 
@@ -77,7 +96,7 @@ The rows compare the two engines as shipped. Their search limits differ too, so 
 - **Boxed-in knights, rooks and queens.** A piece that cannot leave its box counts as a fixed blocker; its first escape fails the certificate. A boxed piece the enemy king or bishop can reach is dropped instead: it can never capture anything, so all that can happen to it is being captured.
 - **One-sided and frozen-king queries.** `l(a,G)` can ask about one side's winning chances only, which is how the search uses it (`l(2-g)`), and it can assume that a king cannot move, verifying the assumption at the end.
 
-FideLite keeps this extension on hold partly because bishops put its one proven property at risk: every position it calls dead must really be dead. Chess LUX answers that with measurement rather than proof: zero false draws on chasolver's data, targeted fuzzing of the bishop layer, and a regression table of the three holes it found and closed (see the appendix). Neither `l` nor the search depends on the castling rules, so both carry over to Chess960.
+FideLite keeps this extension on hold partly because bishops put its one proven property at risk: every position it calls dead must really be dead. Chess LUX answers that with measurement rather than proof: zero false draws on chasolver's data, targeted fuzzing of the bishop layer, and a regression table of the three holes it found and closed (see the appendix). Neither `l` nor the search depends on the castling rules, so both work unchanged in Chess960.
 
 ## Verify it yourself: BestArbiter.html
 
@@ -88,6 +107,8 @@ FideLite keeps this extension on hold partly because bishops put its one proven 
 3. Press **judge the files**. **run both builds** runs the two builds of the selected engine back to back and shows that their verdicts match.
 
 The engine menu also offers FideLite's `L3`, fast and normal. Selecting it sets the ply and node fields to `L3`'s own limits (15 and 20,000) unless you have changed them, so both engines can be judged on the same files.
+
+Chess960 positions can be judged too: the FEN may give the castling rights as Shredder-FEN file letters (`HAha`) or as X-FEN `KQkq`, and the rook and king files are read from the board. `L3` knows only the orthodox castling files; with it, other rights are ignored and the page says so.
 
 Expected results with the default settings (99 plies, 50,000 nodes):
 
@@ -105,8 +126,8 @@ Large files can take a few minutes; the two `.txt` sets, where most positions ad
 
 | file | size | contents | source |
 |---|---|---|---|
-| `index.html` | 7,984 B | game and arbiter | this project |
-| `BestArbiter.html` | 81,562 B | benchmarking page with both builds of Chess LUX and of FideLite `L3` embedded | this project |
+| `index.html` | 9,782 B | game and arbiter | this project |
+| `BestArbiter.html` | 84,022 B | benchmarking page with both builds of Chess LUX and of FideLite `L3` embedded | this project |
 | `chasolver-data-until-08-2026.csv` | 22.3 MB | the 201,060 wrongly decided timeouts chasolver found on Lichess (through August 2026) | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-positions.txt` | 152 KB | chasolver's 3,414 labeled challenging test positions | [chasolver `tests/positions.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/positions.txt) (MIT) |
 | `chasolver-lichess.txt` | 3.3 MB | 65,536 labeled Lichess positions | [chasolver `tests/lichess.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/lichess.txt) (MIT) |
@@ -139,7 +160,7 @@ This section is for anyone who wants to modify `l` or reproduce the measurements
 <details>
 <summary><b>Sizes, builds and priorities</b></summary>
 
-Bytes per definition, FideLite against Chess LUX. Definitions not listed are identical; the header is 9 bytes shorter in both builds (no default clock).
+Bytes per definition, FideLite against Chess LUX. Definitions not listed are identical; the header is 4 bytes longer in both builds (no default clock, but the castling skeleton `X`).
 
 | definition | FideLite 1x | Chess LUX 1x | FideLite 4x | Chess LUX 4x |
 |---|---|---|---|---|
@@ -148,14 +169,15 @@ Bytes per definition, FideLite against Chess LUX. Definitions not listed are ide
 | `F` | 45 | 45 | 45 | 45 |
 | `A` | 52 | 60 | 67 | 75 |
 | `D` | 36 | 42 | 36 | 42 |
-| `G` | 249 | 249 | 252 | 251 |
-| `L` | 104 | 104 | 113 | 104 |
-| `M` | 234 | 234 | 210 | 219 |
-| **engine file** | **1,847** | **2,615** | **1,945** | **2,787** |
+| `G` | 249 | 328 | 252 | 327 |
+| `L` | 104 | 120 | 113 | 120 |
+| `M` | 234 | 263 | 210 | 248 |
+| `C` | 27 | 18 | 27 | 18 |
+| **engine file** | **1,847** | **2,743** | **1,945** | **2,912** |
 
-In 1x, `G` and `M` keep their size: `G` only swaps the operands of one `&`, and `M` makes its board copy in the parameter list instead of the body. `F` differs only in its two limits.
+Beyond the lock detector, the growth comes from Chess960 castling (`G`, `L`, `M`, `C` and `X` in the header) and from FIDE 5.2.3 (`A`, `D`). `F` differs only in its two limits.
 
-`index.html` carries the 4x definitions (`G V L C M I Im H l`) byte-for-byte identical to `engine_4x.js` in `BestArbiter.html`; `Z D F A` are interface versions that report the result as a text code.
+`index.html` carries the 4x definitions (`G V L C M I Im H l`) byte-for-byte identical to `engine_4x.js` in `BestArbiter.html`, with one exception: its `H` ends lines at 50 moves instead of 75 when Auto 3R/50 is ticked (`n>149-50*Au.checked`). `Z D F A` are interface versions that report the result as a text code; `Z` also carries the automatic 3R/50, and `A` the draw-offer interval.
 
 **1x and 4x.** As in FideLite, everything shipped to users is written in 4x style: bytes come first, but a few extra bytes are spent whenever they buy a multiplicative speedup. 1x is the shortest source with identical behavior and is offered only as an experimental option on the benchmarking page. The two builds must return the same verdict on every input; on real games 4x stays under 100 ms, whereas 1x can take seconds. The optimizations the two projects share are described under [FideLite's `engine_4x`](https://www.fidelite.art/#speed).
 
@@ -271,6 +293,7 @@ How `H` works — the order in which a node is proven, the 75-move cutoff, the r
 - **Random games:** Across 450 games and 123,453 plies, the legal move set, board, castling rights and halfmove clock matched chess.js at every step.
 - **FEN:** On 14,005 FENs, positions set up through `index.html`'s FEN path produced the same legal moves as chess.js.
 - **`l`:** Mutation-based fuzzing on about 375,000 locked positions yielded bit-for-bit identical verdicts from the original and the streamlined detector.
+- **Chess960:** Perft identical to python-chess 1.11 on all 960 starting positions (depth 2, every 40th at depth 3) and on 400 random middlegame positions (depth 3, 292 of them with castling rights), in both builds. The numbering matches the official list for all 960 numbers. Through BestArbiter's FEN reader, 520 positions written both as Shredder-FEN and as X-FEN (1,040 FENs) give the same perft. On standard positions the verdicts and search nodes are identical to the engine before Chess960.
 
 **Speed**
 - **Real games:** On a 10% sample of the chasolver data (20,106 positions), median 0.1 ms, maximum 60 ms.
@@ -283,7 +306,16 @@ How `H` works — the order in which a node is proven, the 75-move cutoff, the r
 - exactly one king per side;
 - no pawns on the first or eighth rank;
 - the side not to move is not in check;
-- a halfmove clock between 0 and 255.
+- a halfmove clock that is a whole number from 0 to 255, and a fullmove number that is a whole number from 1 (missing fields count as 0 and 1);
+- that the two agree: the halfmove clock is at most 2 × (fullmove − 1), plus 1 when Black is to move;
+- in Chess960, a starting number between 0 and 959.
+
+The time settings are checked with it:
+- the main time, and Black's when ⚖ is unticked, is above 0; the minutes added by per2 and per3 are 0 or more; and all of them are under 24 hours;
+- every increment or delay that can be in effect is at least 0 and under 1 hour: the first period's, after the earlier threshold, and after both;
+- the move numbers (#) are whole numbers, 0 or more; # 0 never adds minutes, and its seconds apply from the first move;
+- the draw-offer interval is a whole number, 1 or more;
+- minutes and seconds may be fractional, and an empty period field counts as 0.
 
 Castling rights are set only when the king and rook stand on their original squares, and the en passant square only when a capture is actually possible. Known limitation: rank lengths are not checked individually.
 
@@ -313,7 +345,6 @@ These 11 positions (also in `chasolver-missed-draws-08-2026.csv`) are not wrong 
 2. Treat trapped bishops as blockers: `1kb5/1p1p4/1P1P4/8/8/4p1p1/4P1P1/5BK1 w - - 0 1` should be `DP` on the first move. Today the flag verdict is correct (`TM`) and the game ends by fivefold repetition, but the dead position is not declared on move one.
 3. Reduce the 602 missed draws in `chasolver-positions.txt` (listed in `chasolver-missed-draw-positions.csv`).
 4. Bring the game history (fivefold repetition) into the flag search.
-5. Adapt the engine to Chess960.
 
 **Verification queue**
 - Independent verification of the "most rule-accurate arbiter" claim.
@@ -328,7 +359,7 @@ These 11 positions (also in `chasolver-missed-draws-08-2026.csv`) are not wrong 
 1. **FideLite first:** Outside the definitions in [What Chess LUX changes](#what-chess-lux-changes) the engine is FideLite's; a change there belongs in FideLite and is carried over from it, so that table stays true.
 2. **Soundness rationale:** Write down why a new certificate makes mate impossible.
 3. **4x and 1x:** Code shipped to users is written in 4x style; 1x is updated separately as the shortest source with identical behavior.
-4. **Three copies:** Apply every change to `index.html` and to both `src_x4` and `src_nm` in `BestArbiter.html`; `index.html` and `src_x4` must stay identical. When porting to 1x, mind the difference between `&` and `&&`.
+4. **Three copies:** Apply every change to `index.html` and to both `src_x4` and `src_nm` in `BestArbiter.html`; `index.html` and `src_x4` must stay identical, apart from the Auto 3R/50 term in `H`. When porting to 1x, mind the difference between `&` and `&&`.
 5. **Build equivalence:** The two builds must return the same verdict on every input (run both builds).
 6. **Regression:** The positions in the regression table must never be certified in the wrong direction.
 7. **Soundness check:** 0 false draws on `chasolver-lichess.txt`, none on `chasolver-positions.txt` beyond the three already-checkmated positions, and 0 found mates on the chasolver data.
@@ -342,6 +373,7 @@ These 11 positions (also in `chasolver-missed-draws-08-2026.csv`) are not wrong 
 - **File wraparound:** Horizontal shifts always need a mask; on a set restricted to one color, diagonal shifts are correct even without one.
 - **Operator precedence:** `&&` and `||` bind more loosely than `|` and `&`; when you convert one, check its neighbors too.
 - **Early-exit checksum:** Growing sets enter with a plus sign, shrinking ones (`P`, `Q`, `F`, `g`) with a minus sign.
+- **Attack test on an occupied square:** `V(s,u)` must not be asked about a square on which an enemy slider stands: `G(i,i)` has no direction and `S` recurses forever. The castling test therefore checks that a square is empty before it asks whether the square is attacked.
 - **`M` is not side-effect-free in 1x:** there it also clears castling rights, so `L` must carry `c` through its save/restore pair. In 4x `M` leaves `c` alone and the search updates it instead. Never port one half of that pair without the other.
 
 **Measuring with Node**
@@ -372,7 +404,7 @@ Run with `node --stack-size=4000`.
 
 ▶ **[Tarayıcıda hemen oyna](https://cuneytinann.github.io/Chess-LUX/)** · [Ölçüm sayfası](https://cuneytinann.github.io/Chess-LUX/BestArbiter.html)
 
-**7.984 baytlık tek bir HTML dosyasında, dünyanın kural doğruluğu en yüksek satranç hakemi.**
+**9.782 baytlık tek bir HTML dosyasında, dünyanın kural doğruluğu en yüksek satranç hakemi.**
 
 Chess LUX, [FideLite](https://www.fidelite.art/tr)'ın tam FIDE hakeminin kilit dedektörü yeniden yazılmış hâli. FideLite'ın dedektörü `l` yalnızca şah ve piyonlardan oluşan kilitli yapıları tanıyor; daha geniş bir sürümü orada baytı, hız maliyeti ve motorun güvencesine getirdiği risk yüzünden [askıda](https://www.fidelite.art/tr#bishops) duruyor. Chess LUX o sürümü kuruyor: daha gevşek bir bütçeyle `l`, filleri ve kutulu at, kale ve vezirleri de hesaba katıyor.
 
@@ -383,8 +415,9 @@ Geri kalan her şey FideLite'ın: her FIDE maddesinin nasıl okunup uygulandığ
 | | |
 |---|---|
 | **Temel** | FideLite'ın tam hakemi (`L3` kural seviyesi), `engine_4x.js` sürümü |
-| **Değişen** | kilit dedektörü `l` ve bayrak aramasının ona nasıl danıştığı |
-| **Boyut** | tek dosya, 7.984 bayt: oyun, saat, arayüz ve hakem bir arada |
+| **Değişen** | kilit dedektörü `l` ve bayrak aramasının ona nasıl danıştığı; Chess960 |
+| **Boyut** | tek dosya, 9.782 bayt: oyun, saat, arayüz ve hakem bir arada |
+| **Chess960** | her başlangıç pozisyonu resmî numarasıyla (0–959) ya da rastgele; rok, şah kendi kalesinin üstüne giderek |
 | **Lichess verisiyle** | chasolver'ın bulduğu, süreden haksız sonuçlanmış 201.060 oyunun 201.049'unda doğru hüküm (%99,9945); FideLite: 197.493 (%98,2) |
 | **Kilitli yapılarda** | 51.058 oyunun 51.047'sinde (%99,98); FideLite: 47.491 (%93,01) |
 | **Yanlış beraberlik** | Lichess test pozisyonlarında 0; chasolver'ın kurgu pozisyonlarında 3, üçü de zaten mat ve oyunda oluşamayan pozisyonlar |
@@ -394,10 +427,21 @@ Geri kalan her şey FideLite'ın: her FIDE maddesinin nasıl okunup uygulandığ
 ## Hemen dene
 
 1. [cuneytinann.github.io/Chess-LUX](https://cuneytinann.github.io/Chess-LUX/) adresini açın ya da `index.html`'i indirip tarayıcıda açın. Sekmede "FideLite.Art" başlığı görünür.
-2. Açılan pencerede başlangıç pozisyonunu ve süreyi (10 dk + 5 sn, Fischer artırımı) olduğu gibi bırakın ya da kendi FEN'inizi girip Fischer artırımı, Bronstein ya da simple delay seçin, ardından **Play**'e basın.
-3. Taşları tıklayarak ya da sürükleyerek oynayın. Sağ tuşla tahtada sürüklerseniz aradaki bütün kareler işaretlenir, tek kareye sağ tıklarsanız yalnız o kare işaretlenir; sol tıklama işaretleri siler. ½ beraberlik talebi ve teklifi, ⚐ terk içindir; oyun bitince ↺ yeni bir oyun açar.
+2. Açılan pencerede başlangıç pozisyonunu ve süreyi (10 dk + 5 sn, Fischer artırımı) olduğu gibi bırakın ya da kendi FEN'inizi girip Fischer artırımı, Bronstein ya da simple delay seçin, ardından **Play**'e basın. Siyaha farklı bir süre vermek için **⚖**'nin işaretini kaldırın: ikinci bir dakika kutusu belirir, ilk kutu beyazın süresi olur. Chess960 için **960**'ı işaretleyip başlangıç pozisyonunu numarasıyla (0–959) seçin: oklarla, yazarak ya da 🎲 ile. Dizilim yanında görünür, FEN alanı da o başlangıçla dolar; FEN'i yine de düzenleyebilirsiniz. Sürenin altındaki **per2** ve **per3** iki ek periyot tanımlar: hamle (**#**, varsayılan 40 ve 60), o hamle tamamlanınca eklenecek dakika ve sonraki hamleden itibaren artırıma ya da gecikmeye eklenecek saniye (negatif değer azaltır); 0 bırakılırsa hiçbir şey değişmez. **½ Offer**, bir oyuncunun beraberlik teklifleri arasında kaç hamle geçmesi gerektiğini belirler (varsayılan 1); **Auto 3R/50** ise üçlü tekrarı ve 50 hamle kuralını talep yerine oyunu kendiliğinden bitiren kurallar yapar. **Play**'in yanında tahtanın her hamlede dönmesini (**Flip**) ya da **White** veya **Black** altta sabit kalmasını seçin; **⌫** bütün ayarları geri yükler.
+3. Taşları tıklayarak ya da sürükleyerek oynayın. Sağ tuşla tahtada sürüklerseniz aradaki bütün kareler işaretlenir, tek kareye sağ tıklarsanız yalnız o kare işaretlenir; sol tıklama işaretleri siler. ½ beraberlik talebi, teklifi ve kabulü (Auto 3R/50 açıkken yalnızca teklif ve kabul), ⚐ terk içindir. Oyun sürerken, 50 hamle ya da üçlü tekrar talebi mümkün olduğunda veya rakip beraberlik teklif ettiğinde ½ yeşil yanar. Oyun bitince ↺ yeni bir oyun açar. Standart satrançta rok için şaha, ardından varış karesine ya da kaleye tıklayın; Chess960'ta şahı kendi kalesinin üstüne götürün.
 
 Güncel bir tarayıcı yeterli: Chrome/Edge 85+, Firefox 98+, Safari 15.4+ (2022 ve sonrası). Talep ve tekliflerin, sayaçların ve sonuç kodlarının nasıl işlediği [fidelite.art](https://www.fidelite.art/tr#gameplay)'ta anlatılıyor.
+
+## Armageddon
+
+Armageddon, beraberliğin siyahın galibiyeti sayıldığı bir karar oyunudur; siyah buna karşılık daha az süreyle başlar. Chess LUX'ta bunun için ayrı bir mod gerekmez, pencereden kurulabilir:
+
+1. **Auto 3R/50**'yi işaretleyin. Üçlü tekrar ve 50 hamle kuralı talep beklemeden oyunu kendiliğinden bitirir.
+2. **⚖**'nin işaretini kaldırıp siyaha daha az süre verin; örneğin beyaza 5, siyaha 4 dakika.
+3. İsterseniz **½ Offer**'ı çok büyük bir sayıya, örneğin 99999'a ayarlayın; böylece hiç beraberlik teklif edilemez. İlk iki adımın aksine bu şart değildir: anlaşmalı beraberlik de zaten siyahın galibiyeti sayılır.
+4. Format oyunun ilerleyen bölümünde artırım ekliyorsa periyot kullanın. Örneğin 61. hamleden itibaren hamle başına 2 saniye için **per2** `# 60 +0 min +2 s` girilir, ana artırım 0 bırakılır.
+
+Hakem berabere biten oyunu, her beraberlikte olduğu gibi ½-½ olarak gösterir. Buna, beyazın mat edemeyeceği bir durumda siyahın bayrağının düşmesi de dahildir (FIDE 6.9). Armageddon kurallarına göre bu sonuç siyahın galibiyeti demektir.
 
 ## Chess LUX'ın değiştirdikleri
 
@@ -408,8 +452,9 @@ FideLite'ın [`builds/engine.js`](https://github.com/cuneytinann/FideLite/blob/m
 | `l` | yalnız şah ve piyon; tahtada başka bir taş varsa hemen döner | filleri (fil selleri ve fil katmanı) ve kutulu at, kale ve vezirleri de kapsar; tek bir taraf için sorulabilir (`a`) ve donmuş bir şah varsayabilir (`G`) |
 | `H` | `l()`'ye sorar: pozisyon iki taraf için de ölü mü? | `l(2-g)`'ye sorar: rakip hâlâ kazanabilir mi? |
 | `F` | 20.000 düğüm ve 15 yarım hamle arama sınırı | 50.000 düğüm ve 99 yarım hamle |
-| `A`, `D` | anlaşma için iki teklif biti yeter | `A` her tarafın hamle yaptığını da kaydeder (`o\|=4<<t`); `D` anlaşmayı ancak ikisi de hamle yaptıktan sonra kabul eder (`o>14`, FIDE 5.2.3) ve herhangi bir talepten önce tahtayı okur (`Z()`) |
-| başlık | varsayılan bir saat taşır, `U=[600,600]` | saat yok; saat sürücünün |
+| `A`, `D` | anlaşma için iki teklif biti yeter | `A` her tarafın hamle yaptığını da kaydeder (`o\|=4<<t`); `D` anlaşmayı ancak ikisi de hamle yaptıktan sonra kabul eder (`o>14`, FIDE 5.2.3) ve herhangi bir talepten önce tahtayı okur (`Z()`). `index.html`'deki arayüz sürümleri 5.2.3'ü bunun yerine beraberlik teklifi aralığıyla sağlar |
+| `C`, başlık | rok sütunları `C`'de sabit (`'20003001'`); başlık varsayılan bir saat taşır, `U=[600,600]` | `C` rok iskeleti `X`'i okur (şah 3, uzun rok kalesi 2, kısa rok kalesi 1), standart satrançta `20003001`; başlıkta saat yok, saat sürücünün |
+| `G`, `L`, `M` | rok, kale a ya da h sütunundayken şahın iki kare gitmesi | rok iki oyunda da şahın kendi kalesinin üstüne gitmesi: `G` hakkı, şah ile kalenin kapladığı aralığın boş olduğunu ve şahın yolundaki hiçbir karenin saldırı altında olmadığını denetler; `L` şahın kendi kalesini hedef almasına izin verir; `M` şahı g ya da c, kaleyi f ya da d sütununa koyar. Standart satranç bunun özel hâli: perft, hükümler ve arama düğümleri aynı |
 | yeniden yazımlar | | iki sürümde `G` ve `M`, 4x'te `L` ve `H`: tahta kopyası `M`'nin parametre listesine geçer, 4x'te piyon alım testi `d<2&v` olur; 4x'te 9 bayt kısa, 1x'te boy aynı; perft ve arama düğümleri aynı |
 
 Tabloda olmayan her şey bayt bayt FideLite'ın.
@@ -422,7 +467,13 @@ Tabloda olmayan her şey bayt bayt FideLite'ın.
 
 Piyon duvarı kalıcı olarak kilitli; siyah, beyaz yardım etse bile mat edemez, doğru sonuç beraberlik. Tahtada fil olduğu için FideLite'ın `l`'si çalışmıyor, araması 17 düğümde 15 yarım hamle sınırına dayanıyor ve hüküm galibiyet oluyor. Chess LUX'ın `l(1)`'i siyahın kazanamayacağını daha kökte belgeliyor: arama hiç yapılmadan beraberlik. Aynı pozisyonda süresi biten siyah olsaydı iki motor da haklı olarak beyazın galibiyetini verirdi, çünkü beyazın mat edebileceği bir yol var.
 
-**Sürücü.** `index.html`'in arayüzü Chess LUX'ın kendisinin: Fischer, Bronstein ve simple delay modlarıyla bir FEN ve süre penceresi; `performance.now()` ile okunan ve talep ile terk dahil her eylemden önce kapatılan bir saat; sürükle-bırak, sağ tık işaretleri, alınan taşlar, son hamle ve şah vurguları. 4x sürümüyle çalışıyor. Kural katmanı ona bağlı değil: arayüzsüz hâli, `BestArbiter.html` içinde `engine_4x.js` adıyla duruyor.
+**Sürücü.** `index.html`'in arayüzü Chess LUX'ın kendisinin: Fischer, Bronstein ve simple delay modları, üç periyot, beyaz ve siyah için ayrı süre, beraberlik teklifi aralığı, otomatik 3R/50, Chess960 seçeneği ve tahta yönü seçimi olan bir FEN ve süre penceresi; `performance.now()` ile okunan ve talep ile terk dahil her eylemden önce kapatılan bir saat; sürükle-bırak, sağ tık işaretleri, dış çizgili taşlar, alınan taşlar, son hamle ve şah vurguları. 4x sürümüyle çalışıyor. Kural katmanı ona bağlı değil: arayüzsüz hâli, `BestArbiter.html` içinde `engine_4x.js` adıyla duruyor.
+
+**Chess960.** Başlangıç pozisyonu, numarasından Scharnagl formülüyle üretiliyor; bu, Chess960'ın resmî numaralandırması (518 standart pozisyon): açık kareli fil, koyu kareli fil, vezir, iki at, sonra kalan üç kareye kale, şah ve kale. Pozisyon tablosu gömülü değil ve 960 numaranın hepsi resmî listeyle aynı. Rok iskeleti `X` dizilimden türetildiği için düzenlenmiş bir FEN'deki `KQkq` hakları o dizilimin kale sütunlarını gösteriyor. Chess960'ta rok yalnızca şahın kendi kalesini "alması"yla yapılıyor: şahın varış karesine uzaklığı 0 ile 5 kare arasında değişiyor ve tek karelik bir rok, sıradan bir şah hamlesinden ayırt edilemezdi. Standart satranç varış karesine ya da kaleye tıklamayı koruyor.
+
+**Zaman kontrolü.** Her oyunun üç periyodu var; ikinci ve üçüncü, değer verilene kadar hiçbir şey değiştirmez. Hamle sayacı FEN'in tam hamle numarası (6. alanı): oyuncunun yaptığı hamle o numarayı taşır ve numara siyahın hamlesinden sonra artar, tıpkı hamle föyündeki gibi (`b … 0 1` `1...` ile başlar, beyazın ilk hamlesi de 2. hamle olur). Oyuncu # hamlesini tamamlayınca o periyodun dakikası eklenir; sonraki hamleden itibaren saniyesi artırımı (Fischer ya da Bronstein) veya gecikmeyi değiştirir. İki eşik birbirinden bağımsızdır, sıraları önemli değildir. Bronstein'da geri verilen süre, periyodun dakikası eklenmeden önce harcanan süreyle sınırlanır; eklenen dakika hiç kırpılmaz. Pencerede girilen süre her saatte kalan süredir: bir eşiği geçmiş olarak kurulan oyun (örneğin # 40 ve 60 iken 65. hamleden) o eşiğin dakikasını almaz, ama hamle numarasına göre geçerli olan artırım ya da gecikmeyle oynanır. ⚖'nin işareti kaldırılınca siyah kendi başlangıç süresini alır; artırım, gecikme ve periyotlar iki oyuncu için ortak kalır.
+
+**Beraberlik teklifi ve talebi.** Bir oyuncu, kendi son teklifinden bu yana en az ½ Offer kadar hamle geçmişse beraberlik teklif edebilir; hamleler aynı numaralarla sayılır. İlk teklif, iki oyuncu da o kadar hamleyi tamamladığında mümkün olur: siyah ½ Offer numaralı hamlesiyle, beyaz ondan sonraki hamlesiyle teklif edebilir. Teklif, onu taşıyan hamle yapıldığında sayılır; hamle yapmadan geri almak bir şey kaybettirmez. ½'ye her zaman basılabilir: aralık dolana kadar onunla yapılan hamle yalnızca beraberlik talep eder, teklif göndermez. Teklifi kabul etmek ve beraberlik talep etmek hiçbir zaman kısıtlanmaz. Varsayılan 1 değeriyle bu, FIDE 5.2.3'ün kendisidir: anlaşma için iki oyuncunun da hamle yapmış olması gerekir; beyazın ilk hamlesiyle yaptığı teklif hiçbir zaman kabul edilemez, siyah ise ilk hamlesiyle teklif edebilir ve beyaz kabul edebilir. **Auto 3R/50** açıkken üçlü tekrar ve 50 hamle kuralı, çevrim içi sunuculardaki gibi oyunu kendiliğinden bitirir ve ½ yalnızca teklif ve kabul için kalır; bayrak düşünce yapılan arama da varyantları 75 yerine 50 hamlede keser. Kapalıyken oyun FIDE'nin tahta başı kurallarını izler: bu ikisi talep edilir, beşli tekrar ve 75 hamle kuralı ise oyunu kendiliğinden bitirir.
 
 **Adlandırma.** Chess LUX, FideLite'ın `L3` adlandırmasını izler: `L3`'te zaten bulunan her ad korunur — `N` `indexOf`, `Q` `innerHTML`, kilit dedektörünün içindeki piyon kümeleri hâlâ bitişik bir çift (`m`/`n`; `l` dedektörün kendi adı) — ve tanımlar `L3`'teki sırayla gelir, böylece iki kaynak yan yana okunabilir. Yalnızca Chess LUX'ın eklediği şeyler yeni ad taşır.
 
@@ -445,7 +496,7 @@ Satırlar iki motoru yayımlandıkları hâliyle karşılaştırıyor. Arama sı
 - **Kutulu at, kale ve vezirler.** Kutusundan çıkamayan bir taş sabit bir engel sayılır; ilk kaçışı sertifikayı düşürür. Rakip şahın ya da filin ulaşabildiği kutulu taş ise hesaptan çıkar: hiçbir şey alamaz, başına gelebilecek tek şey alınmaktır.
 - **Tek taraflı ve donmuş şahlı sorular.** `l(a,G)` yalnız bir tarafın kazanma şansını sorabilir — arama onu böyle kullanır (`l(2-g)`) — ve bir şahın hareket edemediğini varsayıp bu varsayımı sonda doğrulayabilir.
 
-FideLite bu genişletmeyi kısmen, fillerin motorun tek ispatlı özelliğini riske atmasından dolayı askıda tutuyor: ölü denen her pozisyon gerçekten ölü olmalı. Chess LUX buna ispat yerine ölçümle cevap veriyor: chasolver verisinde sıfır yanlış beraberlik, fil katmanına yönelik hedefli fuzz testi ve bulup kapattığı üç açığın regresyon tablosu (bkz. teknik ek). Ne `l` ne de arama rok kuralına bağlı; ikisi de Chess960'a taşınabilir.
+FideLite bu genişletmeyi kısmen, fillerin motorun tek ispatlı özelliğini riske atmasından dolayı askıda tutuyor: ölü denen her pozisyon gerçekten ölü olmalı. Chess LUX buna ispat yerine ölçümle cevap veriyor: chasolver verisinde sıfır yanlış beraberlik, fil katmanına yönelik hedefli fuzz testi ve bulup kapattığı üç açığın regresyon tablosu (bkz. teknik ek). Ne `l` ne de arama rok kuralına bağlı; ikisi de Chess960'ta değişmeden çalışıyor.
 
 ## Kendin doğrula: BestArbiter.html
 
@@ -456,6 +507,8 @@ FideLite bu genişletmeyi kısmen, fillerin motorun tek ispatlı özelliğini ri
 3. **dosyalara hüküm ver** düğmesine basın (İngilizce arayüzde **judge the files**). **iki sürümü de koştur** (**run both builds**) seçili motorun iki sürümünü art arda çalıştırıp hükümlerin aynı olduğunu gösterir.
 
 Motor menüsünde FideLite'ın `L3`'ü de hızlı ve normal olarak var. Seçildiğinde ply ve düğüm alanları, siz değiştirmediyseniz, `L3`'ün kendi sınırlarına (15 ve 20.000) geçer; böylece iki motor aynı dosyalarla yargılanabilir.
+
+Chess960 pozisyonları da yargılanabilir: FEN rok haklarını Shredder-FEN sütun harfleriyle (`HAha`) ya da X-FEN `KQkq` olarak verebilir; kale ve şah sütunları tahtadan okunur. `L3` yalnızca klasik rok sütunlarını tanır; onunla diğer haklar yok sayılır ve sayfa bunu belirtir.
 
 Varsayılan ayarlarla (99 yarım hamle, 50.000 düğüm) beklenen sonuçlar:
 
@@ -473,8 +526,8 @@ Büyük dosyalar birkaç dakika sürebilir; pozisyonların çoğunun kanıt taş
 
 | dosya | boyut | içerik | kaynak |
 |---|---|---|---|
-| `index.html` | 7.984 B | oyun ve hakem | bu proje |
-| `BestArbiter.html` | 81.562 B | Chess LUX'ın ve FideLite `L3`'ün ikişer sürümünü gömülü taşıyan ölçüm sayfası | bu proje |
+| `index.html` | 9.782 B | oyun ve hakem | bu proje |
+| `BestArbiter.html` | 84.022 B | Chess LUX'ın ve FideLite `L3`'ün ikişer sürümünü gömülü taşıyan ölçüm sayfası | bu proje |
 | `chasolver-data-until-08-2026.csv` | 22,3 MB | chasolver'ın Lichess'te bulduğu, süreden haksız sonuçlanmış 201.060 oyun (Ağustos 2026'ya kadar) | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-positions.txt` | 152 KB | chasolver'ın etiketli 3.414 zorlu test pozisyonu | [chasolver `tests/positions.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/positions.txt) (MIT) |
 | `chasolver-lichess.txt` | 3,3 MB | etiketli 65.536 Lichess pozisyonu | [chasolver `tests/lichess.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/lichess.txt) (MIT) |
@@ -507,7 +560,7 @@ Bu bölüm `l`'yi değiştirmek ya da ölçümleri tekrarlamak isteyenler için.
 <details>
 <summary><b>Boyutlar, sürümler ve öncelikler</b></summary>
 
-Tanım başına bayt, FideLite ve Chess LUX. Listede olmayan tanımlar aynı; başlık iki sürümde de 9 bayt kısa (varsayılan saat yok).
+Tanım başına bayt, FideLite ve Chess LUX. Listede olmayan tanımlar aynı; başlık iki sürümde de 4 bayt uzun (varsayılan saat yok, ama rok iskeleti `X` var).
 
 | tanım | FideLite 1x | Chess LUX 1x | FideLite 4x | Chess LUX 4x |
 |---|---|---|---|---|
@@ -516,14 +569,15 @@ Tanım başına bayt, FideLite ve Chess LUX. Listede olmayan tanımlar aynı; ba
 | `F` | 45 | 45 | 45 | 45 |
 | `A` | 52 | 60 | 67 | 75 |
 | `D` | 36 | 42 | 36 | 42 |
-| `G` | 249 | 249 | 252 | 251 |
-| `L` | 104 | 104 | 113 | 104 |
-| `M` | 234 | 234 | 210 | 219 |
-| **motor dosyası** | **1.847** | **2.615** | **1.945** | **2.787** |
+| `G` | 249 | 328 | 252 | 327 |
+| `L` | 104 | 120 | 113 | 120 |
+| `M` | 234 | 263 | 210 | 248 |
+| `C` | 27 | 18 | 27 | 18 |
+| **motor dosyası** | **1.847** | **2.743** | **1.945** | **2.912** |
 
-1x'te `G` ile `M`'nin boyu değişmiyor: `G`'de yalnızca bir `&`'nin iki tarafının yeri değişiyor, `M` tahta kopyasını gövdede değil parametre listesinde alıyor. `F`'nin tek farkı iki sınırı.
+Kilit dedektörünün dışındaki büyüme Chess960 rokundan (`G`, `L`, `M`, `C` ve başlıktaki `X`) ve FIDE 5.2.3'ten (`A`, `D`) geliyor. `F`'nin tek farkı iki sınırı.
 
-`index.html`, 4x tanımlarını (`G V L C M I Im H l`) `BestArbiter.html`'deki `engine_4x.js` ile bayt bayt aynı taşır; `Z D F A` ise sonucu metin koduyla yazan arayüz sürümleridir.
+`index.html`, 4x tanımlarını (`G V L C M I Im H l`) `BestArbiter.html`'deki `engine_4x.js` ile bayt bayt aynı taşır; tek istisna, Auto 3R/50 işaretliyken varyantları 75 yerine 50 hamlede kesen `H`'dir (`n>149-50*Au.checked`). `Z D F A` ise sonucu metin koduyla yazan arayüz sürümleridir; `Z` otomatik 3R/50'yi, `A` da beraberlik teklifi aralığını taşır.
 
 **1x ve 4x.** FideLite'ta olduğu gibi, kullanıcıya sunulan her şey 4x yazılır: bayt önceliklidir, ama birkaç bayt karşılığında katlanarak hız kazanılıyorsa o bayt harcanır. 1x, aynı davranışın en kısa metnidir ve yalnızca ölçüm sayfasında deneysel seçenek olarak durur. İki sürüm her girdide aynı hükmü vermek zorundadır; gerçek oyunlarda 4x 100 ms'nin altında kalırken 1x saniyelere çıkabilir. İki projenin ortak optimizasyonları [FideLite'ın `engine_4x` bölümünde](https://www.fidelite.art/tr#speed) anlatılıyor.
 
@@ -639,6 +693,7 @@ Tanım başına bayt, FideLite ve Chess LUX. Listede olmayan tanımlar aynı; ba
 - **Rastgele oyunlar:** 450 oyun ve 123.453 yarım hamle boyunca legal hamle kümesi, tahta, rok hakları ve yarım hamle sayacı her adımda chess.js ile aynı.
 - **FEN:** 14.005 FEN'de, `index.html`'in FEN yolundan kurulan pozisyonların legal hamleleri chess.js ile aynı.
 - **`l`:** Mutasyonlu fuzz testinde yaklaşık 375 bin kilitli pozisyonda ilk ve sadeleştirilmiş dedektör bit bit aynı hükmü verdi.
+- **Chess960:** 960 başlangıç pozisyonunun hepsinde (2 derinlik, her 40.'sı 3 derinlik) ve 400 rastgele oyun ortasında (3 derinlik, 292'sinde rok hakkı var) perft iki sürümde de python-chess 1.11 ile aynı. Numaralandırma 960 numaranın hepsinde resmî listeyle aynı. BestArbiter'in FEN okuyucusu üzerinden, hem Shredder-FEN hem X-FEN yazılmış 520 pozisyon (1.040 FEN) aynı perft'i veriyor. Standart pozisyonlarda hükümler ve arama düğümleri Chess960 öncesi motorla aynı.
 
 **Hız**
 - **Gerçek oyunlar:** chasolver verisinin %10'luk örnekleminde (20.106 pozisyon) medyan 0,1 ms, en uzun 60 ms.
@@ -651,7 +706,16 @@ Tanım başına bayt, FideLite ve Chess LUX. Listede olmayan tanımlar aynı; ba
 - her tarafta tek şah;
 - birinci ve sekizinci sırada piyon olmaması;
 - sırası gelmeyen tarafın şah altında olmaması;
-- 0–255 aralığında yarım hamle sayacı.
+- 0–255 aralığında tam sayı bir yarım hamle sayacı ve 1'den başlayan tam sayı bir tam hamle numarası (eksik alanlar 0 ve 1 sayılır);
+- ikisinin tutarlı olması: yarım hamle sayacı en fazla 2 × (tam hamle − 1), sıra siyahtaysa bir fazlası;
+- Chess960'ta 0 ile 959 arasında bir başlangıç numarası.
+
+Süre ayarları da onunla birlikte kontrol edilir:
+- ana süre ve ⚖ işaretsizken siyahın süresi 0'dan büyük; per2 ve per3'ün eklediği dakikalar 0 ya da daha fazla; hepsi 24 saatin altında;
+- geçerli olabilecek her artırım ya da gecikme en az 0 ve 1 saatin altında: ilk periyodunki, önceki eşikten sonraki ve iki eşikten sonraki;
+- hamle numaraları (#) 0 ya da pozitif tam sayı; # 0 hiç dakika eklemez, saniyesi ilk hamleden itibaren geçerli olur;
+- beraberlik teklifi aralığı 1 ya da daha büyük bir tam sayı;
+- dakika ve saniye kesirli olabilir, boş bir periyot alanı 0 sayılır.
 
 Rok hakkı yalnız şah ve kale yerindeyse, geçerken alma alanı yalnız gerçekten oynanabilir bir alım varsa kurulur. Bilinen sınır: sıraların uzunluğu tek tek sayılmıyor.
 
@@ -681,7 +745,6 @@ Bu 11 pozisyon (`chasolver-missed-draws-08-2026.csv`'de de var) yanlış hüküm
 2. Hapsolmuş filleri engel olarak saymak: `1kb5/1p1p4/1P1P4/8/8/4p1p1/4P1P1/5BK1 w - - 0 1` ilk hamlede `DP` olmalı. Bugün bayrak hükmü doğru (`TM`) ve oyun beşli tekrarla berabere bitiyor, ama ölü pozisyon ilk hamlede ilan edilmiyor.
 3. `chasolver-positions.txt`'te kaçan 602 beraberliği azaltmak (listesi `chasolver-missed-draw-positions.csv`'de).
 4. Oyun geçmişini (beşli tekrar) bayrak aramasına katmak.
-5. Chess960 uyarlaması.
 
 **Doğrulama kuyruğu**
 - "Kural doğruluğu en yüksek hakem" iddiasının bağımsız doğrulaması.
@@ -696,7 +759,7 @@ Bu 11 pozisyon (`chasolver-missed-draws-08-2026.csv`'de de var) yanlış hüküm
 1. **Önce FideLite:** [Chess LUX'ın değiştirdikleri](#chess-luxın-değiştirdikleri) tablosundaki tanımların dışında motor FideLite'ın; oradaki bir değişiklik FideLite'ta yapılır ve oradan taşınır, böylece tablo doğru kalır.
 2. **Soundness gerekçesi:** Yeni bir sertifikanın matı neden imkânsız kıldığını yazın.
 3. **4x ve 1x:** Kullanıcıya sunulan kod 4x yazılır; 1x, aynı davranışın en kısa metni olarak ayrıca güncellenir.
-4. **Üç kopya:** Değişiklik `index.html`'e, `BestArbiter.html`'deki `src_x4`'e ve `src_nm`'ye uygulanır; `index.html` ile `src_x4` birebir aynı kalır. 1x'e taşırken `&` ile `&&` farkına dikkat edin.
+4. **Üç kopya:** Değişiklik `index.html`'e, `BestArbiter.html`'deki `src_x4`'e ve `src_nm`'ye uygulanır; `index.html` ile `src_x4`, `H`'deki Auto 3R/50 terimi dışında birebir aynı kalır. 1x'e taşırken `&` ile `&&` farkına dikkat edin.
 5. **Sürüm denkliği:** İki sürüm her girdide aynı hükmü vermeli (iki sürümü de koştur).
 6. **Regresyon:** Regresyon tablosundaki pozisyonlar yanlış yönde sertifika almamalı.
 7. **Soundness ölçümü:** `chasolver-lichess.txt`'te yanlış beraberlik 0, `chasolver-positions.txt`'te zaten mat olan üç pozisyon dışında 0, chasolver verisinde found mate 0 olmalı.
@@ -710,6 +773,7 @@ Bu 11 pozisyon (`chasolver-missed-draws-08-2026.csv`'de de var) yanlış hüküm
 - **Sütun taşması:** Yatay kaydırmada maske her zaman şart; tek renge kısıtlanmış kümede çapraz kaydırma maskesiz de doğrudur.
 - **Operatör önceliği:** `&&` ve `||`, `|` ile `&`'den düşük önceliklidir; birini dönüştürünce komşularını da kontrol edin.
 - **Erken çıkış sağlaması:** Büyüyen kümeler artı, küçülenler (`P`, `Q`, `F`, `g`) eksi işaretle girer.
+- **Dolu karede saldırı testi:** `V(s,u)`, üstünde rakip bir uzun menzilli taş duran bir kare için sorulmamalı: `G(i,i)`'nin yönü yok ve `S` sonsuza kadar kendini çağırır. Bu yüzden rok testi bir karenin saldırı altında olup olmadığını sormadan önce boş olduğunu denetliyor.
 - **1x'te `M` yan etkisiz değil:** orada rok haklarını da siliyor, bu yüzden `L` `c`'yi kaydet/geri yaz çiftinde taşımak zorunda. 4x'te `M` `c`'ye dokunmuyor, güncellemeyi arama yapıyor. Bu çiftin bir yarısını diğeri olmadan taşımayın.
 
 **Node ile ölçüm**
