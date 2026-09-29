@@ -4,7 +4,7 @@
 
 ▶ **[Play in your browser](https://cuneytinann.github.io/Chess-LUX/)** · [Benchmarking page](https://cuneytinann.github.io/Chess-LUX/BestArbiter.html)
 
-**The world's most rule-accurate chess arbiter, in a single 9,793-byte HTML file.**
+**The world's most rule-accurate chess arbiter, in a single 9,795-byte HTML file.**
 
 Chess LUX is [FideLite](https://www.fidelite.art)'s full FIDE arbiter with its lock detector rewritten. FideLite's detector, `l`, recognizes locked structures made of kings and pawns only; a wider version is [on hold](https://www.fidelite.art/#bishops) there, for its bytes, its speed cost and the risk it poses to the engine's guarantee. Chess LUX builds that wider version: with a looser budget, `l` also handles bishops and boxed-in knights, rooks and queens.
 
@@ -16,7 +16,7 @@ Everything else is FideLite's: how each FIDE article is read and applied, the bo
 |---|---|
 | **Base** | FideLite's full arbiter (`L3` rule level), `engine_4x.js` build |
 | **What changes** | the lock detector `l` and how the flag-fall search consults it; Chess960 |
-| **Size** | one file, 9,793 bytes: game, clock, interface and arbiter |
+| **Size** | one file, 9,795 bytes: game, clock, interface and arbiter |
 | **Chess960** | every starting position by its official number (0–959) or at random; castling by moving the king onto its own rook |
 | **On Lichess data** | the correct verdict in 201,049 of the 201,060 games chasolver found wrongly decided on time (99.9945%); FideLite: 197,493 (98.2%) |
 | **In locked positions** | 51,047 of 51,058 (99.98%); FideLite: 47,491 (93.01%) |
@@ -126,7 +126,7 @@ Large files can take a few minutes; the two `.txt` sets, where most positions ad
 
 | file | size | contents | source |
 |---|---|---|---|
-| `index.html` | 9,793 B | game and arbiter | this project |
+| `index.html` | 9,795 B | game and arbiter | this project |
 | `BestArbiter.html` | 84,022 B | benchmarking page with both builds of Chess LUX and of FideLite `L3` embedded | this project |
 | `chasolver-data-until-08-2026.csv` | 22.3 MB | the 201,060 wrongly decided timeouts chasolver found on Lichess (through August 2026) | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-positions.txt` | 152 KB | chasolver's 3,414 labeled challenging test positions | [chasolver `tests/positions.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/positions.txt) (MIT) |
@@ -404,7 +404,7 @@ Run with `node --stack-size=4000`.
 
 ▶ **[Tarayıcıda hemen oyna](https://cuneytinann.github.io/Chess-LUX/)** · [Ölçüm sayfası](https://cuneytinann.github.io/Chess-LUX/BestArbiter.html)
 
-**9.793 baytlık tek bir HTML dosyasında, dünyanın kural doğruluğu en yüksek satranç hakemi.**
+**9.795 baytlık tek bir HTML dosyasında, dünyanın kural doğruluğu en yüksek satranç hakemi.**
 
 Chess LUX, [FideLite](https://www.fidelite.art/tr)'ın tam FIDE hakeminin kilit dedektörü yeniden yazılmış hâli. FideLite'ın dedektörü `l` yalnızca şah ve piyonlardan oluşan kilitli yapıları tanıyor; daha geniş bir sürümü orada baytı, hız maliyeti ve motorun güvencesine getirdiği risk yüzünden [askıda](https://www.fidelite.art/tr#bishops) duruyor. Chess LUX o sürümü kuruyor: daha gevşek bir bütçeyle `l`, filleri ve kutulu at, kale ve vezirleri de hesaba katıyor.
 
@@ -416,7 +416,7 @@ Geri kalan her şey FideLite'ın: her FIDE maddesinin nasıl okunup uygulandığ
 |---|---|
 | **Temel** | FideLite'ın tam hakemi (`L3` kural seviyesi), `engine_4x.js` sürümü |
 | **Değişen** | kilit dedektörü `l` ve bayrak aramasının ona nasıl danıştığı; Chess960 |
-| **Boyut** | tek dosya, 9.793 bayt: oyun, saat, arayüz ve hakem bir arada |
+| **Boyut** | tek dosya, 9.795 bayt: oyun, saat, arayüz ve hakem bir arada |
 | **Chess960** | her başlangıç pozisyonu resmî numarasıyla (0–959) ya da rastgele; rok, şah kendi kalesinin üstüne giderek |
 | **Lichess verisiyle** | chasolver'ın bulduğu, süreden haksız sonuçlanmış 201.060 oyunun 201.049'unda doğru hüküm (%99,9945); FideLite: 197.493 (%98,2) |
 | **Kilitli yapılarda** | 51.058 oyunun 51.047'sinde (%99,98); FideLite: 47.491 (%93,01) |
@@ -526,7 +526,7 @@ Büyük dosyalar birkaç dakika sürebilir; pozisyonların çoğunun kanıt taş
 
 | dosya | boyut | içerik | kaynak |
 |---|---|---|---|
-| `index.html` | 9.793 B | oyun ve hakem | bu proje |
+| `index.html` | 9.795 B | oyun ve hakem | bu proje |
 | `BestArbiter.html` | 84.022 B | Chess LUX'ın ve FideLite `L3`'ün ikişer sürümünü gömülü taşıyan ölçüm sayfası | bu proje |
 | `chasolver-data-until-08-2026.csv` | 22,3 MB | chasolver'ın Lichess'te bulduğu, süreden haksız sonuçlanmış 201.060 oyun (Ağustos 2026'ya kadar) | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-positions.txt` | 152 KB | chasolver'ın etiketli 3.414 zorlu test pozisyonu | [chasolver `tests/positions.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/positions.txt) (MIT) |
