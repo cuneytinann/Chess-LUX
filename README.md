@@ -4,7 +4,7 @@
 
 ▶ **[Play in your browser](https://cuneytinann.github.io/Chess-LUX/)** · [Benchmarking page](https://cuneytinann.github.io/Chess-LUX/BestArbiter.html)
 
-**The world's most rule-accurate chess arbiter, in a single 9,795-byte HTML file.**
+**The world's most rule-accurate chess arbiter, in a single 9,818-byte HTML file.**
 
 Chess LUX is [FideLite](https://www.fidelite.art)'s full FIDE arbiter with its lock detector rewritten. FideLite's detector, `l`, recognizes locked structures made of kings and pawns only; a wider version is [on hold](https://www.fidelite.art/#bishops) there, for its bytes, its speed cost and the risk it poses to the engine's guarantee. Chess LUX builds that wider version: with a looser budget, `l` also handles bishops and boxed-in knights, rooks and queens.
 
@@ -16,7 +16,7 @@ Everything else is FideLite's: how each FIDE article is read and applied, the bo
 |---|---|
 | **Base** | FideLite's full arbiter (`L3` rule level), `engine_4x.js` build |
 | **What changes** | the lock detector `l` and how the flag-fall search consults it; Chess960 |
-| **Size** | one file, 9,795 bytes: game, clock, interface and arbiter |
+| **Size** | one file, 9,818 bytes: game, clock, interface and arbiter |
 | **Chess960** | every starting position by its official number (0–959) or at random; castling by moving the king onto its own rook |
 | **On Lichess data** | the correct verdict in 201,049 of the 201,060 games chasolver found wrongly decided on time (99.9945%); FideLite: 197,493 (98.2%) |
 | **In locked positions** | 51,047 of 51,058 (99.98%); FideLite: 47,491 (93.01%) |
@@ -31,6 +31,8 @@ Everything else is FideLite's: how each FIDE article is read and applied, the bo
 3. Play by clicking or dragging the pieces. Right-drag across the board to mark every square in between, or right-click a single square to mark just that one; a left click clears the marks. ½ claims, offers or accepts a draw (with Auto 3R/50 it only offers and accepts) and ⚐ resigns. While the game is on, ½ lights up green when a 50-move or threefold claim is available or the opponent has offered a draw. When the game ends, ↺ starts a new one. To castle in standard chess, click the king and then its destination or the rook; in Chess960, move the king onto its own rook.
 
 Any current browser will do: Chrome/Edge 85+, Firefox 98+, Safari 15.4+ (2022 or later). How claims, offers, the counters and the result codes work is explained on [fidelite.art](https://www.fidelite.art/#gameplay).
+
+A FEN you enter yourself is checked only for basic validity. The dialog accepts some positions no game can reach, and for those the arbiter gives no guarantee; see **FEN validation** under *Verification details and measurements* in the appendix.
 
 ## Armageddon
 
@@ -126,7 +128,7 @@ Large files can take a few minutes; the two `.txt` sets, where most positions ad
 
 | file | size | contents | source |
 |---|---|---|---|
-| `index.html` | 9,795 B | game and arbiter | this project |
+| `index.html` | 9,818 B | game and arbiter | this project |
 | `BestArbiter.html` | 84,022 B | benchmarking page with both builds of Chess LUX and of FideLite `L3` embedded | this project |
 | `chasolver-data-until-08-2026.csv` | 22.3 MB | the 201,060 wrongly decided timeouts chasolver found on Lichess (through August 2026) | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-positions.txt` | 152 KB | chasolver's 3,414 labeled challenging test positions | [chasolver `tests/positions.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/positions.txt) (MIT) |
@@ -302,7 +304,7 @@ How `H` works — the order in which a node is proven, the 75-move cutoff, the r
 - **Native code:** Ported to C++ or Rust with 64-bit integers, or compiled to WebAssembly, the engine would shed the memory-allocation overhead of BigInt. Typical positions could drop to microseconds and the hardest one to milliseconds; in practice, though, there is no need.
 
 **FEN validation.** The dialog checks:
-- 64 squares and valid piece letters;
+- eight ranks of exactly eight squares each, and valid piece letters;
 - exactly one king per side;
 - no pawns on the first or eighth rank;
 - the side not to move is not in check;
@@ -317,7 +319,16 @@ The time settings are checked with it:
 - the draw-offer interval is a whole number, 1 or more;
 - minutes and seconds may be fractional, and an empty period field counts as 0.
 
-Castling rights are set only when the king and rook stand on their original squares, and the en passant square only when a capture is actually possible. Known limitation: rank lengths are not checked individually.
+Castling rights are set only when the king and rook stand on their original squares, and the en passant square only when a capture is actually possible.
+
+**Not checked.** The dialog does not reject every illegal position:
+- it does not count material: at most 8 pawns and 16 men per side, with every piece beyond the starting set paid for by a promotion;
+- it does not test whether the checks on the board are possible: more than two checking pieces, or a double check no move can produce, such as two checks along diagonals;
+- it does not test whether the en passant square agrees with the position: an inconsistent square is dropped rather than rejected, and a check the last move cannot explain goes unnoticed.
+
+Such positions are accepted and played. `BestArbiter.html` sets them aside as invalid FEN instead.
+
+**No guarantee for strange positions.** `H` and `l` have been measured on legal positions from real games and on chasolver's test positions. Positions with more than 32 men, and other positions no game can reach, have not been tested enough: there the search and the lock detector may give a wrong verdict, a false draw included, and their edge cases have not been worked through. The soundness claims in this README hold for positions that can arise in a game; beyond that there is no guarantee.
 
 </details>
 
@@ -404,7 +415,7 @@ Run with `node --stack-size=4000`.
 
 ▶ **[Tarayıcıda hemen oyna](https://cuneytinann.github.io/Chess-LUX/)** · [Ölçüm sayfası](https://cuneytinann.github.io/Chess-LUX/BestArbiter.html)
 
-**9.795 baytlık tek bir HTML dosyasında, dünyanın kural doğruluğu en yüksek satranç hakemi.**
+**9.818 baytlık tek bir HTML dosyasında, dünyanın kural doğruluğu en yüksek satranç hakemi.**
 
 Chess LUX, [FideLite](https://www.fidelite.art/tr)'ın tam FIDE hakeminin kilit dedektörü yeniden yazılmış hâli. FideLite'ın dedektörü `l` yalnızca şah ve piyonlardan oluşan kilitli yapıları tanıyor; daha geniş bir sürümü orada baytı, hız maliyeti ve motorun güvencesine getirdiği risk yüzünden [askıda](https://www.fidelite.art/tr#bishops) duruyor. Chess LUX o sürümü kuruyor: daha gevşek bir bütçeyle `l`, filleri ve kutulu at, kale ve vezirleri de hesaba katıyor.
 
@@ -416,7 +427,7 @@ Geri kalan her şey FideLite'ın: her FIDE maddesinin nasıl okunup uygulandığ
 |---|---|
 | **Temel** | FideLite'ın tam hakemi (`L3` kural seviyesi), `engine_4x.js` sürümü |
 | **Değişen** | kilit dedektörü `l` ve bayrak aramasının ona nasıl danıştığı; Chess960 |
-| **Boyut** | tek dosya, 9.795 bayt: oyun, saat, arayüz ve hakem bir arada |
+| **Boyut** | tek dosya, 9.818 bayt: oyun, saat, arayüz ve hakem bir arada |
 | **Chess960** | her başlangıç pozisyonu resmî numarasıyla (0–959) ya da rastgele; rok, şah kendi kalesinin üstüne giderek |
 | **Lichess verisiyle** | chasolver'ın bulduğu, süreden haksız sonuçlanmış 201.060 oyunun 201.049'unda doğru hüküm (%99,9945); FideLite: 197.493 (%98,2) |
 | **Kilitli yapılarda** | 51.058 oyunun 51.047'sinde (%99,98); FideLite: 47.491 (%93,01) |
@@ -431,6 +442,8 @@ Geri kalan her şey FideLite'ın: her FIDE maddesinin nasıl okunup uygulandığ
 3. Taşları tıklayarak ya da sürükleyerek oynayın. Sağ tuşla tahtada sürüklerseniz aradaki bütün kareler işaretlenir, tek kareye sağ tıklarsanız yalnız o kare işaretlenir; sol tıklama işaretleri siler. ½ beraberlik talebi, teklifi ve kabulü (Auto 3R/50 açıkken yalnızca teklif ve kabul), ⚐ terk içindir. Oyun sürerken, 50 hamle ya da üçlü tekrar talebi mümkün olduğunda veya rakip beraberlik teklif ettiğinde ½ yeşil yanar. Oyun bitince ↺ yeni bir oyun açar. Standart satrançta rok için şaha, ardından varış karesine ya da kaleye tıklayın; Chess960'ta şahı kendi kalesinin üstüne götürün.
 
 Güncel bir tarayıcı yeterli: Chrome/Edge 85+, Firefox 98+, Safari 15.4+ (2022 ve sonrası). Talep ve tekliflerin, sayaçların ve sonuç kodlarının nasıl işlediği [fidelite.art](https://www.fidelite.art/tr#gameplay)'ta anlatılıyor.
+
+Kendi girdiğiniz FEN yalnızca temel geçerlilik açısından denetlenir. Pencere hiçbir oyunun ulaşamayacağı bazı pozisyonları da kabul eder ve hakem bunlar için bir güvence vermez; ayrıntılar teknik ekte, *Doğrulama ayrıntıları ve ölçümler* altındaki **FEN doğrulaması** bölümünde.
 
 ## Armageddon
 
@@ -526,7 +539,7 @@ Büyük dosyalar birkaç dakika sürebilir; pozisyonların çoğunun kanıt taş
 
 | dosya | boyut | içerik | kaynak |
 |---|---|---|---|
-| `index.html` | 9.795 B | oyun ve hakem | bu proje |
+| `index.html` | 9.818 B | oyun ve hakem | bu proje |
 | `BestArbiter.html` | 84.022 B | Chess LUX'ın ve FideLite `L3`'ün ikişer sürümünü gömülü taşıyan ölçüm sayfası | bu proje |
 | `chasolver-data-until-08-2026.csv` | 22,3 MB | chasolver'ın Lichess'te bulduğu, süreden haksız sonuçlanmış 201.060 oyun (Ağustos 2026'ya kadar) | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-positions.txt` | 152 KB | chasolver'ın etiketli 3.414 zorlu test pozisyonu | [chasolver `tests/positions.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/positions.txt) (MIT) |
@@ -702,7 +715,7 @@ Kilit dedektörünün dışındaki büyüme Chess960 rokundan (`G`, `L`, `M`, `C
 - **Yerel kod:** Motor 64 bitlik tamsayılarla C++ ya da Rust'a çevrilir veya WebAssembly'ye derlenirse BigInt'in bellek ayırma yükü ortadan kalkar. Tipik pozisyonlar mikrosaniyeler, en zor pozisyon milisaniyeler düzeyine inebilir; pratikte buna gerek yok.
 
 **FEN doğrulaması.** Pencere şunları kontrol eder:
-- 64 kare ve bilinen taş harfleri;
+- her biri tam 8 kare olan 8 sıra ve bilinen taş harfleri;
 - her tarafta tek şah;
 - birinci ve sekizinci sırada piyon olmaması;
 - sırası gelmeyen tarafın şah altında olmaması;
@@ -717,7 +730,16 @@ Süre ayarları da onunla birlikte kontrol edilir:
 - beraberlik teklifi aralığı 1 ya da daha büyük bir tam sayı;
 - dakika ve saniye kesirli olabilir, boş bir periyot alanı 0 sayılır.
 
-Rok hakkı yalnız şah ve kale yerindeyse, geçerken alma alanı yalnız gerçekten oynanabilir bir alım varsa kurulur. Bilinen sınır: sıraların uzunluğu tek tek sayılmıyor.
+Rok hakkı yalnız şah ve kale yerindeyse, geçerken alma alanı yalnız gerçekten oynanabilir bir alım varsa kurulur.
+
+**Denetlenmeyenler.** Pencere her geçersiz pozisyonu reddetmez:
+- materyali saymaz: tarafta en fazla 8 piyon ve 16 taş olabileceğine, başlangıç takımından fazla her taşın bir terfiyle karşılanması gerektiğine bakmaz;
+- tahtadaki şahların mümkün olup olmadığını sınamaz: ikiden fazla şah çeken taş ya da hiçbir hamlenin üretemeyeceği bir çifte şah, örneğin iki çapraz şah;
+- geçerken alma karesinin pozisyonla tutarlı olup olmadığına bakmaz: tutarsız kare reddedilmez, düşürülür; son hamlenin açıklayamayacağı bir şah da fark edilmez.
+
+Böyle pozisyonlar kabul edilir ve oynanır. `BestArbiter.html` ise onları geçersiz FEN olarak ayırır.
+
+**Garip pozisyonlarda güvence yok.** `H` ve `l`, gerçek oyunlardan gelen yasal pozisyonlarda ve chasolver'ın test pozisyonlarında ölçüldü. 32'den fazla taşlı pozisyonlar ve hiçbir oyunun ulaşamayacağı başka pozisyonlar yeterince sınanmadı: arama ve kilit dedektörü orada yanlış hüküm verebilir, yanlış beraberlik dahil; bu köşe durumları ayrıca ele alınmadı. Bu README'deki sağlamlık iddiaları oyunda ortaya çıkabilen pozisyonlar için geçerli; ötesi için bir güvence yok.
 
 </details>
 
