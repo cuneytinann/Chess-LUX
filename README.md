@@ -4,7 +4,7 @@
 
 ▶ **[Play in your browser](https://cuneytinann.github.io/Chess-LUX/)** · [Benchmarking page](https://cuneytinann.github.io/Chess-LUX/BestArbiter.html)
 
-**The world's most rule-accurate chess arbiter, in a single 9,818-byte HTML file.**
+**The world's most rule-accurate chess arbiter, in a single 9,812-byte HTML file.**
 
 Chess LUX is [FideLite](https://www.fidelite.art)'s full FIDE arbiter with its lock detector rewritten. FideLite's detector, `l`, recognizes locked structures made of kings and pawns only; a wider version is [on hold](https://www.fidelite.art/#bishops) there, for its bytes, its speed cost and the risk it poses to the engine's guarantee. Chess LUX builds that wider version: with a looser budget, `l` also handles bishops and boxed-in knights, rooks and queens.
 
@@ -16,7 +16,7 @@ Everything else is FideLite's: how each FIDE article is read and applied, the bo
 |---|---|
 | **Base** | FideLite's full arbiter (`L3` rule level), `engine_4x.js` build |
 | **What changes** | the lock detector `l` and how the flag-fall search consults it; Chess960 |
-| **Size** | one file, 9,818 bytes: game, clock, interface and arbiter |
+| **Size** | one file, 9,812 bytes: game, clock, interface and arbiter |
 | **Chess960** | every starting position by its official number (0–959) or at random; castling by moving the king onto its own rook |
 | **On Lichess data** | the correct verdict in 201,049 of the 201,060 games chasolver found wrongly decided on time (99.9945%); FideLite: 197,493 (98.2%) |
 | **In locked positions** | 51,047 of 51,058 (99.98%); FideLite: 47,491 (93.01%) |
@@ -55,7 +55,7 @@ Compared definition by definition with FideLite's [`builds/engine.js`](https://g
 | `H` | asks `l()`: is the position dead for both sides? | asks `l(2-g)`: can the opponent still win? |
 | `F` | search limits of 20,000 nodes and 15 plies | 50,000 nodes and 99 plies |
 | `A`, `D` | an agreement needs both offer bits | `A` also records that each side has moved (`o\|=4<<t`); `D` accepts an agreement only once both have (`o>14`, FIDE 5.2.3), and reads the board (`Z()`) before any claim. In `index.html` the interface versions reach 5.2.3 through the draw-offer interval instead |
-| `C`, header | castling files fixed in `C` (`'20003001'`); the header carries a default clock, `U=[600,600]` | `C` reads the castling skeleton `X` (king 3, queen-side rook 2, king-side rook 1), `20003001` for standard chess; no clock in the header, the driver owns it |
+| `C`, header | castling files fixed in `C` (`'20003001'`); no clock in the header | `C` reads the castling skeleton `X` (king 3, queen-side rook 2, king-side rook 1), `20003001` for standard chess; no clock in the header, the driver owns it |
 | `G`, `L`, `M` | castling is a two-square king move with the rook on the a- or h-file | castling is the king moving onto its own rook, in both games: `G` checks the right, that the spans of king and rook are empty and that no square of the king's path is attacked; `L` lets the king target its own rook; `M` puts the king on the g- or c-file and the rook on the f- or d-file. Standard chess is the special case: same perft, same verdicts, same search nodes |
 | rewrites | | `G` and `M` in both builds, `L` and `H` in 4x: the board copy moves into `M`'s parameter list and the 4x pawn-capture test becomes `d<2&v`; 9 bytes shorter in 4x, the same size in 1x; same perft, same search nodes |
 
@@ -128,7 +128,7 @@ Large files can take a few minutes; the two `.txt` sets, where most positions ad
 
 | file | size | contents | source |
 |---|---|---|---|
-| `index.html` | 9,818 B | game and arbiter | this project |
+| `index.html` | 9,812 B | game and arbiter | this project |
 | `BestArbiter.html` | 84,022 B | benchmarking page with both builds of Chess LUX and of FideLite `L3` embedded | this project |
 | `chasolver-data-until-08-2026.csv` | 22.3 MB | the 201,060 wrongly decided timeouts chasolver found on Lichess (through August 2026) | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-positions.txt` | 152 KB | chasolver's 3,414 labeled challenging test positions | [chasolver `tests/positions.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/positions.txt) (MIT) |
@@ -162,20 +162,20 @@ This section is for anyone who wants to modify `l` or reproduce the measurements
 <details>
 <summary><b>Sizes, builds and priorities</b></summary>
 
-Bytes per definition, FideLite against Chess LUX. Definitions not listed are identical; the header is 4 bytes longer in both builds (no default clock, but the castling skeleton `X`).
+Bytes per definition, FideLite against Chess LUX. Definitions not listed are identical. The header is 16 bytes longer in both builds: Chess LUX's carries the castling skeleton `X` and the signature names, with `U` doubling as the `indexOf` alias; FideLite's has neither the signature nor a clock.
 
 | definition | FideLite 1x | Chess LUX 1x | FideLite 4x | Chess LUX 4x |
 |---|---|---|---|---|
-| `l` | 444 | 1,204 | 477 | 1,321 |
-| `H` | 219 | 222 | 258 | 252 |
+| `l` | 424 | 1,204 | 451 | 1,321 |
+| `H` | 216 | 219 | 255 | 249 |
 | `F` | 45 | 45 | 45 | 45 |
 | `A` | 52 | 60 | 67 | 75 |
 | `D` | 36 | 42 | 36 | 42 |
-| `G` | 249 | 328 | 252 | 327 |
+| `G` | 247 | 327 | 250 | 326 |
 | `L` | 104 | 120 | 113 | 120 |
-| `M` | 234 | 263 | 210 | 248 |
+| `M` | 235 | 263 | 211 | 248 |
 | `C` | 27 | 18 | 27 | 18 |
-| **engine file** | **1,847** | **2,743** | **1,945** | **2,912** |
+| **engine file** | **1,807** | **2,737** | **1,899** | **2,906** |
 
 Beyond the lock detector, the growth comes from Chess960 castling (`G`, `L`, `M`, `C` and `X` in the header) and from FIDE 5.2.3 (`A`, `D`). `F` differs only in its two limits.
 
@@ -415,7 +415,7 @@ Run with `node --stack-size=4000`.
 
 ▶ **[Tarayıcıda hemen oyna](https://cuneytinann.github.io/Chess-LUX/)** · [Ölçüm sayfası](https://cuneytinann.github.io/Chess-LUX/BestArbiter.html)
 
-**9.818 baytlık tek bir HTML dosyasında, dünyanın kural doğruluğu en yüksek satranç hakemi.**
+**9.812 baytlık tek bir HTML dosyasında, dünyanın kural doğruluğu en yüksek satranç hakemi.**
 
 Chess LUX, [FideLite](https://www.fidelite.art/tr)'ın tam FIDE hakeminin kilit dedektörü yeniden yazılmış hâli. FideLite'ın dedektörü `l` yalnızca şah ve piyonlardan oluşan kilitli yapıları tanıyor; daha geniş bir sürümü orada baytı, hız maliyeti ve motorun güvencesine getirdiği risk yüzünden [askıda](https://www.fidelite.art/tr#bishops) duruyor. Chess LUX o sürümü kuruyor: daha gevşek bir bütçeyle `l`, filleri ve kutulu at, kale ve vezirleri de hesaba katıyor.
 
@@ -427,7 +427,7 @@ Geri kalan her şey FideLite'ın: her FIDE maddesinin nasıl okunup uygulandığ
 |---|---|
 | **Temel** | FideLite'ın tam hakemi (`L3` kural seviyesi), `engine_4x.js` sürümü |
 | **Değişen** | kilit dedektörü `l` ve bayrak aramasının ona nasıl danıştığı; Chess960 |
-| **Boyut** | tek dosya, 9.818 bayt: oyun, saat, arayüz ve hakem bir arada |
+| **Boyut** | tek dosya, 9.812 bayt: oyun, saat, arayüz ve hakem bir arada |
 | **Chess960** | her başlangıç pozisyonu resmî numarasıyla (0–959) ya da rastgele; rok, şah kendi kalesinin üstüne giderek |
 | **Lichess verisiyle** | chasolver'ın bulduğu, süreden haksız sonuçlanmış 201.060 oyunun 201.049'unda doğru hüküm (%99,9945); FideLite: 197.493 (%98,2) |
 | **Kilitli yapılarda** | 51.058 oyunun 51.047'sinde (%99,98); FideLite: 47.491 (%93,01) |
@@ -466,7 +466,7 @@ FideLite'ın [`builds/engine.js`](https://github.com/cuneytinann/FideLite/blob/m
 | `H` | `l()`'ye sorar: pozisyon iki taraf için de ölü mü? | `l(2-g)`'ye sorar: rakip hâlâ kazanabilir mi? |
 | `F` | 20.000 düğüm ve 15 yarım hamle arama sınırı | 50.000 düğüm ve 99 yarım hamle |
 | `A`, `D` | anlaşma için iki teklif biti yeter | `A` her tarafın hamle yaptığını da kaydeder (`o\|=4<<t`); `D` anlaşmayı ancak ikisi de hamle yaptıktan sonra kabul eder (`o>14`, FIDE 5.2.3) ve herhangi bir talepten önce tahtayı okur (`Z()`). `index.html`'deki arayüz sürümleri 5.2.3'ü bunun yerine beraberlik teklifi aralığıyla sağlar |
-| `C`, başlık | rok sütunları `C`'de sabit (`'20003001'`); başlık varsayılan bir saat taşır, `U=[600,600]` | `C` rok iskeleti `X`'i okur (şah 3, uzun rok kalesi 2, kısa rok kalesi 1), standart satrançta `20003001`; başlıkta saat yok, saat sürücünün |
+| `C`, başlık | rok sütunları `C`'de sabit (`'20003001'`); başlıkta saat yok | `C` rok iskeleti `X`'i okur (şah 3, uzun rok kalesi 2, kısa rok kalesi 1), standart satrançta `20003001`; başlıkta saat yok, saat sürücünün |
 | `G`, `L`, `M` | rok, kale a ya da h sütunundayken şahın iki kare gitmesi | rok iki oyunda da şahın kendi kalesinin üstüne gitmesi: `G` hakkı, şah ile kalenin kapladığı aralığın boş olduğunu ve şahın yolundaki hiçbir karenin saldırı altında olmadığını denetler; `L` şahın kendi kalesini hedef almasına izin verir; `M` şahı g ya da c, kaleyi f ya da d sütununa koyar. Standart satranç bunun özel hâli: perft, hükümler ve arama düğümleri aynı |
 | yeniden yazımlar | | iki sürümde `G` ve `M`, 4x'te `L` ve `H`: tahta kopyası `M`'nin parametre listesine geçer, 4x'te piyon alım testi `d<2&v` olur; 4x'te 9 bayt kısa, 1x'te boy aynı; perft ve arama düğümleri aynı |
 
@@ -539,7 +539,7 @@ Büyük dosyalar birkaç dakika sürebilir; pozisyonların çoğunun kanıt taş
 
 | dosya | boyut | içerik | kaynak |
 |---|---|---|---|
-| `index.html` | 9.818 B | oyun ve hakem | bu proje |
+| `index.html` | 9.812 B | oyun ve hakem | bu proje |
 | `BestArbiter.html` | 84.022 B | Chess LUX'ın ve FideLite `L3`'ün ikişer sürümünü gömülü taşıyan ölçüm sayfası | bu proje |
 | `chasolver-data-until-08-2026.csv` | 22,3 MB | chasolver'ın Lichess'te bulduğu, süreden haksız sonuçlanmış 201.060 oyun (Ağustos 2026'ya kadar) | [chasolver.org](https://chasolver.org/unfair-games) |
 | `chasolver-positions.txt` | 152 KB | chasolver'ın etiketli 3.414 zorlu test pozisyonu | [chasolver `tests/positions.txt`](https://github.com/miguel-ambrona/chasolver/blob/main/tests/positions.txt) (MIT) |
@@ -573,20 +573,20 @@ Bu bölüm `l`'yi değiştirmek ya da ölçümleri tekrarlamak isteyenler için.
 <details>
 <summary><b>Boyutlar, sürümler ve öncelikler</b></summary>
 
-Tanım başına bayt, FideLite ve Chess LUX. Listede olmayan tanımlar aynı; başlık iki sürümde de 4 bayt uzun (varsayılan saat yok, ama rok iskeleti `X` var).
+Tanım başına bayt, FideLite ve Chess LUX. Listede olmayan tanımlar aynı. Başlık iki sürümde de 16 bayt uzun: Chess LUX'unki rok iskeleti `X`'i ve imza adlarını taşıyor, `U` aynı zamanda `indexOf` takma adı; FideLite'ınkinde ne imza ne saat var.
 
 | tanım | FideLite 1x | Chess LUX 1x | FideLite 4x | Chess LUX 4x |
 |---|---|---|---|---|
-| `l` | 444 | 1.204 | 477 | 1.321 |
-| `H` | 219 | 222 | 258 | 252 |
+| `l` | 424 | 1.204 | 451 | 1.321 |
+| `H` | 216 | 219 | 255 | 249 |
 | `F` | 45 | 45 | 45 | 45 |
 | `A` | 52 | 60 | 67 | 75 |
 | `D` | 36 | 42 | 36 | 42 |
-| `G` | 249 | 328 | 252 | 327 |
+| `G` | 247 | 327 | 250 | 326 |
 | `L` | 104 | 120 | 113 | 120 |
-| `M` | 234 | 263 | 210 | 248 |
+| `M` | 235 | 263 | 211 | 248 |
 | `C` | 27 | 18 | 27 | 18 |
-| **motor dosyası** | **1.847** | **2.743** | **1.945** | **2.912** |
+| **motor dosyası** | **1.807** | **2.737** | **1.899** | **2.906** |
 
 Kilit dedektörünün dışındaki büyüme Chess960 rokundan (`G`, `L`, `M`, `C` ve başlıktaki `X`) ve FIDE 5.2.3'ten (`A`, `D`) geliyor. `F`'nin tek farkı iki sınırı.
 
