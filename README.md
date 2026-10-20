@@ -4,7 +4,7 @@
 
 ▶ **[Play in your browser](https://cuneytinann.github.io/Chess-LUX/)**
 
-**FideLite's FIDE arbiter as a complete game, in a single 9,494-byte HTML file.**
+**FideLite's FIDE arbiter as a complete game, in a single 9,526-byte HTML file.**
 
 Chess LUX is a branch of [FideLite](https://www.fidelite.art). The rules engine is FideLite's fast build, `engine_4x.js`. It keeps FideLite's reading of every FIDE article, its board, move generation, flag-fall search, claims and offers, and its fifteen result codes; all of that is documented at **[fidelite.art](https://www.fidelite.art)**.
 
@@ -19,7 +19,7 @@ This README covers only those additions.
 
 | | FideLite | Chess LUX |
 |---|---|---|
-| **What it is** | the rules engine (`engine_4x.js`, 1,940 B) | the same engine inside a complete game page (`index.html`, 9,494 B) |
+| **What it is** | the rules engine (`engine_4x.js`, 1,978 B) | the same engine inside a complete game page (`index.html`, 9,526 B) |
 | **Game setup** | — | any FEN; Fischer, Bronstein or simple delay; separate times for White and Black; two extra periods; draw-offer interval; automatic 3R/50; board orientation |
 | **Chess960** | — | all 960 starting positions by number or at random; standard chess is number 518 |
 | **Castling** | the king moves two squares | the king moves onto its own rook, in every game; in standard chess a click on the king's destination still works |
@@ -30,6 +30,8 @@ This README covers only those additions.
 | **… of which already dead when the flag fell** | 50,955 | 116,010 |
 
 Any current browser runs it: Chrome/Edge 85+, Firefox 98+, Safari 15.4+. There is nothing to install; download `index.html` to play offline. The tab reads "FideLite.Art".
+
+**The file.** `index.html` has five lines: the page (HTML and CSS), a blank line, the rules engine, a blank line, and the interface. The engine line opens the way FideLite's engines do, with `b=[c=un=15,e=y=t=8,n=o=0]`, and ends with `D`, the claims and offers.
 
 ## Try it now
 
@@ -174,11 +176,20 @@ In a test, castling rights were added to every position of chasolver's test sets
 - **What it adds.** On chasolver's data it proves the draw in games that need lines of up to about 150 plies, and in constructed locked positions that need up to about 450.
 - **What it costs.** Most flag verdicts take well under a millisecond. In the hardest positions the page can pause for a few seconds (about 5 s at most in the tests) while the search runs.
 
-**Two accelerators FideLite dropped.** FideLite's `engine_4x.js` once had two more shortcuts and left them out, because in its 9-ply, 2,000-node search they did not pay for their bytes. Chess LUX keeps both, because its searches are far longer:
+**Two accelerators FideLite dropped.** FideLite's `engine_4x.js` once had two more shortcuts and left them out, because in its 9-ply, 2,000-node search they did not pay for their bytes; measured again with the current build, they still do not. Chess LUX keeps both, because its searches are far longer:
 - **A king that can step out.** Before the lock detector runs its full analysis for a king, it asks whether that king can simply step to a square no pawn holds or attacks; if it can, that case is settled at once.
 - **Asking the lock detector at the right time.** Inside the flag-fall search, the lock detector is asked only in the two plies that follow a capture or a pawn move, and only while no en passant capture is open: a new lock cannot appear anywhere else.
 
 Neither changes a verdict: on all 201,060 positions of chasolver's data the build without them gives the same result for every position. It is only slower: the flag-fall search took about 45% longer in total and about twice as long on the heaviest position, and the dead-position search after every move about 15% longer.
+
+**Three of FideLite's new move-generation shortcuts.** The current `engine_4x.js` (1,978 B) speeds up move generation with four shortcuts that change no result. Chess LUX carries three of them:
+- **Check test.** A pawn, knight or king that stands too far from the king to give check is skipped before its move is traced.
+- **Rook and queen.** A target that lies on none of the piece's lines is rejected at once, instead of after a walk along the rank.
+- **Pawn advance.** The squares of a pawn advance are walked only when the target square is empty and in reach.
+
+The fourth limits the targets of pawns, knights and kings to the 5×5 box around them. Chess LUX leaves it out, because here the king castles onto its own rook, which can stand up to six files away.
+
+Nothing is decided differently: the engine gives the same perft counts as before on the Chess Programming Wiki test positions, and the same legal moves at every ply of 60 random Chess960 games.
 
 ## Counterexamples, credits and license
 
@@ -200,7 +211,7 @@ Chess LUX is released under the MIT License.
 
 ▶ **[Tarayıcıda oyna](https://cuneytinann.github.io/Chess-LUX/)**
 
-**FideLite'ın FIDE hakemi, eksiksiz bir oyun olarak, tek bir 9.494 baytlık HTML dosyasında.**
+**FideLite'ın FIDE hakemi, eksiksiz bir oyun olarak, tek bir 9.526 baytlık HTML dosyasında.**
 
 Chess LUX, [FideLite](https://www.fidelite.art)'ın bir koludur. Kural motoru FideLite'ın hızlı sürümü `engine_4x.js`. Her FIDE maddesinin nasıl okunduğu, tahta, hamle üretimi, bayrak düşme araması, talepler ve teklifler, on beş sonuç kodu FideLite'ınkiyle aynı; hepsi **[fidelite.art](https://www.fidelite.art)**'ta anlatılıyor.
 
@@ -215,7 +226,7 @@ Bu README yalnızca bu eklemeleri anlatıyor.
 
 | | FideLite | Chess LUX |
 |---|---|---|
-| **Ne olduğu** | kural motoru (`engine_4x.js`, 1.940 B) | aynı motor, eksiksiz bir oyun sayfasının içinde (`index.html`, 9.494 B) |
+| **Ne olduğu** | kural motoru (`engine_4x.js`, 1.978 B) | aynı motor, eksiksiz bir oyun sayfasının içinde (`index.html`, 9.526 B) |
 | **Oyun kurma** | — | istenen FEN; Fischer, Bronstein ya da simple delay; beyaz ve siyah için ayrı süre; iki ek periyot; beraberlik teklifi aralığı; otomatik 3R/50; tahta yönü |
 | **Chess960** | — | 960 başlangıç pozisyonunun hepsi, numarasıyla ya da rastgele; standart satranç 518 numara |
 | **Rok** | şah iki kare gider | her oyunda şah kendi kalesinin üstüne gider; standart satrançta şahın varış karesine tıklamak da çalışır |
@@ -226,6 +237,8 @@ Bu README yalnızca bu eklemeleri anlatıyor.
 | **… bunlardan bayrak düştüğünde zaten ölü olan** | 50.955 | 116.010 |
 
 Güncel her tarayıcıda çalışır: Chrome/Edge 85+, Firefox 98+, Safari 15.4+. Kurulum gerekmez; çevrimdışı oynamak için `index.html`'i indirmen yeterli. Sekmede "FideLite.Art" yazar.
+
+**Dosya.** `index.html` beş satırdır: sayfa (HTML ve CSS), boş bir satır, kural motoru, boş bir satır ve arayüz. Motor satırı FideLite'ın motorları gibi `b=[c=un=15,e=y=t=8,n=o=0]` ile açılır ve talepleri ve teklifleri karşılayan `D` ile biter.
 
 ## Hemen dene
 
@@ -370,11 +383,20 @@ Bir testte chasolver'ın test setlerinde şahın ve kalelerin izin verdiği her 
 - **Kazandırdığı.** chasolver verisinde 150 ply civarına kadar uzanan varyantlar isteyen oyunlarda, kurgu kilitli pozisyonlarda da 450 ply'a kadar uzananlarda beraberliği ispatlar.
 - **Bedeli.** Bayrak hükümlerinin çoğu bir milisaniyenin çok altında çıkar. En zor pozisyonlarda arama sürerken sayfa birkaç saniye (testlerde en fazla yaklaşık 5 sn) bekleyebilir.
 
-**FideLite'ın bıraktığı iki hızlandırıcı.** FideLite'ın `engine_4x.js`'inde iki kısa yol daha vardı; 9 ply ve 2.000 düğümlük aramasında baytlarını karşılamadıkları için çıkarıldılar. Chess LUX ikisini de tutuyor, çünkü aramaları çok daha uzun:
+**FideLite'ın bıraktığı iki hızlandırıcı.** FideLite'ın `engine_4x.js`'inde iki kısa yol daha vardı; 9 ply ve 2.000 düğümlük aramasında baytlarını karşılamadıkları için çıkarıldılar; güncel sürümle yeniden ölçüldüğünde de karşılamıyorlar. Chess LUX ikisini de tutuyor, çünkü aramaları çok daha uzun:
 - **Dışarı adım atabilen şah.** Kilit dedektörü bir şah için tam analize girmeden önce, o şahın hiçbir piyonun tutmadığı ya da tehdit etmediği bir kareye adım atıp atamayacağına bakar; atabiliyorsa o durum hemen kapanır.
 - **Kilit dedektörüne doğru anda sormak.** Bayrak düşme araması kilit dedektörüne yalnızca bir alış ya da piyon hamlesini izleyen iki yarım hamlede, o da geçerken alma açık değilken sorar: yeni bir kilit başka bir yerde doğamaz.
 
 İkisi de hiçbir hükmü değiştirmez: chasolver verisinin 201.060 pozisyonunun hepsinde onlarsız sürüm her pozisyon için aynı sonucu veriyor. Yalnızca daha yavaş: bayrak düşme araması toplamda yaklaşık %45, en ağır pozisyonda yaklaşık iki kat; her hamleden sonraki ölü pozisyon araması yaklaşık %15 daha uzun sürdü.
+
+**FideLite'ın yeni hamle üretimi kısa yollarından üçü.** Güncel `engine_4x.js` (1.978 B), hiçbir sonucu değiştirmeyen dört kısa yolla hamle üretimini hızlandırıyor. Chess LUX bunların üçünü taşıyor:
+- **Şah testi.** Şahtan, şah çekemeyecek kadar uzakta duran piyon, at ya da şah, hamlesi izlenmeden atlanır.
+- **Kale ve vezir.** Taşın hiçbir hattında olmayan bir hedef, yatay boyunca yürünmeden hemen reddedilir.
+- **Piyon ilerleyişi.** Piyon ilerleyişinin kareleri yalnızca hedef kare boş ve erişilebilirken yürünür.
+
+Dördüncüsü piyon, at ve şahın hedeflerini çevrelerindeki 5×5'lik kutuyla sınırlıyor. Chess LUX onu almıyor, çünkü burada şah kendi kalesinin üstüne rok yapıyor ve o kale altı sütun öteye kadar uzakta durabiliyor.
+
+Hiçbir karar değişmiyor: motor Chess Programming Wiki test pozisyonlarında öncekiyle aynı perft sayılarını, 60 rastgele Chess960 oyununun her yarım hamlesinde de aynı yasal hamleleri veriyor.
 
 ## Karşı örnek, atıf ve lisans
 
