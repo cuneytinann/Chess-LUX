@@ -4,7 +4,7 @@
 
 ▶ **[Play in your browser](https://cuneytinann.github.io/Chess-LUX/)**
 
-**FideLite's FIDE arbiter as a complete game, in a single 9,526-byte HTML file.**
+**FideLite's FIDE arbiter as a complete game, in a single 9,411-byte HTML file.**
 
 Chess LUX is a branch of [FideLite](https://www.fidelite.art). The rules engine is FideLite's fast build, `engine_4x.js`. It keeps FideLite's reading of every FIDE article, its board, move generation, flag-fall search, claims and offers, and its fifteen result codes; all of that is documented at **[fidelite.art](https://www.fidelite.art)**.
 
@@ -19,7 +19,7 @@ This README covers only those additions.
 
 | | FideLite | Chess LUX |
 |---|---|---|
-| **What it is** | the rules engine (`engine_4x.js`, 1,978 B) | the same engine inside a complete game page (`index.html`, 9,526 B) |
+| **What it is** | the rules engine (`engine_4x.js`, 1,978 B) | the same engine inside a complete game page (`index.html`, 9,411 B) |
 | **Game setup** | — | any FEN; Fischer, Bronstein or simple delay; separate times for White and Black; two extra periods; draw-offer interval; automatic 3R/50; board orientation |
 | **Chess960** | — | all 960 starting positions by number or at random; standard chess is number 518 |
 | **Castling** | the king moves two squares | the king moves onto its own rook, in every game; in standard chess a click on the king's destination still works |
@@ -211,7 +211,7 @@ Chess LUX is released under the MIT License.
 
 ▶ **[Tarayıcıda oyna](https://cuneytinann.github.io/Chess-LUX/)**
 
-**FideLite'ın FIDE hakemi, eksiksiz bir oyun olarak, tek bir 9.526 baytlık HTML dosyasında.**
+**FideLite'ın FIDE hakemi, eksiksiz bir oyun olarak, tek bir 9.411 baytlık HTML dosyasında.**
 
 Chess LUX, [FideLite](https://www.fidelite.art)'ın bir koludur. Kural motoru FideLite'ın hızlı sürümü `engine_4x.js`. Her FIDE maddesinin nasıl okunduğu, tahta, hamle üretimi, bayrak düşme araması, talepler ve teklifler, on beş sonuç kodu FideLite'ınkiyle aynı; hepsi **[fidelite.art](https://www.fidelite.art)**'ta anlatılıyor.
 
@@ -226,7 +226,7 @@ Bu README yalnızca bu eklemeleri anlatıyor.
 
 | | FideLite | Chess LUX |
 |---|---|---|
-| **Ne olduğu** | kural motoru (`engine_4x.js`, 1.978 B) | aynı motor, eksiksiz bir oyun sayfasının içinde (`index.html`, 9.526 B) |
+| **Ne olduğu** | kural motoru (`engine_4x.js`, 1.978 B) | aynı motor, eksiksiz bir oyun sayfasının içinde (`index.html`, 9.411 B) |
 | **Oyun kurma** | — | istenen FEN; Fischer, Bronstein ya da simple delay; beyaz ve siyah için ayrı süre; iki ek periyot; beraberlik teklifi aralığı; otomatik 3R/50; tahta yönü |
 | **Chess960** | — | 960 başlangıç pozisyonunun hepsi, numarasıyla ya da rastgele; standart satranç 518 numara |
 | **Rok** | şah iki kare gider | her oyunda şah kendi kalesinin üstüne gider; standart satrançta şahın varış karesine tıklamak da çalışır |
