@@ -4,13 +4,13 @@
 
 ▶ **[Play in your browser](https://cuneytinann.github.io/Chess-LUX/)**
 
-**FideLite's FIDE arbiter as a complete game, in a single 9,411-byte HTML file.**
+**FideLite's FIDE arbiter as a complete game, in a single 9,392-byte HTML file.**
 
 Chess LUX is a branch of [FideLite](https://www.fidelite.art). The rules engine is FideLite's fast build, `engine_4x.js`. It keeps FideLite's reading of every FIDE article, its board, move generation, flag-fall search, claims and offers, and its fifteen result codes; all of that is documented at **[fidelite.art](https://www.fidelite.art)**.
 
 On top of that core, Chess LUX adds:
 - a full game page: game setup, three clock types, time periods, a draw-offer interval and Chess960;
-- three engine extensions: boxed-in knights, rooks and queens in the lock detector, castling by moving the king onto its own rook, and a short search for dead positions after every move;
+- three engine extensions: a wider lock detector (bishops, pawns a king can take, a king that can never move, and boxed-in knights, rooks and queens), castling by moving the king onto its own rook, and a short search for dead positions after every move;
 - a much larger flag-fall search.
 
 This README covers only those additions.
@@ -19,15 +19,15 @@ This README covers only those additions.
 
 | | FideLite | Chess LUX |
 |---|---|---|
-| **What it is** | the rules engine (`engine_4x.js`, 1,978 B) | the same engine inside a complete game page (`index.html`, 9,411 B) |
+| **What it is** | the rules engine (`engine_4x.js`, 1,644 B) | the same engine inside a complete game page (`index.html`, 9,392 B) |
 | **Game setup** | — | any FEN; Fischer, Bronstein or simple delay; separate times for White and Black; two extra periods; draw-offer interval; automatic 3R/50; board orientation |
 | **Chess960** | — | all 960 starting positions by number or at random; standard chess is number 518 |
 | **Castling** | the king moves two squares | the king moves onto its own rook, in every game; in standard chess a click on the king's destination still works |
-| **Lock detector** | kings, pawns and bishops | also boxed-in knights, rooks and queens |
+| **Lock detector** | kings and pawns | kings, pawns and bishops, plus boxed-in knights, rooks and queens |
 | **Dead position (5.2.2)** | the lock detector | the lock detector, then a 9-ply search for each side after every move |
-| **Flag-fall search** | 9 plies, 2,000 nodes | 450 plies, 600,000 nodes |
-| **chasolver's 201,060 wrongly decided Lichess timeouts** | 201,050 correct | 201,058 correct |
-| **… of which already dead when the flag fell** | 50,955 | 116,010 |
+| **Flag-fall search** | 9 plies, 2,000 nodes | 300 plies, 400,000 nodes |
+| **chasolver's 201,060 wrongly decided Lichess timeouts** | 197,464 correct | 201,058 correct |
+| **… of which already dead when the flag fell** | 47,048 | 116,010 |
 
 Any current browser runs it: Chrome/Edge 85+, Firefox 98+, Safari 15.4+. There is nothing to install; download `index.html` to play offline. The tab reads "FideLite.Art".
 
@@ -119,7 +119,7 @@ The page shows the following:
 **FIDE 5.2.3.** With the default of 1, the interval is exactly FIDE 5.2.3: an agreement needs both players to have moved. White's offer with its first move could never be accepted, while Black may offer with its first move and White may accept.
 
 **Auto 3R/50.**
-- **On:** threefold repetition and the 50-move rule end the game automatically, as on online servers, and ½ only offers and accepts. The flag-fall search then also ends its lines at 50 moves instead of 75.
+- **On:** threefold repetition and the 50-move rule end the game automatically, as on online servers, and ½ only offers and accepts. The flag-fall search and the dead-position search after every move then also end their lines at 50 moves instead of 75.
 - **Off:** the game follows FIDE's over-the-board rules. Those two are claimed, while fivefold repetition and the 75-move rule end the game automatically.
 
 ### Chess960
@@ -141,7 +141,17 @@ No table of positions is embedded, and all 960 numbers match the official list. 
 
 ### The engine
 
-**Boxed-in knights, rooks and queens.** FideLite's lock detector certifies locked structures of kings, pawns and bishops. Any knight, rook or queen on the board switches it off. Chess LUX lets such a piece stay when it is boxed in.
+**A wider lock detector than FideLite's.** FideLite's lock detector now certifies only locks made of kings and pawns. Chess LUX keeps the detector FideLite carried before, so the gap between the two is wider than it used to be. Beyond kings and pawns it handles:
+- **Bishops.** A bishop may move about behind the wall, as long as it can never take a pawn or stand on a square where a pawn could take it.
+- **Pawns a king can take.** A king that can reach a pawn is not taken as a sign of life on its own: the pawn leaves the wall, and the detector checks whether anything opens behind it.
+- **Checks that cannot mate.** A pawn or bishop that can give check does not break the lock by itself; it counts only where the checked king could be left without an escape square. So a lock can hold for one side and not for the other: on the same board one side may still be able to mate.
+- **A king that can never move.** A king shut in so that it can never leave its square counts as part of the wall, and it freezes the enemy pawn in front of it. This holds only if the king really cannot move.
+- **Boxed-in knights, rooks and queens**, described next.
+
+On chasolver's 201,060 timeouts this detector alone finds 50,956 positions already dead when the flag falls; FideLite's finds 47,048.
+
+**Boxed-in knights, rooks and queens.** Any knight, rook or queen on the board would switch the detector off. Chess LUX lets such a piece stay when it is boxed in.
+- **Why Chess LUX has it: Chess960.** In standard chess such a lock almost never happens. Of chasolver's 201,060 timeouts exactly one has it, the game below, and the labelled Lichess test set has none. It is hard to build even on purpose, and the chance of meeting one in a real game is less than one in billions. In Chess960 rooks, knights and bishops start on other squares, so depending on the starting position a piece walled in behind its own pawns can become much more likely.
 - **When a piece is boxed in.** Every square it could step to holds one of its own fixed men:
   - for a knight, its knight squares;
   - for a rook, its four orthogonal neighbours;
@@ -168,21 +178,22 @@ In a test, castling rights were added to every position of chasolver's test sets
 
 **Dead positions found by search.** After every move, besides the lock detector, Chess LUX asks the search two short questions, one for each side: can this side still be mated? Each search runs to 9 plies and 2,000 nodes and plays every legal move of both sides. A side in check plays only the moves that get it out of check; a side that is already mated has ended the game as checkmate before this test is reached; stalemate counts as no mate. When both searches prove that no line leads to mate, the game ends as a dead position (FIDE 5.2.2).
 - **What it adds.** Positions the lock detector cannot certify but that are dead within a few moves: a piece that must be captured, a king whose only move takes the last pawn, lines that all end in stalemate. Of chasolver's 201,060 timeouts, 116,010 (58%) are already dead when the flag falls, against 50,956 with the lock detector alone. In those games Chess LUX would have ended the game as a dead position no later than that move. Deep locks with bishops still need the flag-fall search.
-- **Soundness.** A line that reaches the ply or node limit counts as unproven, so a position is called dead only when every line ends without mate: in stalemate, in a repetition, or at a position the lock detector certifies. The 50- and 75-move rules do not end a line here: a position is never called dead just because the move counter is close to its limit. On chasolver's labelled test sets it called no position dead that one side can still win.
+- **Soundness.** A line that reaches the ply or node limit counts as unproven, so a position is called dead only when every line ends without mate: in stalemate, in a repetition, or at a position the lock detector certifies. A line also ends without mate when the move counter reaches its automatic limit, 75 moves, or 50 with Auto 3R/50: from there the game is drawn whatever is played. So a position whose every line runs into that limit before any mate is dead as well; two knights against two knights from halfmove 134 end as a dead position at halfmove 147. Fivefold repetition and the limit itself are checked before the search, so a game that reaches either still ends under its own name. On chasolver's labelled test sets it called no position dead that one side can still win.
 - **What it costs.** About 0.1 ms per move on average, a few tens of milliseconds at most.
 
-**The flag-fall search.** When a flag falls, the search checks whether the opponent can still mate. It runs to 450 plies and 600,000 nodes, where FideLite stops at 9 plies and 2,000 nodes.
-- **Why 450.** A line ends by itself at the 75-move rule, so 450 plies leave room for three full 75-move stretches between pawn moves and captures.
-- **What it adds.** On chasolver's data it proves the draw in games that need lines of up to about 150 plies, and in constructed locked positions that need up to about 450.
-- **What it costs.** Most flag verdicts take well under a millisecond. In the hardest positions the page can pause for a few seconds (about 5 s at most in the tests) while the search runs.
+**The flag-fall search.** When a flag falls, the search checks whether the opponent can still mate. It runs to 300 plies and 400,000 nodes, where FideLite stops at 9 plies and 2,000 nodes.
+- **Why 300 plies.** A line ends by itself at the 75-move rule, so 300 plies leave room for two full 75-move stretches between pawn moves and captures. No proof on chasolver's data needs more than 150.
+- **Why 400,000 nodes.** The heaviest proof on chasolver's data takes about 256,000 nodes. The two limits keep the pause short when a flag falls and the call stack small: 300 plies deep, the search needs about 375 KB of the roughly 1 MB of stack a browser gives a page.
+- **What it adds.** Of chasolver's 201,060 timeouts it proves the draw in all but two, the same result as the earlier 450 plies and 600,000 nodes. In chasolver's constructed test positions it proves 2,103 of the 2,877 cases in which the flagged side cannot be mated. The earlier limits proved 40 more, locks that need up to about 450 plies or more nodes; they now end as a win on time.
+- **What it costs.** Most flag verdicts take well under a millisecond. On our test machine, a slow server, the hardest position from chasolver's data takes about 2 s and the hardest constructed positions about 8 s; a current laptop is about twice as fast.
 
-**Two accelerators FideLite dropped.** FideLite's `engine_4x.js` once had two more shortcuts and left them out, because in its 9-ply, 2,000-node search they did not pay for their bytes; measured again with the current build, they still do not. Chess LUX keeps both, because its searches are far longer:
+**Two accelerators FideLite dropped.** FideLite's `engine_4x.js` once had two more shortcuts and left them out, because in its 9-ply, 2,000-node search they did not pay for their bytes. Chess LUX keeps both, because its searches are far longer:
 - **A king that can step out.** Before the lock detector runs its full analysis for a king, it asks whether that king can simply step to a square no pawn holds or attacks; if it can, that case is settled at once.
-- **Asking the lock detector at the right time.** Inside the flag-fall search, the lock detector is asked only in the two plies that follow a capture or a pawn move, and only while no en passant capture is open: a new lock cannot appear anywhere else.
+- **Asking the lock detector at the right time.** In both searches, the flag-fall search and the dead-position search after every move, the lock detector is asked at the root and then only in the two plies that follow a capture or a pawn move, and only while no en passant capture is open: a new lock cannot appear anywhere else.
 
 Neither changes a verdict: on all 201,060 positions of chasolver's data the build without them gives the same result for every position. It is only slower: the flag-fall search took about 45% longer in total and about twice as long on the heaviest position, and the dead-position search after every move about 15% longer.
 
-**Three of FideLite's new move-generation shortcuts.** The current `engine_4x.js` (1,978 B) speeds up move generation with four shortcuts that change no result. Chess LUX carries three of them:
+**Three of FideLite's new move-generation shortcuts.** The current `engine_4x.js` (1,644 B) speeds up move generation with four shortcuts that change no result. Chess LUX carries three of them:
 - **Check test.** A pawn, knight or king that stands too far from the king to give check is skipped before its move is traced.
 - **Rook and queen.** A target that lies on none of the piece's lines is rejected at once, instead of after a walk along the rank.
 - **Pawn advance.** The squares of a pawn advance are walked only when the target square is empty and in reach.
@@ -211,13 +222,13 @@ Chess LUX is released under the MIT License.
 
 ▶ **[Tarayıcıda oyna](https://cuneytinann.github.io/Chess-LUX/)**
 
-**FideLite'ın FIDE hakemi, eksiksiz bir oyun olarak, tek bir 9.411 baytlık HTML dosyasında.**
+**FideLite'ın FIDE hakemi, eksiksiz bir oyun olarak, tek bir 9.392 baytlık HTML dosyasında.**
 
 Chess LUX, [FideLite](https://www.fidelite.art)'ın bir koludur. Kural motoru FideLite'ın hızlı sürümü `engine_4x.js`. Her FIDE maddesinin nasıl okunduğu, tahta, hamle üretimi, bayrak düşme araması, talepler ve teklifler, on beş sonuç kodu FideLite'ınkiyle aynı; hepsi **[fidelite.art](https://www.fidelite.art)**'ta anlatılıyor.
 
 Chess LUX bu çekirdeğin üstüne şunları ekliyor:
 - eksiksiz bir oyun sayfası: oyun kurma, üç saat türü, zaman periyotları, beraberlik teklifi aralığı ve Chess960;
-- motorda üç ek: kilit dedektöründe gömülü at, kale ve vezir; şahın kendi kalesinin üstüne giderek yaptığı rok; ve her hamleden sonra ölü pozisyon için kısa bir arama;
+- motorda üç ek: daha geniş bir kilit dedektörü (filler, şahın alabildiği piyonlar, hiç kıpırdayamayan şah ve gömülü at, kale, vezir); şahın kendi kalesinin üstüne giderek yaptığı rok; ve her hamleden sonra ölü pozisyon için kısa bir arama;
 - çok daha geniş bir bayrak düşme araması.
 
 Bu README yalnızca bu eklemeleri anlatıyor.
@@ -226,15 +237,15 @@ Bu README yalnızca bu eklemeleri anlatıyor.
 
 | | FideLite | Chess LUX |
 |---|---|---|
-| **Ne olduğu** | kural motoru (`engine_4x.js`, 1.978 B) | aynı motor, eksiksiz bir oyun sayfasının içinde (`index.html`, 9.411 B) |
+| **Ne olduğu** | kural motoru (`engine_4x.js`, 1.644 B) | aynı motor, eksiksiz bir oyun sayfasının içinde (`index.html`, 9.392 B) |
 | **Oyun kurma** | — | istenen FEN; Fischer, Bronstein ya da simple delay; beyaz ve siyah için ayrı süre; iki ek periyot; beraberlik teklifi aralığı; otomatik 3R/50; tahta yönü |
 | **Chess960** | — | 960 başlangıç pozisyonunun hepsi, numarasıyla ya da rastgele; standart satranç 518 numara |
 | **Rok** | şah iki kare gider | her oyunda şah kendi kalesinin üstüne gider; standart satrançta şahın varış karesine tıklamak da çalışır |
-| **Kilit dedektörü** | şahlar, piyonlar ve filler | ayrıca gömülü at, kale ve vezir |
+| **Kilit dedektörü** | şahlar ve piyonlar | şahlar, piyonlar ve filler, ayrıca gömülü at, kale ve vezir |
 | **Ölü pozisyon (5.2.2)** | kilit dedektörü | kilit dedektörü, ardından her hamleden sonra iki taraf için 9 ply'lık arama |
-| **Bayrak düşme araması** | 9 ply, 2.000 düğüm | 450 ply, 600.000 düğüm |
-| **chasolver'ın süreden yanlış sonuçlanan 201.060 Lichess oyunu** | 201.050 doğru | 201.058 doğru |
-| **… bunlardan bayrak düştüğünde zaten ölü olan** | 50.955 | 116.010 |
+| **Bayrak düşme araması** | 9 ply, 2.000 düğüm | 300 ply, 400.000 düğüm |
+| **chasolver'ın süreden yanlış sonuçlanan 201.060 Lichess oyunu** | 197.464 doğru | 201.058 doğru |
+| **… bunlardan bayrak düştüğünde zaten ölü olan** | 47.048 | 116.010 |
 
 Güncel her tarayıcıda çalışır: Chrome/Edge 85+, Firefox 98+, Safari 15.4+. Kurulum gerekmez; çevrimdışı oynamak için `index.html`'i indirmen yeterli. Sekmede "FideLite.Art" yazar.
 
@@ -326,7 +337,7 @@ Sayfada şunlar görünür:
 **FIDE 5.2.3.** Varsayılan 1 değeriyle aralık FIDE 5.2.3'ün kendisidir: anlaşma için iki oyuncunun da hamle yapmış olması gerekir. Beyazın ilk hamlesiyle yaptığı teklif hiçbir zaman kabul edilemez; siyah ise ilk hamlesiyle teklif edebilir ve beyaz kabul edebilir.
 
 **Auto 3R/50.**
-- **Açıkken:** üçlü tekrar ve 50 hamle kuralı, çevrim içi sunuculardaki gibi oyunu kendiliğinden bitirir; ½ yalnızca teklif ve kabul için kalır. Bayrak düşünce yapılan arama da varyantları 75 yerine 50 hamlede keser.
+- **Açıkken:** üçlü tekrar ve 50 hamle kuralı, çevrim içi sunuculardaki gibi oyunu kendiliğinden bitirir; ½ yalnızca teklif ve kabul için kalır. Bayrak düşünce yapılan arama ve her hamleden sonraki ölü pozisyon araması da varyantları 75 yerine 50 hamlede keser.
 - **Kapalıyken:** oyun FIDE'nin tahta başı kurallarını izler. Bu ikisi talep edilir; beşli tekrar ve 75 hamle kuralı ise oyunu kendiliğinden bitirir.
 
 ### Chess960
@@ -348,7 +359,17 @@ Pozisyon tablosu gömülü değil ve 960 numaranın hepsi resmî listeyle aynı.
 
 ### Motor
 
-**Gömülü at, kale ve vezir.** FideLite'ın kilit dedektörü şahlardan, piyonlardan ve fillerden oluşan kilitli yapıları onaylar. Tahtada bir at, kale ya da vezir olunca devre dışı kalır. Chess LUX böyle bir taş gömülüyse onun kalmasına izin veriyor.
+**FideLite'ınkinden geniş bir kilit dedektörü.** FideLite'ın kilit dedektörü artık yalnız şahlardan ve piyonlardan oluşan kilitleri onaylıyor. Chess LUX, FideLite'ın daha önce taşıdığı dedektörü koruyor; bu yüzden ikisi arasındaki fark eskisinden büyük. Şah ve piyonun ötesinde şunları da tanıyor:
+- **Filler.** Fil, hiçbir piyonu alamadığı ve bir piyonun onu alabileceği bir kareye hiç çıkamadığı sürece duvarın arkasında dolaşabilir.
+- **Şahın alabildiği piyonlar.** Bir piyona ulaşabilen şah tek başına canlılık işareti sayılmaz: piyon duvardan çıkar, dedektör de arkasında bir şeyin açılıp açılmadığına bakar.
+- **Mat getiremeyen şah çekmeler.** Şah çekebilen bir piyon ya da fil kilidi tek başına bozmaz; yalnızca şah çekilen şahın kaçacak karesi kalmayabilecekse sayılır. Bu yüzden kilit bir taraf için tutup öbürü için tutmayabilir: aynı tahtada bir taraf hâlâ mat edebilir.
+- **Hiç kıpırdayamayan şah.** Karesinden hiç çıkamayacak biçimde kapanmış bir şah duvarın parçası sayılır ve önündeki rakip piyonu da dondurur. Bu, ancak şah gerçekten kıpırdayamıyorsa geçerlidir.
+- **Gömülü at, kale ve vezir**, hemen aşağıda.
+
+chasolver'ın 201.060 süre kaybında bu dedektör tek başına, bayrak düştüğünde zaten ölü olan 50.956 pozisyon buluyor; FideLite'ınki 47.048.
+
+**Gömülü at, kale ve vezir.** Tahtadaki her at, kale ya da vezir dedektörü devre dışı bırakırdı. Chess LUX böyle bir taş gömülüyse onun kalmasına izin veriyor.
+- **Neden var: Chess960.** Standart satrançta böyle bir kilit neredeyse hiç görülmez. chasolver'ın 201.060 süre kaybında yalnız bir tane var, aşağıdaki oyun; etiketli Lichess test setinde hiç yok. Bilerek kurmak bile zor; gerçek bir oyunda karşılaşma ihtimali milyarlarda birden az. Chess960'ta ise kaleler, atlar ve filler başka karelerden başlar; başlangıç pozisyonuna göre kendi piyonlarının arkasında gömülü kalan bir taşın görülme ihtimali çok artabilir.
 - **Bir taş ne zaman gömülü sayılır.** Gidebileceği her karede kendi sabit taşlarından biri durmalı:
   - at için kendi at kareleri;
   - kale için dört dik komşusu;
@@ -375,21 +396,22 @@ Bir testte chasolver'ın test setlerinde şahın ve kalelerin izin verdiği her 
 
 **Aramayla bulunan ölü pozisyonlar.** Chess LUX her hamleden sonra kilit dedektörünün yanında aramaya iki kısa soru sorar, her taraf için bir tane: bu taraf hâlâ mat edilebilir mi? Her arama 9 ply ve 2.000 düğüme kadar gider ve iki tarafın da bütün yasal hamlelerini oynar. Şahta olan taraf yalnız şahtan kurtaran hamleleri oynar; zaten mat olan tarafın oyunu bu teste gelmeden mat olarak biter; pat mat sayılmaz. İki arama da hiçbir yolun mata çıkmadığını kanıtlarsa oyun ölü pozisyonla biter (FIDE 5.2.2).
 - **Kazandırdığı.** Kilit dedektörünün onaylayamadığı ama birkaç hamle içinde ölü olan pozisyonlar: alınmak zorunda olan bir taş, tek hamlesi son piyonu almak olan bir şah, her yolu pata çıkan konumlar. chasolver'ın 201.060 süre kaybının 116.010'u (%58) bayrak düştüğünde zaten ölü; yalnız kilit dedektörüyle bu sayı 50.956. Bu oyunlarda Chess LUX oyunu en geç o hamlede ölü pozisyon olarak bitirirdi. Fillerle kurulmuş derin kilitler için yine bayrak düşme araması gerekir.
-- **Güvenilirlik.** Ply ya da düğüm sınırına çarpan yol ispatlanmamış sayılır; yani bir pozisyon ancak her yol matsız bittiğinde ölü sayılır: patta, tekrarda ya da kilit dedektörünün onayladığı bir pozisyonda. 50 ve 75 hamle kuralları burada bir yolu bitirmez: hamle sayacı sınırına yaklaştı diye hiçbir pozisyon ölü sayılmaz. chasolver'ın etiketli test setlerinde, bir tarafın hâlâ kazanabildiği hiçbir pozisyonu ölü saymadı.
+- **Güvenilirlik.** Ply ya da düğüm sınırına çarpan yol ispatlanmamış sayılır; yani bir pozisyon ancak her yol matsız bittiğinde ölü sayılır: patta, tekrarda ya da kilit dedektörünün onayladığı bir pozisyonda. Hamle sayacı otomatik sınırına (75 hamle, Auto 3R/50 açıkken 50) ulaşan yol da matsız biter: oradan sonra ne oynanırsa oynansın oyun berabere biter. Bu yüzden her yolu mattan önce bu sınıra çıkan pozisyon da ölüdür; 134. yarım hamleden başlayan iki at iki ata karşı oyun 147. yarım hamlede ölü pozisyonla biter. Beşli tekrar ve sınırın kendisi aramadan önce sorulur; oyun bunlardan birine ulaşırsa yine kendi adıyla biter. chasolver'ın etiketli test setlerinde, bir tarafın hâlâ kazanabildiği hiçbir pozisyonu ölü saymadı.
 - **Bedeli.** Hamle başına ortalama yaklaşık 0,1 ms, en fazla birkaç on milisaniye.
 
-**Bayrak düşme araması.** Bayrak düşünce arama, rakibin hâlâ mat edip edemeyeceğine bakar. 450 ply ve 600.000 düğüme kadar gider; FideLite 9 ply ve 2.000 düğümde durur.
-- **Neden 450.** Bir varyant 75 hamle kuralında kendiliğinden biter; 450 ply, piyon hamleleri ve alışlar arasında üç tam 75 hamlelik aralığa yer bırakır.
-- **Kazandırdığı.** chasolver verisinde 150 ply civarına kadar uzanan varyantlar isteyen oyunlarda, kurgu kilitli pozisyonlarda da 450 ply'a kadar uzananlarda beraberliği ispatlar.
-- **Bedeli.** Bayrak hükümlerinin çoğu bir milisaniyenin çok altında çıkar. En zor pozisyonlarda arama sürerken sayfa birkaç saniye (testlerde en fazla yaklaşık 5 sn) bekleyebilir.
+**Bayrak düşme araması.** Bayrak düşünce arama, rakibin hâlâ mat edip edemeyeceğine bakar. 300 ply ve 400.000 düğüme kadar gider; FideLite 9 ply ve 2.000 düğümde durur.
+- **Neden 300 ply.** Bir varyant 75 hamle kuralında kendiliğinden biter; 300 ply, piyon hamleleri ve alışlar arasında iki tam 75 hamlelik aralığa yer bırakır. chasolver verisinde hiçbir ispat 150 ply'dan fazlasını istemiyor.
+- **Neden 400.000 düğüm.** chasolver verisindeki en ağır ispat yaklaşık 256.000 düğüm tutuyor. İki sınır, bayrak düştüğündeki bekleyişi kısa, çağrı yığınını da küçük tutar: 300 ply derinlikte arama, tarayıcının bir sayfaya verdiği yaklaşık 1 MB'lık yığının yaklaşık 375 KB'ını kullanır.
+- **Kazandırdığı.** chasolver'ın 201.060 süre kaybının ikisi dışında hepsinde beraberliği ispatlar; önceki 450 ply ve 600.000 düğümle sonuç aynı. chasolver'ın kurgu test pozisyonlarında, bayrağı düşen tarafın mat edilemediği 2.877 durumun 2.103'ünü ispatlar. Önceki sınırlar 40 tane daha ispatlıyordu: 450 ply'a kadar uzanan ya da daha çok düğüm isteyen kilitler; bunlar artık süreden galibiyetle biter.
+- **Bedeli.** Bayrak hükümlerinin çoğu bir milisaniyenin çok altında çıkar. Test makinemizde (yavaş bir sunucu) chasolver verisindeki en zor pozisyon yaklaşık 2 sn, en zor kurgu pozisyonları yaklaşık 8 sn sürer; güncel bir dizüstü bilgisayar yaklaşık iki kat hızlı.
 
-**FideLite'ın bıraktığı iki hızlandırıcı.** FideLite'ın `engine_4x.js`'inde iki kısa yol daha vardı; 9 ply ve 2.000 düğümlük aramasında baytlarını karşılamadıkları için çıkarıldılar; güncel sürümle yeniden ölçüldüğünde de karşılamıyorlar. Chess LUX ikisini de tutuyor, çünkü aramaları çok daha uzun:
+**FideLite'ın bıraktığı iki hızlandırıcı.** FideLite'ın `engine_4x.js`'inde iki kısa yol daha vardı; 9 ply ve 2.000 düğümlük aramasında baytlarını karşılamadıkları için çıkarıldılar. Chess LUX ikisini de tutuyor, çünkü aramaları çok daha uzun:
 - **Dışarı adım atabilen şah.** Kilit dedektörü bir şah için tam analize girmeden önce, o şahın hiçbir piyonun tutmadığı ya da tehdit etmediği bir kareye adım atıp atamayacağına bakar; atabiliyorsa o durum hemen kapanır.
-- **Kilit dedektörüne doğru anda sormak.** Bayrak düşme araması kilit dedektörüne yalnızca bir alış ya da piyon hamlesini izleyen iki yarım hamlede, o da geçerken alma açık değilken sorar: yeni bir kilit başka bir yerde doğamaz.
+- **Kilit dedektörüne doğru anda sormak.** İki arama da, bayrak düşme araması ve her hamleden sonraki ölü pozisyon araması, kilit dedektörüne kökte ve sonra yalnızca bir alış ya da piyon hamlesini izleyen iki yarım hamlede, o da geçerken alma açık değilken sorar: yeni bir kilit başka bir yerde doğamaz.
 
 İkisi de hiçbir hükmü değiştirmez: chasolver verisinin 201.060 pozisyonunun hepsinde onlarsız sürüm her pozisyon için aynı sonucu veriyor. Yalnızca daha yavaş: bayrak düşme araması toplamda yaklaşık %45, en ağır pozisyonda yaklaşık iki kat; her hamleden sonraki ölü pozisyon araması yaklaşık %15 daha uzun sürdü.
 
-**FideLite'ın yeni hamle üretimi kısa yollarından üçü.** Güncel `engine_4x.js` (1.978 B), hiçbir sonucu değiştirmeyen dört kısa yolla hamle üretimini hızlandırıyor. Chess LUX bunların üçünü taşıyor:
+**FideLite'ın yeni hamle üretimi kısa yollarından üçü.** Güncel `engine_4x.js` (1.644 B), hiçbir sonucu değiştirmeyen dört kısa yolla hamle üretimini hızlandırıyor. Chess LUX bunların üçünü taşıyor:
 - **Şah testi.** Şahtan, şah çekemeyecek kadar uzakta duran piyon, at ya da şah, hamlesi izlenmeden atlanır.
 - **Kale ve vezir.** Taşın hiçbir hattında olmayan bir hedef, yatay boyunca yürünmeden hemen reddedilir.
 - **Piyon ilerleyişi.** Piyon ilerleyişinin kareleri yalnızca hedef kare boş ve erişilebilirken yürünür.
