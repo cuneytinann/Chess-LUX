@@ -4,12 +4,12 @@
 
 ▶ **[Play in your browser](https://cuneytinann.github.io/Chess-LUX/)**
 
-**FideLite's FIDE arbiter as a complete game, in a single 9,392-byte HTML file.**
+**FideLite's FIDE arbiter as a complete game, in a single 9,574-byte HTML file.**
 
 Chess LUX is a branch of [FideLite](https://www.fidelite.art). The rules engine is FideLite's fast build, `engine_4x.js`. It keeps FideLite's reading of every FIDE article, its board, move generation, flag-fall search, claims and offers, and its fifteen result codes; all of that is documented at **[fidelite.art](https://www.fidelite.art)**.
 
 On top of that core, Chess LUX adds:
-- a full game page: game setup, three clock types, time periods, a draw-offer interval and Chess960;
+- a full game page: game setup, three clock types, time periods, a draw-offer interval, Chess960 and an Armageddon mode;
 - three engine extensions: a wider lock detector (bishops, pawns a king can take, a king that can never move, and boxed-in knights, rooks and queens), castling by moving the king onto its own rook, and a short search for dead positions after every move;
 - a much larger flag-fall search.
 
@@ -19,8 +19,8 @@ This README covers only those additions.
 
 | | FideLite | Chess LUX |
 |---|---|---|
-| **What it is** | the rules engine (`engine_4x.js`, 1,644 B) | the same engine inside a complete game page (`index.html`, 9,392 B) |
-| **Game setup** | — | any FEN; Fischer, Bronstein or simple delay; separate times for White and Black; two extra periods; draw-offer interval; automatic 3R/50; board orientation |
+| **What it is** | the rules engine (`engine_4x.js`, 1,644 B) | the same engine inside a complete game page (`index.html`, 9,574 B) |
+| **Game setup** | — | any FEN; Fischer, Bronstein or simple delay; separate times for White and Black; two extra periods; draw-offer interval; automatic 3R/50; Armageddon; board orientation |
 | **Chess960** | — | all 960 starting positions by number or at random; standard chess is number 518 |
 | **Castling** | the king moves two squares | the king moves onto its own rook, in every game; in standard chess a click on the king's destination still works |
 | **Lock detector** | kings and pawns | kings, pawns and bishops, plus boxed-in knights, rooks and queens |
@@ -42,13 +42,14 @@ Any current browser runs it: Chrome/Edge 85+, Firefox 98+, Safari 15.4+. There i
    - **Periods.** **per2** and **per3** add up to two further periods. Each one has a move (**#**, 40 and 60 by default), the minutes added when that move is completed, and the seconds added to the increment or delay from the next move on (negative values reduce it). Left at 0 they change nothing.
    - **½ Offer.** Sets how many moves must pass between a player's draw offers (1 by default).
    - **Auto 3R/50.** Makes threefold repetition and the 50-move rule end the game automatically instead of by claim.
+   - **Armageddon.** Makes a draw a win for Black; see [Armageddon](#armageddon).
    - **960.** Holds the number of the starting position: 518 is the standard one. Type another number or press 🎲 for a random one. The arrangement appears beside it, and the FEN field fills in with that start; you can still edit it.
    - **Orientation.** Beside **Play**, choose whether the board turns after every move (**Flip**) or stays with **White** or **Black** at the bottom.
    - **Reset.** **⌫** restores every setting.
 3. **Play.**
    - **Moving.** Click or drag the pieces. To castle, move the king onto its own rook; in standard chess you can also click the king's destination.
    - **Marks.** Right-drag across the board to mark every square in between, or right-click a single square to mark just that one. A left click clears the marks.
-   - **½ and ⚐.** ½ claims, offers or accepts a draw; with Auto 3R/50 it only offers and accepts. ⚐ resigns.
+   - **½ and ⚐.** ½ claims, offers or accepts a draw; with Auto 3R/50 it only offers and accepts, and in Armageddon it is hidden. ⚐ resigns.
    - **Ending.** When the game ends, ↺ starts a new one.
 
 The dialog checks a FEN you enter for basic validity only:
@@ -77,14 +78,17 @@ Even that test looks only one move back, so it still lets through positions rule
 
 ## Armageddon
 
-Armageddon is a decisive game in which a draw counts as a win for Black; in return, Black starts with less time. Chess LUX needs no separate mode for it, because the dialog can set it up:
+Armageddon is a decisive game in which a draw counts as a win for Black; in return, Black starts with less time. Tick **Armageddon** in the dialog:
 
-1. Tick **Auto 3R/50**, so that threefold repetition and the 50-move rule end the game on their own instead of waiting for a claim.
-2. Untick **⚖** and give Black less time, for example 5 minutes for White and 4 for Black.
-3. Optionally, set **½ Offer** to a very large number, such as 99999, so that no draw can be offered. Unlike the first two steps this is not required: an agreed draw counts as a win for Black anyway.
-4. If the format adds an increment later in the game, use a period. For example, 2 seconds per move from move 61 on is **per2** `# 60 +0 min +2 s`, with the main increment at 0.
+1. **A time difference is required.** Ticking **Armageddon** unticks **⚖** by itself and opens Black's time box; the first box becomes White's time. White must have more time than Black, for example 5 minutes for White and 4 for Black; with equal times, or less for White, the input is invalid and **Play** does not start the game. Unticking **Armageddon** brings **⚖** back.
+2. **No claims and no offers.** **Auto 3R/50** is ticked and locked, so threefold repetition and the 50-move rule end the game on their own. The ½ button is hidden: an agreed draw would be a win for Black anyway.
+3. **A one-sided dead position.** After every move the page asks whether White can still mate. If not, the game ends with `IM`, or with `DP` if neither side can. The answer comes from the material test, the wider lock detector and the 9-ply search, and the search rules mate impossible only when every line has closed without mate; if it runs out of budget, the game plays on. `IM` is the one result code Chess LUX adds to FideLite's fifteen, and only Armageddon uses it.
+4. **Flag and resignation.** These work as under FIDE: the 300-ply flag-fall search decides as always. If the opponent can mate, the player whose flag falls or who resigns loses (`WT`, `WR`, `BT`, `BR`); if not, the result is `TM` or `RM`. In Armageddon `TM` and `RM` are wins for Black too, so White's flag or resignation is a win for Black either way.
+5. **The score.** The result line shows the code and the score: `W# ⟹ WA`, `3R ⟹ BA`. White's wins are the three codes that begin with `W`; every other code is a win for Black.
 
-The page reports a drawn game as ½-½, like any other draw. This includes a flag fall after which White cannot mate (FIDE 6.9). Under Armageddon rules, that result means Black wins.
+If the format adds an increment later in the game, use a period. For example, 2 seconds per move from move 61 on is **per2** `# 60 +0 min +2 s`, with the main increment at 0. Armageddon works with any FEN and with Chess960.
+
+Black must still know the rule. With king and knight against king and knight, a mate can be built, because Black's own knight can block its king's escape square, so the game does not end there by itself. At the 2008 Women's World Championship, Foişor (Black) lost on time to Soćko in exactly that ending: the arbiter first declared a draw, and the appeals committee gave the game to White. Chess LUX gives the same verdict, `WT ⟹ WA`.
 
 ## What Chess LUX adds
 
@@ -222,12 +226,12 @@ Chess LUX is released under the MIT License.
 
 ▶ **[Tarayıcıda oyna](https://cuneytinann.github.io/Chess-LUX/)**
 
-**FideLite'ın FIDE hakemi, eksiksiz bir oyun olarak, tek bir 9.392 baytlık HTML dosyasında.**
+**FideLite'ın FIDE hakemi, eksiksiz bir oyun olarak, tek bir 9.574 baytlık HTML dosyasında.**
 
 Chess LUX, [FideLite](https://www.fidelite.art)'ın bir koludur. Kural motoru FideLite'ın hızlı sürümü `engine_4x.js`. Her FIDE maddesinin nasıl okunduğu, tahta, hamle üretimi, bayrak düşme araması, talepler ve teklifler, on beş sonuç kodu FideLite'ınkiyle aynı; hepsi **[fidelite.art](https://www.fidelite.art)**'ta anlatılıyor.
 
 Chess LUX bu çekirdeğin üstüne şunları ekliyor:
-- eksiksiz bir oyun sayfası: oyun kurma, üç saat türü, zaman periyotları, beraberlik teklifi aralığı ve Chess960;
+- eksiksiz bir oyun sayfası: oyun kurma, üç saat türü, zaman periyotları, beraberlik teklifi aralığı, Chess960 ve armageddon modu;
 - motorda üç ek: daha geniş bir kilit dedektörü (filler, şahın alabildiği piyonlar, hiç kıpırdayamayan şah ve gömülü at, kale, vezir); şahın kendi kalesinin üstüne giderek yaptığı rok; ve her hamleden sonra ölü pozisyon için kısa bir arama;
 - çok daha geniş bir bayrak düşme araması.
 
@@ -237,8 +241,8 @@ Bu README yalnızca bu eklemeleri anlatıyor.
 
 | | FideLite | Chess LUX |
 |---|---|---|
-| **Ne olduğu** | kural motoru (`engine_4x.js`, 1.644 B) | aynı motor, eksiksiz bir oyun sayfasının içinde (`index.html`, 9.392 B) |
-| **Oyun kurma** | — | istenen FEN; Fischer, Bronstein ya da simple delay; beyaz ve siyah için ayrı süre; iki ek periyot; beraberlik teklifi aralığı; otomatik 3R/50; tahta yönü |
+| **Ne olduğu** | kural motoru (`engine_4x.js`, 1.644 B) | aynı motor, eksiksiz bir oyun sayfasının içinde (`index.html`, 9.574 B) |
+| **Oyun kurma** | — | istenen FEN; Fischer, Bronstein ya da simple delay; beyaz ve siyah için ayrı süre; iki ek periyot; beraberlik teklifi aralığı; otomatik 3R/50; armageddon; tahta yönü |
 | **Chess960** | — | 960 başlangıç pozisyonunun hepsi, numarasıyla ya da rastgele; standart satranç 518 numara |
 | **Rok** | şah iki kare gider | her oyunda şah kendi kalesinin üstüne gider; standart satrançta şahın varış karesine tıklamak da çalışır |
 | **Kilit dedektörü** | şahlar ve piyonlar | şahlar, piyonlar ve filler, ayrıca gömülü at, kale ve vezir |
@@ -260,13 +264,14 @@ Güncel her tarayıcıda çalışır: Chrome/Edge 85+, Firefox 98+, Safari 15.4+
    - **Periyotlar.** **per2** ve **per3** iki ek periyot tanımlar. Her birinde bir hamle (**#**, varsayılan 40 ve 60), o hamle tamamlanınca eklenecek dakika ve sonraki hamleden itibaren artırıma ya da gecikmeye eklenecek saniye var (negatif değer azaltır). 0 bırakılırsa hiçbir şey değişmez.
    - **½ Offer.** Bir oyuncunun beraberlik teklifleri arasında kaç hamle geçmesi gerektiğini belirler (varsayılan 1).
    - **Auto 3R/50.** Üçlü tekrarı ve 50 hamle kuralını, talep yerine oyunu kendiliğinden bitiren kurallar yapar.
+   - **Armageddon.** Beraberliği siyahın galibiyeti yapar; bkz. [Armageddon](#armageddon-1).
    - **960.** Başlangıç pozisyonunun numarası; standart pozisyon 518. Başka bir numara yaz ya da rastgele biri için 🎲'ya bas. Dizilim yanında görünür, FEN alanı da o başlangıçla dolar; FEN'i yine de düzenleyebilirsin.
    - **Tahta yönü.** **Play**'in yanında tahtanın her hamlede dönmesini (**Flip**) ya da **White** veya **Black** altta sabit kalmasını seç.
    - **Sıfırlama.** **⌫** bütün ayarları geri yükler.
 3. **Oyna.**
    - **Hamle.** Taşları tıklayarak ya da sürükleyerek oyna. Rok için şahı kendi kalesinin üstüne götür; standart satrançta şahın varış karesine tıklamak da olur.
    - **İşaretler.** Sağ tuşla tahtada sürüklersen aradaki bütün kareler işaretlenir; tek kareye sağ tıklarsan yalnız o kare işaretlenir. Sol tıklama işaretleri siler.
-   - **½ ve ⚐.** ½ beraberlik talebi, teklifi ve kabulü içindir; Auto 3R/50 açıkken yalnız teklif ve kabul. ⚐ terk içindir.
+   - **½ ve ⚐.** ½ beraberlik talebi, teklifi ve kabulü içindir; Auto 3R/50 açıkken yalnız teklif ve kabul, armageddonda gizli. ⚐ terk içindir.
    - **Bitiş.** Oyun bitince ↺ yeni bir oyun açar.
 
 Pencere, girilen FEN'i yalnızca temel geçerlilik açısından denetler:
@@ -295,14 +300,17 @@ O test de yalnızca bir hamle geriye bakar; başka bir nedenle dışlanan konuml
 
 ## Armageddon
 
-Armageddon, beraberliğin siyahın galibiyeti sayıldığı, buna karşılık siyahın daha az süreyle başladığı kesin sonuçlu bir oyundur. Chess LUX'ın bunun için ayrı bir moda ihtiyacı yok, açılan pencere kurabiliyor:
+Armageddon, beraberliğin siyahın galibiyeti sayıldığı, buna karşılık siyahın daha az süreyle başladığı kesin sonuçlu bir oyundur. Pencerede **Armageddon**'u işaretle:
 
-1. **Auto 3R/50**'yi işaretle; üçlü tekrar ve 50 hamle kuralı talep beklemeden oyunu bitirsin.
-2. **⚖**'nin işaretini kaldır ve siyaha daha az süre ver; örneğin beyaza 5, siyaha 4 dakika.
-3. İstersen **½ Offer**'ı 99999 gibi çok büyük bir sayı yap; böylece beraberlik teklif edilemez. İlk iki adımın aksine bu şart değil: anlaşmalı beraberlik zaten siyahın galibiyeti sayılır.
-4. Formatta oyunun ilerisinde artırım varsa bir periyot kullan. Örneğin 61. hamleden itibaren hamle başına 2 saniye, ana artırım 0'ken **per2** `# 60 +0 dk +2 sn` olur.
+1. **Süre farkı şart.** **Armageddon** işaretlenince **⚖** kendiliğinden kalkar ve siyahın süre kutusu açılır; ilk kutu beyazın süresi olur. Beyazın süresi siyahınkinden fazla olmalı, örneğin beyaza 5, siyaha 4 dakika. Süreler eşitse ya da beyazınki azsa giriş geçersiz sayılır ve **Play** oyunu başlatmaz. **Armageddon**'un işareti kaldırılınca **⚖** geri gelir.
+2. **Talep ve teklif yok.** **Auto 3R/50** işaretlenip kilitlenir; üçlü tekrar ve 50 hamle kuralı oyunu kendiliğinden bitirir. ½ düğmesi gizlenir: anlaşmalı beraberlik de zaten siyahın galibiyeti olurdu.
+3. **Tek taraflı ölü pozisyon.** Her hamleden sonra beyazın hâlâ mat edip edemeyeceği sorulur. Edemiyorsa oyun `IM` ile, iki taraf da edemiyorsa `DP` ile biter. Cevabı materyal testi, geniş kilit dedektörü ve 9 yarım hamlelik arama verir; arama matı ancak bütün yollar matsız kapandığında imkânsız sayar, bütçesi dolarsa oyun sürer. `IM`, Chess LUX'ın FideLite'ın on beş koduna eklediği tek sonuç kodu ve yalnız armageddonda kullanılır.
+4. **Bayrak ve terk.** FIDE'deki gibi işler: her zamanki gibi 300 yarım hamlelik bayrak araması karar verir. Rakip mat edebiliyorsa bayrağı düşen ya da terk eden kaybeder (`WT`, `WR`, `BT`, `BR`), edemiyorsa sonuç `TM` ya da `RM` olur. Armageddonda `TM` ile `RM` de siyahın galibiyeti sayıldığı için beyazın bayrağı ya da terki her durumda siyahın galibiyetidir.
+5. **Skor.** Sonuç satırı kodu ve skoru gösterir: `W# ⟹ WA`, `3R ⟹ BA`. Beyazın galibiyetleri `W` ile başlayan üç kod; geri kalan her kod siyahın galibiyetidir.
 
-Sayfa beraberliği her beraberlik gibi ½-½ olarak bildirir. Buna, bayrak düştükten sonra beyazın mat edemediği durum da dahil (FIDE 6.9). Armageddon kurallarında bu sonuç siyahın kazandığı anlamına gelir.
+Formatta oyunun ilerisinde artırım varsa bir periyot kullan. Örneğin 61. hamleden itibaren hamle başına 2 saniye, ana artırım 0'ken **per2** `# 60 +0 dk +2 sn` olur. Armageddon her FEN'le ve Chess960'la çalışır.
+
+Siyahın yine de kuralı bilmesi gerekir. At ve şah karşı at ve şahta mat kurulabilir, çünkü siyahın kendi atı şahının kaçış karesini kapatabilir; bu yüzden oyun orada kendiliğinden bitmez. 2008 Kadınlar Dünya Şampiyonası'nda Foişor (siyah) tam bu oyunsonunda Soćko'ya süreden kaybetti: hakem önce beraberlik verdi, itiraz kurulu oyunu beyaza verdi. Chess LUX da aynı hükmü verir: `WT ⟹ WA`.
 
 ## Chess LUX'ın ekledikleri
 
