@@ -4,7 +4,7 @@
 
 ▶ **[Play in your browser](https://cuneytinann.github.io/Chess-LUX/)**
 
-**FideLite's FIDE arbiter as a complete game, in a single 9,574-byte HTML file.**
+**FideLite's FIDE arbiter as a complete game, in a single 9,553-byte HTML file.**
 
 Chess LUX is a branch of [FideLite](https://www.fidelite.art). The rules engine is FideLite's fast build, `engine_4x.js`. It keeps FideLite's reading of every FIDE article, its board, move generation, flag-fall search, claims and offers, and its fifteen result codes; all of that is documented at **[fidelite.art](https://www.fidelite.art)**.
 
@@ -19,7 +19,7 @@ This README covers only those additions.
 
 | | FideLite | Chess LUX |
 |---|---|---|
-| **What it is** | the rules engine (`engine_4x.js`, 1,644 B) | the same engine inside a complete game page (`index.html`, 9,574 B) |
+| **What it is** | the rules engine (`engine_4x.js`, 1,644 B) | the same engine inside a complete game page (`index.html`, 9,553 B) |
 | **Game setup** | — | any FEN; Fischer, Bronstein or simple delay; separate times for White and Black; two extra periods; draw-offer interval; automatic 3R/50; Armageddon; board orientation |
 | **Chess960** | — | all 960 starting positions by number or at random; standard chess is number 518 |
 | **Castling** | the king moves two squares | the king moves onto its own rook, in every game; in standard chess a click on the king's destination still works |
@@ -82,7 +82,7 @@ Armageddon is a decisive game in which a draw counts as a win for Black; in retu
 
 1. **A time difference is required.** Ticking **Armageddon** unticks **⚖** by itself and opens Black's time box; the first box becomes White's time. White must have more time than Black, for example 5 minutes for White and 4 for Black; with equal times, or less for White, the input is invalid and **Play** does not start the game. Unticking **Armageddon** brings **⚖** back.
 2. **No claims and no offers.** **Auto 3R/50** is ticked and locked, so threefold repetition and the 50-move rule end the game on their own. The ½ button is hidden: an agreed draw would be a win for Black anyway.
-3. **A one-sided dead position.** After every move the page asks whether White can still mate. If not, the game ends with `IM`, or with `DP` if neither side can. The answer comes from the material test, the wider lock detector and the 9-ply search, and the search rules mate impossible only when every line has closed without mate; if it runs out of budget, the game plays on. `IM` is the one result code Chess LUX adds to FideLite's fifteen, and only Armageddon uses it.
+3. **A one-sided dead position.** After every move the page asks whether White can still mate. If not, the game ends with `DP ⟹ BA`. There is no separate code: the question `DP` asks for both sides in a normal game is asked in Armageddon only for White's chances of mate. The answer comes from the material test, the wider lock detector and the 9-ply search, and the search rules mate impossible only when every line has closed without mate; if it runs out of budget, the game plays on.
 4. **Flag and resignation.** These work as under FIDE: the 300-ply flag-fall search decides as always. If the opponent can mate, the player whose flag falls or who resigns loses (`WT`, `WR`, `BT`, `BR`); if not, the result is `TM` or `RM`. In Armageddon `TM` and `RM` are wins for Black too, so White's flag or resignation is a win for Black either way.
 5. **The score.** The result line shows the code and the score: `W# ⟹ WA`, `3R ⟹ BA`. White's wins are the three codes that begin with `W`; every other code is a win for Black.
 
@@ -226,7 +226,7 @@ Chess LUX is released under the MIT License.
 
 ▶ **[Tarayıcıda oyna](https://cuneytinann.github.io/Chess-LUX/)**
 
-**FideLite'ın FIDE hakemi, eksiksiz bir oyun olarak, tek bir 9.574 baytlık HTML dosyasında.**
+**FideLite'ın FIDE hakemi, eksiksiz bir oyun olarak, tek bir 9.553 baytlık HTML dosyasında.**
 
 Chess LUX, [FideLite](https://www.fidelite.art)'ın bir koludur. Kural motoru FideLite'ın hızlı sürümü `engine_4x.js`. Her FIDE maddesinin nasıl okunduğu, tahta, hamle üretimi, bayrak düşme araması, talepler ve teklifler, on beş sonuç kodu FideLite'ınkiyle aynı; hepsi **[fidelite.art](https://www.fidelite.art)**'ta anlatılıyor.
 
@@ -241,7 +241,7 @@ Bu README yalnızca bu eklemeleri anlatıyor.
 
 | | FideLite | Chess LUX |
 |---|---|---|
-| **Ne olduğu** | kural motoru (`engine_4x.js`, 1.644 B) | aynı motor, eksiksiz bir oyun sayfasının içinde (`index.html`, 9.574 B) |
+| **Ne olduğu** | kural motoru (`engine_4x.js`, 1.644 B) | aynı motor, eksiksiz bir oyun sayfasının içinde (`index.html`, 9.553 B) |
 | **Oyun kurma** | — | istenen FEN; Fischer, Bronstein ya da simple delay; beyaz ve siyah için ayrı süre; iki ek periyot; beraberlik teklifi aralığı; otomatik 3R/50; armageddon; tahta yönü |
 | **Chess960** | — | 960 başlangıç pozisyonunun hepsi, numarasıyla ya da rastgele; standart satranç 518 numara |
 | **Rok** | şah iki kare gider | her oyunda şah kendi kalesinin üstüne gider; standart satrançta şahın varış karesine tıklamak da çalışır |
@@ -304,7 +304,7 @@ Armageddon, beraberliğin siyahın galibiyeti sayıldığı, buna karşılık si
 
 1. **Süre farkı şart.** **Armageddon** işaretlenince **⚖** kendiliğinden kalkar ve siyahın süre kutusu açılır; ilk kutu beyazın süresi olur. Beyazın süresi siyahınkinden fazla olmalı, örneğin beyaza 5, siyaha 4 dakika. Süreler eşitse ya da beyazınki azsa giriş geçersiz sayılır ve **Play** oyunu başlatmaz. **Armageddon**'un işareti kaldırılınca **⚖** geri gelir.
 2. **Talep ve teklif yok.** **Auto 3R/50** işaretlenip kilitlenir; üçlü tekrar ve 50 hamle kuralı oyunu kendiliğinden bitirir. ½ düğmesi gizlenir: anlaşmalı beraberlik de zaten siyahın galibiyeti olurdu.
-3. **Tek taraflı ölü pozisyon.** Her hamleden sonra beyazın hâlâ mat edip edemeyeceği sorulur. Edemiyorsa oyun `IM` ile, iki taraf da edemiyorsa `DP` ile biter. Cevabı materyal testi, geniş kilit dedektörü ve 9 yarım hamlelik arama verir; arama matı ancak bütün yollar matsız kapandığında imkânsız sayar, bütçesi dolarsa oyun sürer. `IM`, Chess LUX'ın FideLite'ın on beş koduna eklediği tek sonuç kodu ve yalnız armageddonda kullanılır.
+3. **Tek taraflı ölü pozisyon.** Her hamleden sonra beyazın hâlâ mat edip edemeyeceği sorulur. Edemiyorsa oyun `DP ⟹ BA` ile biter. Ayrı bir kod yok: `DP`'nin normal oyunda iki taraf için sorduğu soru, armageddonda yalnız beyazın mat imkânı için sorulur. Cevabı materyal testi, geniş kilit dedektörü ve 9 yarım hamlelik arama verir; arama matı ancak bütün yollar matsız kapandığında imkânsız sayar, bütçesi dolarsa oyun sürer.
 4. **Bayrak ve terk.** FIDE'deki gibi işler: her zamanki gibi 300 yarım hamlelik bayrak araması karar verir. Rakip mat edebiliyorsa bayrağı düşen ya da terk eden kaybeder (`WT`, `WR`, `BT`, `BR`), edemiyorsa sonuç `TM` ya da `RM` olur. Armageddonda `TM` ile `RM` de siyahın galibiyeti sayıldığı için beyazın bayrağı ya da terki her durumda siyahın galibiyetidir.
 5. **Skor.** Sonuç satırı kodu ve skoru gösterir: `W# ⟹ WA`, `3R ⟹ BA`. Beyazın galibiyetleri `W` ile başlayan üç kod; geri kalan her kod siyahın galibiyetidir.
 
